@@ -1,6 +1,6 @@
-import { PLACEHOLDERS } from '../constants';
+import { PLACEHOLDER } from '../constants';
 
 export type PageInfo = {
-  [PLACEHOLDERS.FIRST_NAME]?: string,
-  [PLACEHOLDERS.LAST_NAME]?: string,
+  [PLACEHOLDER.FIRST_NAME]?: string,
+  [PLACEHOLDER.LAST_NAME]?: string,
 };

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { MESSAGE_TYPES } from '../../constants';
+import { MESSAGE_TYPE } from '../../constants';
 import { Template } from '../../interfaces';
 
 type TemplateRowProps = {
   template: Template;
   deleteTemplate: (id: number) => (void | Promise<void>);
-  sendTemplate: (messageType: MESSAGE_TYPES, template: Template) => (void | Promise<void>);
+  sendTemplate: (messageType: MESSAGE_TYPE, template: Template) => (void | Promise<void>);
 };
 
 export const TemplateRow = ({ template, deleteTemplate, sendTemplate }: TemplateRowProps): JSX.Element => {
@@ -15,7 +15,7 @@ export const TemplateRow = ({ template, deleteTemplate, sendTemplate }: Template
   }, []);
 
   const connect = (): void => {
-    sendTemplate(MESSAGE_TYPES.CONNECT_MESSAGE, templateData);
+    sendTemplate(MESSAGE_TYPE.CONNECT_MESSAGE, templateData);
   };
 
   const deleteCurrentTemplate = (): void => {
@@ -23,7 +23,7 @@ export const TemplateRow = ({ template, deleteTemplate, sendTemplate }: Template
   };
 
   const send = (): void => {
-    sendTemplate(MESSAGE_TYPES.NORMAL_MESSAGE, templateData);
+    sendTemplate(MESSAGE_TYPE.NORMAL_MESSAGE, templateData);
   };
 
   return (

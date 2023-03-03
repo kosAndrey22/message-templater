@@ -1,9 +1,13 @@
 import { MESSAGE_TYPE } from '../constants';
 import { Template } from '../interfaces';
-import { LinkedinSendTemplateStrategy, MockReceivePageInfoStrategy } from '../strategies';
+import { SendTemplateStrategyManager } from '../strategies';
 
 export const sendMessage = (messageType: MESSAGE_TYPE, template: Template): void => {
-  const str = new LinkedinSendTemplateStrategy(new MockReceivePageInfoStrategy());
-  str.send(template);
+  const url = document.URL;
+  const strategy = SendTemplateStrategyManager.getStrategy(url, messageType);
+  if (!strategy) {
+    return;
+  }
+  strategy.send(template);
 };
 

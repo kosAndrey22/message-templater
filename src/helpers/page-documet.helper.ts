@@ -1,4 +1,4 @@
-const DEFAULT_CLICK_DELAY_MS = 500;
+const DEFAULT_CLICK_DELAY_MS = 1000;
 
 export const click = (element: HTMLElement): void => {
   return element.click();

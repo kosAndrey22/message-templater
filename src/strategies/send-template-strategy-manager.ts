@@ -1,6 +1,6 @@
 import { MESSAGE_TYPE } from '../constants';
 import { SendTemplateStrategy } from '../interfaces';
-import { MockReceivePageInfoStrategy } from './receive-page-info.strategies';
+import { LinkedinReceivePageInfoStrategy } from './receive-page-info.strategies';
 import { LinkedinSendTemplateStrategy } from './send-template.strategies';
 
 export class SendTemplateStrategyManager {
@@ -17,7 +17,7 @@ export class SendTemplateStrategyManager {
   }
 
   private static getLinkedinStrategy(messageType: MESSAGE_TYPE): SendTemplateStrategy | null {
-    const pageInfoReceiveStrategy = new MockReceivePageInfoStrategy();
+    const pageInfoReceiveStrategy = new LinkedinReceivePageInfoStrategy();
     switch (messageType) {
     case MESSAGE_TYPE.NORMAL_MESSAGE:
       return new LinkedinSendTemplateStrategy(pageInfoReceiveStrategy);

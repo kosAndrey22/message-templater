@@ -1,1 +1,1 @@
-export * from './linkedin-send-template.strategy';
+export * from './linkedin.send-template.strategy';

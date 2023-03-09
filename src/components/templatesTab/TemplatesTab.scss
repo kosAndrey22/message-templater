@@ -1,0 +1,63 @@
+$primary-color: #333;
+$secondary-color: #ccc;
+
+.templates-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+
+  h2 {
+    color: $primary-color;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .no-templates-msg {
+    font-size: 15px;
+  }
+
+  .template {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    padding: 5px;
+    padding-top: 1px;
+    border: 1px solid $secondary-color;
+
+    p {
+      font-size: 15px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      width: 310px;
+    }
+
+    .buttons {
+      flex-direction: row;
+      padding-top: 10px;
+      padding-left: 70px;
+
+      button {
+        width: 70px;
+        height: 22px;
+        cursor: pointer;
+        padding: 0px 7px;
+        border: none;
+        background-color: $primary-color;
+        color: white;
+        font-size: 12px;
+
+        &:hover {
+          background-color: darken($primary-color, 10%);
+        }
+
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}

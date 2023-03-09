@@ -1,0 +1,44 @@
+$primary-color: #333;
+$secondary-color: #ccc;
+
+.new-template-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+
+  h2 {
+    color: $primary-color;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    textarea {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid $secondary-color;
+      font-size: 1rem;
+      width: 300px;
+    }
+
+    button {
+      cursor: pointer;
+      padding: 5px 10px;
+      border: none;
+      background-color: $primary-color;
+      color: white;
+      font-size: 1rem;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+  }
+}

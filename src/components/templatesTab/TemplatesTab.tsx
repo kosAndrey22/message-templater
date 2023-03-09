@@ -36,9 +36,9 @@ export const TemplatesTab = (): JSX.Element => {
   };
 
   return (
-    <div>
+    <div className='templates-container'>
       {
-        templates.map(
+        templates.length ? templates.map(
           (t) => <div key={t.id}>
             <TemplateRow
               template={t}
@@ -46,7 +46,7 @@ export const TemplatesTab = (): JSX.Element => {
               sendTemplate={sendTemplate}
             />
           </div>,
-        )
+        ) : <span className='no-templates-msg'> No templates here </span>
       }
     </div>
   );

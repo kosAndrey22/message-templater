@@ -27,17 +27,19 @@ export const TemplateRow = ({ template, deleteTemplate, sendTemplate }: Template
   };
 
   return (
-    <div>
-      {templateData?.text ?? ''}
-      <button onClick={(): void => connect()}>
-        Connect
-      </button>
-      <button onClick={(): void => send()}>
-        Send
-      </button>
-      <button onClick={(): void => deleteCurrentTemplate()}>
-        Delete
-      </button>
+    <div className='template'>
+      <p>{templateData?.text ?? ''}</p>
+      <div className='buttons'>
+        <button onClick={(): void => connect()}>
+          Connect
+        </button>
+        <button onClick={(): void => send()}>
+          Send
+        </button>
+        <button onClick={(): void => deleteCurrentTemplate()}>
+          Delete
+        </button>
+      </div>
     </div>
   );
 };

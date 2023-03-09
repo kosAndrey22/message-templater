@@ -10,11 +10,13 @@ export const Popup = (): JSX.Element => {
   }, []);
 
   return (
-    <div style={{ width: 400, height: 600 }}>
+    <div className='app'>
       <Tabs>
         <TabList>
-          <Tab>Templates</Tab>
-          <Tab>Add Template</Tab>
+          <div className='tab-switcher'>
+            <Tab><div className='tab-switcher__tab-button'>Templates</div></Tab>
+            <Tab><div className='tab-switcher__tab-button'>Add Template</div ></Tab>
+          </div>
         </TabList>
 
         <TabPanel>

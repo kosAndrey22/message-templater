@@ -10,6 +10,11 @@ export const clickWithDelayAfter = async (element: HTMLElement, delay: number = 
   return;
 };
 
+export const findPageElementsById = (id: string): HTMLElement => {
+  const matchingElement = document.getElementById(id);
+  return matchingElement;
+};
+
 export const findPageElementsByClassName = (className: string): HTMLElement[] => {
   const matchingElements = document.getElementsByClassName(className);
   const arrayOfMatchinElements = [].slice.call(matchingElements);

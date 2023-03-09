@@ -1,7 +1,7 @@
 import { MESSAGE_TYPE } from '../constants';
 import { SendTemplateStrategy } from '../interfaces';
 import { LinkedinReceivePageInfoStrategy } from './receive-page-info.strategies';
-import { LinkedinSendTemplateStrategy } from './send-template.strategies';
+import { LinkedinConnectSendTemplateStrategy, LinkedinSendTemplateStrategy } from './send-template.strategies';
 
 export class SendTemplateStrategyManager {
 
@@ -22,7 +22,7 @@ export class SendTemplateStrategyManager {
     case MESSAGE_TYPE.NORMAL_MESSAGE:
       return new LinkedinSendTemplateStrategy(pageInfoReceiveStrategy);
     case MESSAGE_TYPE.CONNECT_MESSAGE:
-      return null;
+      return new LinkedinConnectSendTemplateStrategy(pageInfoReceiveStrategy);;
     default:
       return null;
     }

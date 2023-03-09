@@ -30,19 +30,20 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
   ) { }
 
   public async send(template: Template): Promise<void> {
-    await this.clickSendButton();
-    const pageInfo = await this.pageInfoReceiver.receive();
+    await this.clickOpenDialogButton();
+    const pageInfo = this.pageInfoReceiver.receive();
     const text = interpolate(template.text, pageInfo);
     this.insertText(text);
+    this.disableSendButton();
   }
 
-  private async clickSendButton(): Promise<void> {
+  private async clickOpenDialogButton(): Promise<void> {
     const elements = findPageElementsByClassName(this.openDialogButton.className);
-    const sendButton = elements.find((el) => el.getAttribute('type') === this.openDialogButton.type);
-    if (!sendButton) {
+    const button = elements.find((el) => el.getAttribute('type') === this.openDialogButton.type);
+    if (!button) {
       return;
     }
-    await clickWithDelayAfter(sendButton);
+    await clickWithDelayAfter(button);
   }
 
   private insertText(text: string): void {
@@ -53,7 +54,6 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
     const input = <HTMLElement>inputParent.firstChild;
     this.removeSendInputPlaceholder(inputParent);
     this.setSendInputParentContainerActive();
-    this.disableSendButton();
     input.textContent = text;
   }
 

@@ -1,5 +1,5 @@
-import { TEMPLATES_STORAGE_KEY } from '../constants';
-import { Template } from '../interfaces';
+import { TEMPLATES_STORAGE_KEY } from '../../constants';
+import { Template } from '../../interfaces';
 
 export const getSavedTemplates = async (): Promise<Template[]> => {
   const storage = await chrome.storage.local.get(TEMPLATES_STORAGE_KEY);

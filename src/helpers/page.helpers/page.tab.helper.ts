@@ -7,6 +7,6 @@ export const getActiveTab = async (): Promise<chrome.tabs.Tab> => {
   return activeTab;
 };
 
-export const executeSriptOnTab = (tabId: number, scriptFile: string): void => {
+export const executeScriptOnTab = (tabId: number, scriptFile: string): void => {
   chrome.scripting.executeScript({ target: { tabId }, files: [scriptFile] });
 };

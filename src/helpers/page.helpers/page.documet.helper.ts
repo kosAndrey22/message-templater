@@ -1,6 +1,8 @@
 const DEFAULT_CLICK_DELAY_MS = 1000;
 const DOCUMENT_COMMANDS = {
-  INSERT_TEXT_COMMAND: 'insertText',
+  DELETE: 'delete',
+  INSERT_TEXT: 'insertText',
+  SELECT_ALL: 'selectAll',
 };
 
 export const click = (element: HTMLElement): void => {
@@ -32,9 +34,20 @@ export const removeClassFromElemetClassList = (element: HTMLElement, className: 
   element.classList.remove(className);
 };
 
-export const insertTextToElement = (element: HTMLElement, text: string): void => {
+export const clearElementText = (element: HTMLElement): void => {
   element.focus();
-  document.execCommand(DOCUMENT_COMMANDS.INSERT_TEXT_COMMAND, false, text);
+  document.execCommand(DOCUMENT_COMMANDS.SELECT_ALL, false);
+  document.execCommand(DOCUMENT_COMMANDS.DELETE, false);
+};
+
+export const addElementText = (element: HTMLElement, text: string): void => {
+  element.focus();
+  document.execCommand(DOCUMENT_COMMANDS.INSERT_TEXT, false, text);
+};
+
+export const setElementText = (element: HTMLElement, text: string): void => {
+  clearElementText(element);
+  addElementText(element, text);
 };
 
 export const getDocumentUrl = (): string => {

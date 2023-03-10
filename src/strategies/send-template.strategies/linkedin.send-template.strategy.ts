@@ -1,4 +1,4 @@
-import { clickWithDelayAfter, findPageElementsByClassName, insertTextToElement, interpolate } from '../../helpers';
+import { clickWithDelayAfter, findPageElementsByClassName, setElementText, interpolate } from '../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateStrategy, Template } from '../../interfaces';
 
 export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
@@ -38,6 +38,6 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
       return;
     }
     const input = <HTMLElement>inputParent.firstChild;
-    insertTextToElement(input, text);
+    setElementText(input, text);
   }
 }

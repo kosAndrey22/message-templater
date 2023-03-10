@@ -1,4 +1,4 @@
-import { clickWithDelayAfter, findPageElementsByClassName, findPageElementsById, insertTextToElement, interpolate } from '../../helpers';
+import { clickWithDelayAfter, findPageElementsByClassName, findPageElementsById, setElementText, interpolate } from '../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateStrategy, Template } from '../../interfaces';
 
 export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy {
@@ -48,7 +48,7 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
     if (!input) {
       return;
     }
-    insertTextToElement(input, text);
+    setElementText(input, text);
   }
 
 }

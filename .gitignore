@@ -1,2 +1,5 @@
 dist/js
 node_modules
+
+## Builded ext
+message-templater.zip

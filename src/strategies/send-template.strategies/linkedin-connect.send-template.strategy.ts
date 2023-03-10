@@ -1,4 +1,4 @@
-import { clickWithDelayAfter, findPageElementsByClassName, findPageElementsById, interpolate, removeClassFromElemetClassList } from '../../helpers';
+import { clickWithDelayAfter, findPageElementsByClassName, findPageElementsById, insertTextToElement, interpolate } from '../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateStrategy, Template } from '../../interfaces';
 
 export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy {
@@ -14,11 +14,6 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
     id: 'custom-message',
   };
 
-  private sendButton = {
-    className: 'artdeco-button artdeco-button--2 artdeco-button--primary artdeco-button--disabled ember-view ml1',
-    disableClassNamePart: 'artdeco-button--disabled',
-  };
-
   constructor(
     private pageInfoReceiver: ReceivePageInfoStrategy,
   ) { }
@@ -29,7 +24,6 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
     const pageInfo = this.pageInfoReceiver.receive();
     const text = interpolate(template.text, pageInfo);
     this.insertText(text);
-    this.disableSendButton();
   }
 
   private async clickOpenConnectModalButton(): Promise<void> {
@@ -54,17 +48,7 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
     if (!input) {
       return;
     }
-    input.focus();
-    input.value = text;
-  }
-
-  private disableSendButton(): void {
-    const sendButton = <HTMLButtonElement>(findPageElementsByClassName(this.sendButton.className)[0]);
-    if (!sendButton) {
-      return;
-    }
-    removeClassFromElemetClassList(<HTMLElement>sendButton, this.sendButton.disableClassNamePart);
-    sendButton.disabled = false;
+    insertTextToElement(input, text);
   }
 
 }

@@ -36,3 +36,7 @@ export const insertTextToElement = (element: HTMLElement, text: string): void =>
   element.focus();
   document.execCommand(DOCUMENT_COMMANDS.INSERT_TEXT_COMMAND, false, text);
 };
+
+export const getDocumentUrl = (): string => {
+  return document.URL;
+};

@@ -1,14 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { AddTemplateTab } from '../addTemplateTab';
 import { TemplatesTab } from '../templatesTab';
 import './Popup.scss';
 
 export const Popup = (): JSX.Element => {
-  useEffect((): void => {
-    chrome.runtime.sendMessage({ popupMounted: true });
-  }, []);
-
   return (
     <div className='app'>
       <Tabs>

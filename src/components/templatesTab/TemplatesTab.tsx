@@ -19,13 +19,13 @@ export const TemplatesTab = (): JSX.Element => {
     getTemplates();
   });
 
-  const sendTemplate = (messageType: MESSAGE_TYPE, template: Template): void => {
+  const sendTemplate = async (messageType: MESSAGE_TYPE, template: Template): Promise<void> => {
     const event: SendTemplatePageEvent = {
       template,
       messageType,
       type: PAGE_EVENT.SEND_MESSAGE,
     };
-    sendPageEvent(event);
+    await sendPageEvent(event);
   };
 
   const deleteTemplate = async (templateId: number): Promise<void> => {

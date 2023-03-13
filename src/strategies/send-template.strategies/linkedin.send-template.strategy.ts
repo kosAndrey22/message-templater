@@ -1,11 +1,12 @@
-import { clickWithDelayAfter, findPageElementsByClassName, setElementText, interpolate } from '../../helpers';
+import { clickWithDelayAfter, findPageElementsByClassName, setElementText, interpolate, findChildsInsideElementRecursively } from '../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateStrategy, Template } from '../../interfaces';
 
 export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
 
   private openDialogButton = {
-    className: 'artdeco-button__icon',
+    sectionClassName: 'artdeco-card ember-view pv-top-card',
     type: 'send-privately',
+    lockedType: 'locked',
   };
 
   private messageInput = {
@@ -24,8 +25,17 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
   }
 
   private async clickOpenDialogButton(): Promise<void> {
-    const elements = findPageElementsByClassName(this.openDialogButton.className);
-    const button = elements.find((el) => el.getAttribute('type') === this.openDialogButton.type);
+    const buttonSection = findPageElementsByClassName(this.openDialogButton.sectionClassName)[0];
+    if (!buttonSection) {
+      return;
+    }
+    const elements = findChildsInsideElementRecursively(
+      buttonSection,
+      (el: HTMLElement) =>
+        el.getAttribute('type') === this.openDialogButton.type
+        || el.getAttribute('type') === this.openDialogButton.lockedType,
+    );
+    const button = <HTMLButtonElement>elements[0];
     if (!button) {
       return;
     }

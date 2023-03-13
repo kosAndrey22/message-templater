@@ -53,3 +53,24 @@ export const setElementText = (element: HTMLElement, text: string): void => {
 export const getDocumentUrl = (): string => {
   return document.URL;
 };
+
+export const findChildsInsideElementRecursively = (
+  element: HTMLElement | null,
+  matchCondition: (element: HTMLElement) => boolean,
+): HTMLElement[] => {
+  if (!element) {
+    return [];
+  };
+
+  const matches = [];
+  const match = matchCondition(element);
+
+  if (match) {
+    matches.push(element);
+  }
+  for (let i = 0; i < element.children.length; i += 1) {
+    const childMatches = findChildsInsideElementRecursively(<HTMLElement>element.children[i], matchCondition);
+    matches.push(...childMatches);
+  }
+  return matches;
+};

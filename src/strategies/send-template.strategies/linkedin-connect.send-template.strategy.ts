@@ -1,9 +1,10 @@
-import { clickWithDelayAfter, findPageElementsByClassName, findPageElementsById, setElementText, interpolate } from '../../helpers';
+import { clickWithDelayAfter, findPageElementsByClassName, findPageElementsById, setElementText, interpolate, findChildsInsideElementRecursively } from '../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateStrategy, Template } from '../../interfaces';
 
 export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy {
   private openConnectModalButton = {
-    parentClassName: 'pv-top-card-v2-ctas',
+    sectionClassName: 'artdeco-card ember-view pv-top-card',
+    type: 'connect',
   };
 
   private personalizeButton = {
@@ -27,8 +28,15 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
   }
 
   private async clickOpenConnectModalButton(): Promise<void> {
-    const elements = findPageElementsByClassName(this.openConnectModalButton.parentClassName);
-    const button = <HTMLButtonElement>elements[0]?.firstElementChild?.firstElementChild?.firstElementChild;
+    const buttonSection = findPageElementsByClassName(this.openConnectModalButton.sectionClassName)[0];
+    if (!buttonSection) {
+      return;
+    }
+    const elements = findChildsInsideElementRecursively(
+      buttonSection,
+      (el: HTMLElement) => el.getAttribute('type') === this.openConnectModalButton.type,
+    );
+    const button = <HTMLButtonElement>elements[0];
     if (!button) {
       return;
     }

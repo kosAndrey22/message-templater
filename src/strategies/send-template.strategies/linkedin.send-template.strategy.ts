@@ -10,7 +10,7 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
   };
 
   private messageInput = {
-    parentClass: 'msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 full-height notranslate      ',
+    class: 'msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 full-height notranslate      ',
   };
 
   constructor(
@@ -43,11 +43,11 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
   }
 
   private insertText(text: string): void {
-    const inputParent = findPageElementsByClassName(this.messageInput.parentClass)[0];
-    if (!inputParent) {
+    const input = findPageElementsByClassName(this.messageInput.class)[0];
+    if (!input) {
       return;
     }
-    const input = <HTMLElement>inputParent.firstChild;
+    input.click();
     setElementText(input, text);
   }
 }

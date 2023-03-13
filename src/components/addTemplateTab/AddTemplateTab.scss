@@ -1,12 +1,49 @@
 $primary-color: #333;
 $secondary-color: #ccc;
 
+.info-tooltip-mark-container {
+  margin-left: 320px;
+  margin-bottom: 0px;
+
+
+  .info-tooltip-mark:before {
+    content: '?';
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    width: 1.8ex;
+    height: 1.8ex;
+    font-size: 1.4ex;
+    line-height: 1.8ex;
+    border-radius: 1.2ex;
+    margin-right: 4px;
+    padding: 1px;
+    color: blue;
+    background: white;
+    border: 1px solid blue;
+    text-decoration: none;
+  }
+}
+
+.tooltip-container {
+  background-color: $primary-color;
+  color: $secondary-color;
+
+  .info-tooltip {
+    margin-left: 7px;
+    text-align: left;
+    width: 200px;
+    max-height: 80px;
+  }
+}
+
+
 .new-template-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 20px;
+  margin: 0px 20px 20px 20px;
 
   h2 {
     color: $primary-color;

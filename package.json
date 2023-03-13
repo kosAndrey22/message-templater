@@ -1,6 +1,6 @@
 {
   "name": "message-templater",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Chrome Extension for sending template messages",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
@@ -15,6 +15,7 @@
   "dependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-popper-tooltip": "^4.4.2",
     "react-tabs": "3.1.0"
   },
   "devDependencies": {

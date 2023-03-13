@@ -1,4 +1,5 @@
-import { clickWithDelayAfter, findPageElementsByClassName, setElementText, interpolate, findChildsInsideElementRecursively } from '../../helpers';
+import { HTMLElementNotFoundError } from '../../errors';
+import { clickWithDelayAfter, findPageElementsByClassName, setElementText, interpolate, findChildsInsideElementRecursively, formatNewErrorMessage } from '../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateStrategy, Template } from '../../interfaces';
 
 export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
@@ -45,7 +46,8 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private insertText(text: string): void {
     const input = findPageElementsByClassName(this.messageInput.class)[0];
     if (!input) {
-      return;
+      const errorMessage = formatNewErrorMessage('Can\'t find connect send input', 'insertText', 'LinkedinSendTemplateStrategy');
+      throw new HTMLElementNotFoundError(errorMessage);
     }
     input.click();
     setElementText(input, text);

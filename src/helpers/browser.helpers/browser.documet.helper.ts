@@ -15,7 +15,7 @@ export const clickWithDelayAfter = async (element: HTMLElement, delay: number = 
   return;
 };
 
-export const findPageElementsById = (id: string): HTMLElement => {
+export const findPageElementById = (id: string): HTMLElement => {
   const matchingElement = document.getElementById(id);
   return matchingElement;
 };

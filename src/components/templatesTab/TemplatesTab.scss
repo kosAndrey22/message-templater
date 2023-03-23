@@ -28,11 +28,12 @@ $secondary-color: #ccc;
     padding-top: 1px;
     border: 1px solid $secondary-color;
 
-    p {
+    span {
       font-size: 15px;
       margin-top: 5px;
       margin-bottom: 5px;
       width: 310px;
+      white-space: pre-line;
     }
 
     .buttons {

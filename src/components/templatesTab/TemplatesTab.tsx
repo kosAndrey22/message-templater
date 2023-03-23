@@ -11,9 +11,10 @@ export const TemplatesTab = (): JSX.Element => {
   useEffect(() => {
     const getTemplates = async (): Promise<void> => {
       const savedTemplates = await getSavedTemplates();
-      const savedEqualToRendered = JSON.stringify(savedTemplates) === JSON.stringify(templates);
+      const orderedByIdTemplates = savedTemplates.sort((t1, t2) => t2.id - t1.id);
+      const savedEqualToRendered = JSON.stringify(orderedByIdTemplates) === JSON.stringify(templates);
       if (!savedEqualToRendered) {
-        setTemplates(savedTemplates);
+        setTemplates(orderedByIdTemplates);
       }
     };
     getTemplates();

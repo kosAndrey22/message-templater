@@ -5,15 +5,13 @@ const DOCUMENT_COMMANDS = {
   SELECT_ALL: 'selectAll',
 };
 
-export const click = (element: HTMLElement): void => {
-  return element.click();
+// Type check area:
+
+export const isInputElemet = (element: HTMLElement): element is HTMLInputElement => {
+  return (<HTMLInputElement>element).setSelectionRange !== undefined;
 };
 
-export const clickWithDelayAfter = async (element: HTMLElement, delay: number = DEFAULT_CLICK_DELAY_MS): Promise<void> => {
-  click(element);
-  await new Promise((resolve) => setTimeout(resolve, delay));
-  return;
-};
+// Get elements and their class area:
 
 export const findPageElementById = (id: string): HTMLElement => {
   const matchingElement = document.getElementById(id);
@@ -32,26 +30,6 @@ export const addClassToElemetClassList = (element: HTMLElement, className: strin
 
 export const removeClassFromElemetClassList = (element: HTMLElement, className: string): void => {
   element.classList.remove(className);
-};
-
-export const clearElementText = (element: HTMLElement): void => {
-  element.focus();
-  document.execCommand(DOCUMENT_COMMANDS.SELECT_ALL, false);
-  document.execCommand(DOCUMENT_COMMANDS.DELETE, false);
-};
-
-export const addElementText = (element: HTMLElement, text: string): void => {
-  element.focus();
-  document.execCommand(DOCUMENT_COMMANDS.INSERT_TEXT, false, text);
-};
-
-export const setElementText = (element: HTMLElement, text: string): void => {
-  clearElementText(element);
-  addElementText(element, text);
-};
-
-export const getDocumentUrl = (): string => {
-  return document.URL;
 };
 
 export const findChildsInsideElementRecursively = (
@@ -73,4 +51,68 @@ export const findChildsInsideElementRecursively = (
     matches.push(...childMatches);
   }
   return matches;
+};
+
+// Element click area:
+
+export const click = (element: HTMLElement): void => {
+  return element.click();
+};
+
+export const clickWithDelayAfter = async (element: HTMLElement, delay: number = DEFAULT_CLICK_DELAY_MS): Promise<void> => {
+  click(element);
+  await new Promise((resolve) => setTimeout(resolve, delay));
+  return;
+};
+
+// Element text area:
+
+export const selectAllDocumentText = (element: HTMLElement): void => {
+  if (!isInputElemet(element)) {
+    return;
+  }
+  element.focus();
+  element.setSelectionRange(0, Number.MAX_SAFE_INTEGER);
+};
+
+export const clearElementText = (element: HTMLElement): void => {
+  if (!isInputElemet(element)) {
+    return;
+  }
+  element.focus();
+  selectAllDocumentText(element);
+  document.execCommand(DOCUMENT_COMMANDS.DELETE, false);
+};
+
+export const addElementText = (element: HTMLElement, text: string): void => {
+  element.focus();
+  document.execCommand(DOCUMENT_COMMANDS.INSERT_TEXT, false, text);
+};
+
+export const setElementText = (element: HTMLElement, text: string): void => {
+  clearElementText(element);
+  addElementText(element, text);
+  moveCaretToTextEnd(element);
+  scrollToElementEnd(element);
+};
+
+export const moveCaretToTextEnd = (element: HTMLElement): void => {
+  if (!isInputElemet(element)) {
+    return;
+  }
+  element.focus();
+  element.setSelectionRange(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
+};
+
+// Document data area:
+
+export const getDocumentUrl = (): string => {
+  return document.URL;
+};
+
+// Others area:
+
+export const scrollToElementEnd = (element: HTMLElement): void => {
+  element.focus();
+  element.scrollTop = Number.MAX_SAFE_INTEGER;
 };

@@ -38,7 +38,7 @@ $secondary-color: #ccc;
     .buttons {
       flex-direction: row;
       padding-top: 10px;
-      padding-left: 70px;
+      padding-left: 140px; // Return 70 when send button will be fixed
 
       button {
         width: 70px;

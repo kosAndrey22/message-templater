@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MESSAGE_TYPE, PAGE_EVENT } from '../../constants';
-import { getSavedTemplates, deleteTemplate as deleteTemplateFromStorage, sendPageEvent } from '../../helpers';
+import { getSavedTemplates, deleteTemplate as deleteTemplateFromStorage, sendPageEvent, closeWindow } from '../../helpers';
 import { SendTemplatePageEvent, Template } from '../../interfaces';
 import { TemplateRow } from './TemplateRow';
 import './TemplatesTab.scss';
@@ -27,6 +27,7 @@ export const TemplatesTab = (): JSX.Element => {
       type: PAGE_EVENT.SEND_MESSAGE,
     };
     await sendPageEvent(event);
+    closeWindow();
   };
 
   const deleteTemplate = async (templateId: number): Promise<void> => {

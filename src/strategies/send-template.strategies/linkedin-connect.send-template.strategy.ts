@@ -1,5 +1,5 @@
 import { HTMLElementNotFoundError } from '../../errors';
-import { clickWithDelayAfter, findPageElementsByClassName, findPageElementById, setElementText, interpolate, findChildsInsideElementRecursively, formatNewErrorMessage } from '../../helpers';
+import { clickWithDelayAfter, findPageElementsByClassName, findPageElementById, setElementText, interpolate, findChildsInsideElementRecursively, formatNewErrorMessage, moveCaretToTextStart } from '../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateStrategy, Template } from '../../interfaces';
 
 export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy {
@@ -59,6 +59,7 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
       throw new HTMLElementNotFoundError(errorMessage);
     }
     setElementText(input, text);
+    moveCaretToTextStart(input);
   }
 
 }

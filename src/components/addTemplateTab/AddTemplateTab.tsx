@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
+import { PLACEHOLDER } from '../../constants';
 import { saveNewTemplate } from '../../helpers';
 import './AddTemplateTab.scss';
 
@@ -35,8 +36,12 @@ export const AddTemplateTab = (): JSX.Element => {
             <div {...getArrowProps({ className: 'tooltip-arrow' })} />
             <div className='info-tooltip'>
               <h4> Available variables: </h4>
-              <p> {'{firstName} - first name of the user'} </p>
-              <p> {'{lastName} - last name of the user'} </p>
+              <p>
+                <b>{PLACEHOLDER.FIRST_NAME}</b> - first name of the user
+              </p>
+              <p>
+                <b>{PLACEHOLDER.LAST_NAME}</b> - last name of the user
+              </p>
             </div>
           </div>
         )}

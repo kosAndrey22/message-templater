@@ -2,16 +2,15 @@ const DEFAULT_CLICK_DELAY_MS = 1000;
 const DOCUMENT_COMMANDS = {
   DELETE: 'delete',
   INSERT_TEXT: 'insertText',
-  SELECT_ALL: 'selectAll',
 };
 
-// Type check area:
+// Type check section:
 
 export const isInputElemet = (element: HTMLElement): element is HTMLInputElement => {
   return (<HTMLInputElement>element).setSelectionRange !== undefined;
 };
 
-// Get elements and their class area:
+// Get elements and their class section:
 
 export const findPageElementById = (id: string): HTMLElement => {
   const matchingElement = document.getElementById(id);
@@ -53,7 +52,13 @@ export const findChildsInsideElementRecursively = (
   return matches;
 };
 
-// Element click area:
+// Element focus section:
+
+export const focus = (element: HTMLElement): void => {
+  element.focus();
+};
+
+// Element click section:
 
 export const click = (element: HTMLElement): void => {
   return element.click();
@@ -65,13 +70,13 @@ export const clickWithDelayAfter = async (element: HTMLElement, delay: number = 
   return;
 };
 
-// Element text area:
+// Element text section:
 
 export const selectAllDocumentText = (element: HTMLElement): void => {
   if (!isInputElemet(element)) {
     return;
   }
-  element.focus();
+  focus(element);
   element.setSelectionRange(0, Number.MAX_SAFE_INTEGER);
 };
 
@@ -79,40 +84,51 @@ export const clearElementText = (element: HTMLElement): void => {
   if (!isInputElemet(element)) {
     return;
   }
-  element.focus();
+  focus(element);
   selectAllDocumentText(element);
   document.execCommand(DOCUMENT_COMMANDS.DELETE, false);
 };
 
 export const addElementText = (element: HTMLElement, text: string): void => {
-  element.focus();
+  focus(element);
   document.execCommand(DOCUMENT_COMMANDS.INSERT_TEXT, false, text);
 };
 
 export const setElementText = (element: HTMLElement, text: string): void => {
   clearElementText(element);
   addElementText(element, text);
-  moveCaretToTextEnd(element);
-  scrollToElementEnd(element);
+};
+
+export const moveCaretToTextStart = (element: HTMLElement): void => {
+  if (!isInputElemet(element)) {
+    return;
+  }
+  focus(element);
+  element.setSelectionRange(0, 0);
 };
 
 export const moveCaretToTextEnd = (element: HTMLElement): void => {
   if (!isInputElemet(element)) {
     return;
   }
-  element.focus();
+  focus(element);
   element.setSelectionRange(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
 };
 
-// Document data area:
+// Document data section:
 
 export const getDocumentUrl = (): string => {
   return document.URL;
 };
 
-// Others area:
+// Scroll section:
+
+export const scrollToElementStart = (element: HTMLElement): void => {
+  focus(element);
+  element.scrollTop = 0;
+};
 
 export const scrollToElementEnd = (element: HTMLElement): void => {
-  element.focus();
+  focus(element);
   element.scrollTop = Number.MAX_SAFE_INTEGER;
 };

@@ -34,6 +34,11 @@ body {
         padding: 0px;
     }
 
+    &__tab-panel {
+        overflow: auto;
+        overflow-x: hidden;
+    }
+
     &__tab {
         width: 100%;
         text-align: center;

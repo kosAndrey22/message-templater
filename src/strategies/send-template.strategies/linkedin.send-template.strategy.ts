@@ -1,5 +1,5 @@
 import { HTMLElementNotFoundError } from '../../errors';
-import { clickWithDelayAfter, findPageElementsByClassName, setElementText, interpolate, findChildsInsideElementRecursively, formatNewErrorMessage } from '../../helpers';
+import { clickWithDelayAfter, findPageElementsByClassName, setElementText, interpolate, findChildsInsideElementRecursively, formatNewErrorMessage, moveCaretToTextStart } from '../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateStrategy, Template } from '../../interfaces';
 
 export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
@@ -51,5 +51,6 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
     }
     input.click();
     setElementText(input, text);
+    moveCaretToTextStart(input);
   }
 }

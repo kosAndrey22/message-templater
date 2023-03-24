@@ -10,9 +10,14 @@ export const saveTemplates = async (templates: Template[]): Promise<void> => {
   await chrome.storage.local.set({ [TEMPLATES_STORAGE_KEY]: templates });
 };
 
-export const saveNewTemplate = async (newTemplateText: string): Promise<void> => {
+export const saveNewTemplate = async (newTemplateData: Omit<Template, 'id'>): Promise<void> => {
   const templates = await getSavedTemplates();
-  const newTemplate: Template = { text: newTemplateText, id: new Date().getTime() };
+  const { title, text } = newTemplateData;
+  const newTemplate: Template = {
+    title,
+    text,
+    id: new Date().getTime(),
+  };
   templates.push(newTemplate);
   await saveTemplates(templates);
 };

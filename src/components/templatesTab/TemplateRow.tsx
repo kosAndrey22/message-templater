@@ -28,6 +28,7 @@ export const TemplateRow = ({ template, deleteTemplate, sendTemplate }: Template
 
   return (
     <div className='template'>
+      <b>{templateData?.title ?? ''}</b>
       <span>{templateData?.text ?? ''}</span>
       <div className='buttons'>
         <button onClick={(): void => connect()}>

@@ -6,13 +6,18 @@ import './AddTemplateTab.scss';
 
 export const AddTemplateTab = (): JSX.Element => {
   const [templateText, setTemplateText] = useState('');
+  const [templateTitle, setTemplateTitle] = useState('');
 
-  const onInputChange = <E extends ChangeEvent<HTMLTextAreaElement>>(e: E): void => {
+  const onTitleInputChange = <E extends ChangeEvent<HTMLInputElement>>(e: E): void => {
+    setTemplateTitle(e.target.value);
+  };
+  const onTextInputChange = <E extends ChangeEvent<HTMLTextAreaElement>>(e: E): void => {
     setTemplateText(e.target.value);
   };
 
   const onSave = (): void => {
-    saveNewTemplate(templateText);
+    saveNewTemplate({ title: templateTitle, text: templateText });
+    setTemplateTitle('');
     setTemplateText('');
   };
 
@@ -48,11 +53,18 @@ export const AddTemplateTab = (): JSX.Element => {
       </div>
       <div className='new-template-container'>
         <div className='form'>
+          <input
+            placeholder='Title'
+            value={templateTitle}
+            onChange={(e): void => onTitleInputChange(e)}
+          />
           <textarea
+            placeholder='Template Text'
             value={templateText}
-            onChange={(e): void => onInputChange(e)}
+            onChange={(e): void => onTextInputChange(e)}
           />
           <button
+            disabled={(!templateTitle) || (!templateText)}
             onClick={(): void => onSave()}
           >
             Save

@@ -57,6 +57,14 @@ $secondary-color: #ccc;
     align-items: center;
     justify-content: center;
 
+    input {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid $secondary-color;
+      font-size: 1rem;
+      width: 300px;
+    }
+
     textarea {
       padding: 10px;
       margin-bottom: 10px;
@@ -75,6 +83,11 @@ $secondary-color: #ccc;
 
       &:hover {
         background-color: darken($primary-color, 10%);
+      }
+
+      &:disabled {
+        background-color: gray;
+        cursor: default;
       }
     }
   }

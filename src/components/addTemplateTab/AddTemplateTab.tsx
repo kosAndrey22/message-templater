@@ -47,6 +47,9 @@ export const AddTemplateTab = (): JSX.Element => {
               <p>
                 <b>{PLACEHOLDER.LAST_NAME}</b> - last name of the user
               </p>
+              <p>
+                <b>{PLACEHOLDER.FULL_NAME}</b> - Shortcut of {`{${PLACEHOLDER.FIRST_NAME}}`} {`{${PLACEHOLDER.LAST_NAME}}`}
+              </p>
             </div>
           </div>
         )}

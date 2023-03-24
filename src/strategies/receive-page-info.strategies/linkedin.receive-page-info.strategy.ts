@@ -16,6 +16,9 @@ export class LinkedinReceivePageInfoStrategy implements ReceivePageInfoStrategy 
     if (lastName) {
       pageInfo.lastName = lastName;
     }
+    if (firstName && lastName) {
+      pageInfo.fullName = `${firstName} ${lastName}`;
+    }
     return pageInfo;
   }
 

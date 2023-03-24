@@ -6,6 +6,7 @@ export class MockReceivePageInfoStrategy implements ReceivePageInfoStrategy {
     return {
       firstName: 'aboba',
       lastName: 'pavlovich',
+      fullName: 'aboba pavlovich',
     };
   }
 }

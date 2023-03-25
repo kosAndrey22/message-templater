@@ -10,6 +10,7 @@ Now supports only LinkedIn.
 
 * firstName - first name of user.
 * lastName - last name of user.
+* fullName - Shortcut of {firstName} {lastName}.
 
 ## Usage:
 

@@ -34,6 +34,10 @@ $secondary-color: #ccc;
     text-align: left;
     width: 200px;
     max-height: 120px;
+
+    .placeholder-variable {
+      cursor: pointer;
+    }
   }
 }
 

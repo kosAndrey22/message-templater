@@ -12,8 +12,8 @@ export const isInputElemet = (element: HTMLElement): element is HTMLInputElement
 
 // Get elements and their class section:
 
-export const findPageElementById = (id: string): HTMLElement => {
-  const matchingElement = document.getElementById(id);
+export const findPageElementById = (id: string): HTMLElement | null => {
+  const matchingElement: HTMLElement | null = document.getElementById(id);
   return matchingElement;
 };
 
@@ -56,6 +56,10 @@ export const findChildsInsideElementRecursively = (
 
 export const focus = (element: HTMLElement): void => {
   element.focus();
+};
+
+export const isCursorInside = (element: HTMLElement): boolean => {
+  return element.matches(':hover');
 };
 
 // Element click section:
@@ -131,4 +135,33 @@ export const scrollToElementStart = (element: HTMLElement): void => {
 export const scrollToElementEnd = (element: HTMLElement): void => {
   focus(element);
   element.scrollTop = Number.MAX_SAFE_INTEGER;
+};
+
+// Events section
+export const addMouseEnterListener = <K extends keyof HTMLElementEventMap>(
+  element: HTMLElement,
+  func: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+): void => {
+  element.addEventListener('mouseenter', func);
+};
+
+export const removeMouseEnterListener = <K extends keyof HTMLElementEventMap>(
+  element: HTMLElement,
+  func: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+): void => {
+  element.removeEventListener('mouseenter', func);
+};
+
+export const addMouseOutListener = <K extends keyof HTMLElementEventMap>(
+  element: HTMLElement,
+  func: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+): void => {
+  element.addEventListener('mouseout', func);
+};
+
+export const removeMouseOutListener = <K extends keyof HTMLElementEventMap>(
+  element: HTMLElement,
+  func: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+): void => {
+  element.removeEventListener('mouseout', func);
 };

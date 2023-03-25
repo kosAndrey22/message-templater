@@ -1,12 +1,16 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { PLACEHOLDER } from '../../constants';
-import { saveNewTemplate } from '../../helpers';
+import { addMouseEnterListener, addMouseOutListener, findPageElementById, isCursorInside, removeMouseEnterListener, removeMouseOutListener, saveNewTemplate } from '../../helpers';
 import './AddTemplateTab.scss';
 
 export const AddTemplateTab = (): JSX.Element => {
+  const tooltipMarkId = 'info-tooltip-mark';
+  const tooltipContainerId = 'tooltip-container';
+
   const [templateText, setTemplateText] = useState('');
   const [templateTitle, setTemplateTitle] = useState('');
+  const [tooltipVisibility, setTooltipVisibility] = useState(false);
 
   const onTitleInputChange = <E extends ChangeEvent<HTMLInputElement>>(e: E): void => {
     setTemplateTitle(e.target.value);
@@ -21,34 +25,96 @@ export const AddTemplateTab = (): JSX.Element => {
     setTemplateText('');
   };
 
+  const onPlacehoderVariableClick = (placeholderVar: PLACEHOLDER): void => {
+    const lastChar = templateText[templateText.length - 1];
+    const messageEmpty = lastChar === undefined;
+    const newStringStarted = lastChar === '\n';
+    const spaceBeforeInserted = lastChar === ' ';
+    const spaceBeforeRequired = !(messageEmpty || newStringStarted || spaceBeforeInserted);
+    const varIndent = spaceBeforeRequired ? ' ' : '';
+    setTemplateText(`${templateText}${varIndent}{${placeholderVar.toString()}}`);
+    closeTooltip();
+  };
+
+  const closeTooltip = (): void => {
+    const tooltipElement = findPageElementById(tooltipContainerId);
+    if (!tooltipElement) {
+      return;
+    }
+    setTooltipVisibility(false);
+    removeMouseOutListener(tooltipElement, handleMouseOutTooltip);
+  };
+
+  const handleMouseEnterTooltip = (): void => {
+    setTooltipVisibility(true);
+    const tooltipElement = findPageElementById(tooltipContainerId);
+    if (!tooltipElement) {
+      return;
+    }
+    addMouseOutListener(tooltipElement, handleMouseOutTooltip);
+  };
+
+  const handleMouseOutTooltip = (): void => {
+    const tooltipElement = findPageElementById(tooltipContainerId);
+    if (!tooltipElement) {
+      return;
+    }
+    const mouseInside = isCursorInside(tooltipElement);
+    if (!mouseInside) {
+      closeTooltip();
+    }
+  };
+
+  useEffect(() => {
+    const tooltipMarkElement = findPageElementById(tooltipMarkId);
+    if (!tooltipMarkElement) {
+      return;
+    }
+    addMouseEnterListener(tooltipMarkElement, handleMouseEnterTooltip);
+    return (): void => {
+      removeMouseEnterListener(tooltipMarkElement, handleMouseEnterTooltip);
+    };
+  }, []);
+
   const {
     getArrowProps,
     getTooltipProps,
     setTooltipRef,
     setTriggerRef,
     visible,
-  } = usePopperTooltip();
+  } = usePopperTooltip({
+    visible: tooltipVisibility,
+  });
 
   return (
     <>
       <div className='info-tooltip-mark-container'>
-        <p className='info-tooltip-mark' ref={setTriggerRef} />
+        <p id={tooltipMarkId} className='info-tooltip-mark' ref={setTriggerRef} />
         {visible && (
           <div
             ref={setTooltipRef}
-            {...getTooltipProps({ className: 'tooltip-container' })}
+            {...getTooltipProps({ className: 'tooltip-container', id: tooltipContainerId })}
           >
             <div {...getArrowProps({ className: 'tooltip-arrow' })} />
-            <div className='info-tooltip'>
+            <div id='info-tooltip' className='info-tooltip'>
               <h4> Available variables: </h4>
               <p>
-                <b>{PLACEHOLDER.FIRST_NAME}</b> - first name of the user
+                <b className='placeholder-variable' onClick={(): void => onPlacehoderVariableClick(PLACEHOLDER.FIRST_NAME)}>
+                  {PLACEHOLDER.FIRST_NAME}
+                </b>
+                - first name of the user
               </p>
               <p>
-                <b>{PLACEHOLDER.LAST_NAME}</b> - last name of the user
+                <b className='placeholder-variable' onClick={(): void => onPlacehoderVariableClick(PLACEHOLDER.LAST_NAME)}>
+                  {PLACEHOLDER.LAST_NAME}
+                </b>
+                - last name of the user
               </p>
               <p>
-                <b>{PLACEHOLDER.FULL_NAME}</b> - Shortcut of {`{${PLACEHOLDER.FIRST_NAME}}`} {`{${PLACEHOLDER.LAST_NAME}}`}
+                <b className='placeholder-variable' onClick={(): void => onPlacehoderVariableClick(PLACEHOLDER.FULL_NAME)}>
+                  {PLACEHOLDER.FULL_NAME}
+                </b>
+                - Shortcut of {`{${PLACEHOLDER.FIRST_NAME}}`} {`{${PLACEHOLDER.LAST_NAME}}`}
               </p>
             </div>
           </div>

@@ -4,7 +4,6 @@ import { LinkedinReceivePageInfoStrategy } from './receive-page-info.strategies'
 import { LinkedinConnectSendTemplateStrategy, LinkedinSendTemplateStrategy } from './send-template.strategies';
 
 export class SendTemplateStrategyManager {
-
   static getStrategy(url: string, messageType: MESSAGE_TYPE): SendTemplateStrategy | null {
     if (SendTemplateStrategyManager.isLinkedinProfilePageUrl(url)) {
       return SendTemplateStrategyManager.getLinkedinStrategy(messageType);
@@ -27,12 +26,12 @@ export class SendTemplateStrategyManager {
   private static getLinkedinStrategy(messageType: MESSAGE_TYPE): SendTemplateStrategy | null {
     const pageInfoReceiveStrategy = new LinkedinReceivePageInfoStrategy();
     switch (messageType) {
-    case MESSAGE_TYPE.NORMAL_MESSAGE:
-      return new LinkedinSendTemplateStrategy(pageInfoReceiveStrategy);
-    case MESSAGE_TYPE.CONNECT_MESSAGE:
-      return new LinkedinConnectSendTemplateStrategy(pageInfoReceiveStrategy);;
-    default:
-      return null;
+      case MESSAGE_TYPE.NORMAL_MESSAGE:
+        return new LinkedinSendTemplateStrategy(pageInfoReceiveStrategy);
+      case MESSAGE_TYPE.CONNECT_MESSAGE:
+        return new LinkedinConnectSendTemplateStrategy(pageInfoReceiveStrategy);
+      default:
+        return null;
     }
   }
 }

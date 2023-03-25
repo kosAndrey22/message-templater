@@ -1,9 +1,16 @@
 import { HTMLElementNotFoundError } from '../../errors';
-import { clickWithDelayAfter, findPageElementsByClassName, setElementText, interpolate, findChildsInsideElementRecursively, formatNewErrorMessage, moveCaretToTextStart } from '../../helpers';
+import {
+  clickWithDelayAfter,
+  findPageElementsByClassName,
+  setElementText,
+  interpolate,
+  findChildsInsideElementRecursively,
+  formatNewErrorMessage,
+  moveCaretToTextStart,
+} from '../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateStrategy, Template } from '../../interfaces';
 
 export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
-
   private openDialogButton = {
     sectionClassName: 'artdeco-card ember-view pv-top-card',
     type: 'send-privately',
@@ -14,9 +21,7 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
     class: 'msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 full-height notranslate      ',
   };
 
-  constructor(
-    private pageInfoReceiver: ReceivePageInfoStrategy,
-  ) { }
+  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
 
   public async send(template: Template): Promise<void> {
     await this.clickOpenDialogButton();
@@ -33,8 +38,8 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
     const elements = findChildsInsideElementRecursively(
       buttonSection,
       (el: HTMLElement) =>
-        el.getAttribute('type') === this.openDialogButton.type
-        || el.getAttribute('type') === this.openDialogButton.lockedType,
+        el.getAttribute('type') === this.openDialogButton.type ||
+        el.getAttribute('type') === this.openDialogButton.lockedType,
     );
     const button = <HTMLButtonElement>elements[0];
     if (!button) {
@@ -46,7 +51,11 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private insertText(text: string): void {
     const input = findPageElementsByClassName(this.messageInput.class)[0];
     if (!input) {
-      const errorMessage = formatNewErrorMessage('Can\'t find connect send input', 'insertText', 'LinkedinSendTemplateStrategy');
+      const errorMessage = formatNewErrorMessage(
+        'Can not find connect send input',
+        'insertText',
+        'LinkedinSendTemplateStrategy',
+      );
       throw new HTMLElementNotFoundError(errorMessage);
     }
     input.click();

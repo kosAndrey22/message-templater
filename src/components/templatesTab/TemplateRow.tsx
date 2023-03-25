@@ -4,8 +4,8 @@ import { Template } from '../../interfaces';
 
 type TemplateRowProps = {
   template: Template;
-  deleteTemplate: (id: number) => (void | Promise<void>);
-  sendTemplate: (messageType: MESSAGE_TYPE, template: Template) => (void | Promise<void>);
+  deleteTemplate: (id: number) => void | Promise<void>;
+  sendTemplate: (messageType: MESSAGE_TYPE, template: Template) => void | Promise<void>;
 };
 
 export const TemplateRow = ({ template, deleteTemplate, sendTemplate }: TemplateRowProps): JSX.Element => {
@@ -27,19 +27,15 @@ export const TemplateRow = ({ template, deleteTemplate, sendTemplate }: Template
   // };
 
   return (
-    <div className='template'>
+    <div className="template">
       <b>{templateData?.title ?? ''}</b>
       <span>{templateData?.text ?? ''}</span>
-      <div className='buttons'>
-        <button onClick={(): void => connect()}>
-          Connect
-        </button>
+      <div className="buttons">
+        <button onClick={(): void => connect()}>Connect</button>
         {/* <button onClick={(): void => send()}>
           Send
         </button> */}
-        <button onClick={(): void => deleteCurrentTemplate()}>
-          Delete
-        </button>
+        <button onClick={(): void => deleteCurrentTemplate()}>Delete</button>
       </div>
     </div>
   );

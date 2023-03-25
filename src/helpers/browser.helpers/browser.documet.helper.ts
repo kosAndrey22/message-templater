@@ -37,7 +37,7 @@ export const findChildsInsideElementRecursively = (
 ): HTMLElement[] => {
   if (!element) {
     return [];
-  };
+  }
 
   const matches = [];
   const match = matchCondition(element);
@@ -68,7 +68,10 @@ export const click = (element: HTMLElement): void => {
   return element.click();
 };
 
-export const clickWithDelayAfter = async (element: HTMLElement, delay: number = DEFAULT_CLICK_DELAY_MS): Promise<void> => {
+export const clickWithDelayAfter = async (
+  element: HTMLElement,
+  delay: number = DEFAULT_CLICK_DELAY_MS,
+): Promise<void> => {
   click(element);
   await new Promise((resolve) => setTimeout(resolve, delay));
   return;

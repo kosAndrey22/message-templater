@@ -6,12 +6,16 @@ import './Popup.scss';
 
 export const Popup = (): JSX.Element => {
   return (
-    <div className='app'>
+    <div className="app">
       <Tabs>
         <TabList>
-          <div className='tab-switcher'>
-            <Tab><div className='tab-switcher__tab-button'>Templates</div></Tab>
-            <Tab><div className='tab-switcher__tab-button'>Add Template</div ></Tab>
+          <div className="tab-switcher">
+            <Tab>
+              <div className="tab-switcher__tab-button">Templates</div>
+            </Tab>
+            <Tab>
+              <div className="tab-switcher__tab-button">Add Template</div>
+            </Tab>
           </div>
         </TabList>
 

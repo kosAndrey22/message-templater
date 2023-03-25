@@ -1,7 +1,15 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { PLACEHOLDER } from '../../constants';
-import { addMouseEnterListener, addMouseOutListener, findPageElementById, isCursorInside, removeMouseEnterListener, removeMouseOutListener, saveNewTemplate } from '../../helpers';
+import {
+  addMouseEnterListener,
+  addMouseOutListener,
+  findPageElementById,
+  isCursorInside,
+  removeMouseEnterListener,
+  removeMouseOutListener,
+  saveNewTemplate,
+} from '../../helpers';
 import './AddTemplateTab.scss';
 
 export const AddTemplateTab = (): JSX.Element => {
@@ -76,42 +84,42 @@ export const AddTemplateTab = (): JSX.Element => {
     };
   }, []);
 
-  const {
-    getArrowProps,
-    getTooltipProps,
-    setTooltipRef,
-    setTriggerRef,
-    visible,
-  } = usePopperTooltip({
+  const { getArrowProps, getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip({
     visible: tooltipVisibility,
   });
 
   return (
     <>
-      <div className='info-tooltip-mark-container'>
-        <p id={tooltipMarkId} className='info-tooltip-mark' ref={setTriggerRef} />
+      <div className="info-tooltip-mark-container">
+        <p id={tooltipMarkId} className="info-tooltip-mark" ref={setTriggerRef} />
         {visible && (
-          <div
-            ref={setTooltipRef}
-            {...getTooltipProps({ className: 'tooltip-container', id: tooltipContainerId })}
-          >
+          <div ref={setTooltipRef} {...getTooltipProps({ className: 'tooltip-container', id: tooltipContainerId })}>
             <div {...getArrowProps({ className: 'tooltip-arrow' })} />
-            <div id='info-tooltip' className='info-tooltip'>
+            <div id="info-tooltip" className="info-tooltip">
               <h4> Available variables: </h4>
               <p>
-                <b className='placeholder-variable' onClick={(): void => onPlacehoderVariableClick(PLACEHOLDER.FIRST_NAME)}>
+                <b
+                  className="placeholder-variable"
+                  onClick={(): void => onPlacehoderVariableClick(PLACEHOLDER.FIRST_NAME)}
+                >
                   {PLACEHOLDER.FIRST_NAME}
                 </b>
                 - first name of the user
               </p>
               <p>
-                <b className='placeholder-variable' onClick={(): void => onPlacehoderVariableClick(PLACEHOLDER.LAST_NAME)}>
+                <b
+                  className="placeholder-variable"
+                  onClick={(): void => onPlacehoderVariableClick(PLACEHOLDER.LAST_NAME)}
+                >
                   {PLACEHOLDER.LAST_NAME}
                 </b>
                 - last name of the user
               </p>
               <p>
-                <b className='placeholder-variable' onClick={(): void => onPlacehoderVariableClick(PLACEHOLDER.FULL_NAME)}>
+                <b
+                  className="placeholder-variable"
+                  onClick={(): void => onPlacehoderVariableClick(PLACEHOLDER.FULL_NAME)}
+                >
                   {PLACEHOLDER.FULL_NAME}
                 </b>
                 - Shortcut of {`{${PLACEHOLDER.FIRST_NAME}}`} {`{${PLACEHOLDER.LAST_NAME}}`}
@@ -120,22 +128,11 @@ export const AddTemplateTab = (): JSX.Element => {
           </div>
         )}
       </div>
-      <div className='new-template-container'>
-        <div className='form'>
-          <input
-            placeholder='Title'
-            value={templateTitle}
-            onChange={(e): void => onTitleInputChange(e)}
-          />
-          <textarea
-            placeholder='Template Text'
-            value={templateText}
-            onChange={(e): void => onTextInputChange(e)}
-          />
-          <button
-            disabled={(!templateTitle) || (!templateText)}
-            onClick={(): void => onSave()}
-          >
+      <div className="new-template-container">
+        <div className="form">
+          <input placeholder="Title" value={templateTitle} onChange={(e): void => onTitleInputChange(e)} />
+          <textarea placeholder="Template Text" value={templateText} onChange={(e): void => onTextInputChange(e)} />
+          <button disabled={!templateTitle || !templateText} onClick={(): void => onSave()}>
             Save
           </button>
         </div>

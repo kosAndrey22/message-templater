@@ -1,5 +1,14 @@
 import { HTMLElementNotFoundError } from '../../errors';
-import { clickWithDelayAfter, findPageElementsByClassName, findPageElementById, setElementText, interpolate, findChildsInsideElementRecursively, formatNewErrorMessage, moveCaretToTextStart } from '../../helpers';
+import {
+  clickWithDelayAfter,
+  findPageElementsByClassName,
+  findPageElementById,
+  setElementText,
+  interpolate,
+  findChildsInsideElementRecursively,
+  formatNewErrorMessage,
+  moveCaretToTextStart,
+} from '../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateStrategy, Template } from '../../interfaces';
 
 export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy {
@@ -16,9 +25,7 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
     id: 'custom-message',
   };
 
-  constructor(
-    private pageInfoReceiver: ReceivePageInfoStrategy,
-  ) { }
+  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
 
   public async send(template: Template): Promise<void> {
     await this.clickOpenConnectModalButton();
@@ -55,11 +62,14 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
   private insertText(text: string): void {
     const input = <HTMLTextAreaElement>findPageElementById(this.personalizeInput.id);
     if (!input) {
-      const errorMessage = formatNewErrorMessage('Can\'t find connect message input', 'insertText', 'LinkedinConnectSendTemplateStrategy');
+      const errorMessage = formatNewErrorMessage(
+        'Can not find connect message input',
+        'insertText',
+        'LinkedinConnectSendTemplateStrategy',
+      );
       throw new HTMLElementNotFoundError(errorMessage);
     }
     setElementText(input, text);
     moveCaretToTextStart(input);
   }
-
 }

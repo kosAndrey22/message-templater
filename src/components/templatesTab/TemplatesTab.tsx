@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { MESSAGE_TYPE, PAGE_EVENT } from '../../constants';
-import { getSavedTemplates, deleteTemplate as deleteTemplateFromStorage, sendPageEvent, closeWindow } from '../../helpers';
+import {
+  getSavedTemplates,
+  deleteTemplate as deleteTemplateFromStorage,
+  sendPageEvent,
+  closeWindow,
+} from '../../helpers';
 import { SendTemplatePageEvent, Template } from '../../interfaces';
 import { TemplateRow } from './TemplateRow';
 import './TemplatesTab.scss';
@@ -38,18 +43,16 @@ export const TemplatesTab = (): JSX.Element => {
   };
 
   return (
-    <div className='templates-container'>
-      {
-        templates.length ? templates.map(
-          (t) => <div key={t.id}>
-            <TemplateRow
-              template={t}
-              deleteTemplate={deleteTemplate}
-              sendTemplate={sendTemplate}
-            />
-          </div>,
-        ) : <span className='no-templates-msg'> No templates here </span>
-      }
+    <div className="templates-container">
+      {templates.length ? (
+        templates.map((t) => (
+          <div key={t.id}>
+            <TemplateRow template={t} deleteTemplate={deleteTemplate} sendTemplate={sendTemplate} />
+          </div>
+        ))
+      ) : (
+        <span className="no-templates-msg"> No templates here </span>
+      )}
     </div>
   );
 };

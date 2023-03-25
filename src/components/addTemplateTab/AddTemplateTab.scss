@@ -38,6 +38,10 @@ $secondary-color: #ccc;
     .placeholder-variable {
       cursor: pointer;
     }
+
+    .placeholder-variable:before {
+      content: "• ";
+    }
   }
 }
 

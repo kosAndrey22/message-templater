@@ -1,0 +1,1 @@
+export const MAX_TEMPLATE_TITLE_LENGHT = 30;

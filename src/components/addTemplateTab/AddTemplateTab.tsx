@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
-import { PLACEHOLDER } from '../../constants';
+import { MAX_TEMPLATE_TITLE_LENGHT, PLACEHOLDER } from '../../constants';
 import {
   addMouseEnterListener,
   addMouseOutListener,
@@ -130,7 +130,12 @@ export const AddTemplateTab = (): JSX.Element => {
       </div>
       <div className="new-template-container">
         <div className="form">
-          <input placeholder="Title" value={templateTitle} onChange={(e): void => onTitleInputChange(e)} />
+          <input
+            placeholder="Title"
+            value={templateTitle}
+            onChange={(e): void => onTitleInputChange(e)}
+            maxLength={MAX_TEMPLATE_TITLE_LENGHT}
+          />
           <textarea placeholder="Template Text" value={templateText} onChange={(e): void => onTextInputChange(e)} />
           <button disabled={!templateTitle || !templateText} onClick={(): void => onSave()}>
             Save

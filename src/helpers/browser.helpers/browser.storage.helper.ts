@@ -1,30 +1,8 @@
-import { TEMPLATES_STORAGE_KEY } from '../../constants';
-import { Template } from '../../interfaces';
-
-export const getSavedTemplates = async (): Promise<Template[]> => {
-  const storage = await chrome.storage.local.get(TEMPLATES_STORAGE_KEY);
-  return storage[TEMPLATES_STORAGE_KEY] ?? [];
+export const getFromBrowserStorage = async <T>(key: string): Promise<T | null> => {
+  const res = await chrome.storage.local.get(key);
+  return res[key];
 };
 
-export const saveTemplates = async (templates: Template[]): Promise<void> => {
-  await chrome.storage.local.set({ [TEMPLATES_STORAGE_KEY]: templates });
-};
-
-export const saveNewTemplate = async (newTemplateData: Omit<Template, 'id'>): Promise<void> => {
-  const templates = await getSavedTemplates();
-  const { title, text } = newTemplateData;
-  const newTemplate: Template = {
-    title,
-    text,
-    id: new Date().getTime(),
-  };
-  templates.push(newTemplate);
-  await saveTemplates(templates);
-};
-
-export const deleteTemplate = async (templateId: number): Promise<void> => {
-  const templates = await getSavedTemplates();
-  const templateToDeleteIndex = templates.findIndex((t) => t.id === templateId);
-  const newTemplates = [...templates.slice(0, templateToDeleteIndex), ...templates.slice(templateToDeleteIndex + 1)];
-  await saveTemplates(newTemplates);
+export const setToBrowserStorage = async <T>(key: string, data: T): Promise<void> => {
+  await chrome.storage.local.set({ [key]: data });
 };

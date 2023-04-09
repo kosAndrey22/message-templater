@@ -28,7 +28,7 @@ export const AddTemplateTab = (): JSX.Element => {
   };
 
   const onSave = (): void => {
-    saveNewTemplate({ title: templateTitle, text: templateText });
+    saveNewTemplate({ title: templateTitle, text: templateText, pinned: false });
     setTemplateTitle('');
     setTemplateText('');
   };

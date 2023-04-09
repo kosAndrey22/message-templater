@@ -13,20 +13,18 @@ export const saveTemplates = async (templates: Template[]): Promise<void> => {
 
 export const saveNewTemplate = async (newTemplateData: Omit<Template, 'id'>): Promise<void> => {
   const templates = await getSavedTemplates();
-  const { title, text } = newTemplateData;
+  const { title, text, pinned } = newTemplateData;
   const newTemplate: Template = {
     title,
     text,
+    pinned,
     id: new Date().getTime(),
   };
   templates.push(newTemplate);
   await saveTemplates(templates);
 };
 
-export const updateTemplateById = async (
-  id: Template['id'],
-  updateTemplateData: Omit<Template, 'id'>,
-): Promise<void> => {
+export const updateTemplateById = async (id: Template['id'], updateTemplateData: Partial<Template>): Promise<void> => {
   const templates = await getSavedTemplates();
   const updatedTemplateIndex = templates.findIndex((t) => t.id === id);
   templates[updatedTemplateIndex] = {

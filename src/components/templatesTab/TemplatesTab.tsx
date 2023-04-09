@@ -5,6 +5,7 @@ import {
   deleteTemplate as deleteTemplateFromStorage,
   sendPageEvent,
   closeWindow,
+  updateTemplateById,
 } from '../../helpers';
 import { SendTemplatePageEvent, Template } from '../../interfaces';
 import { TemplateRow } from './TemplateRow';
@@ -14,16 +15,21 @@ export const TemplatesTab = (): JSX.Element => {
   const [templates, setTemplates] = useState<Template[]>([]);
 
   useEffect(() => {
-    const getTemplates = async (): Promise<void> => {
-      const savedTemplates = await getSavedTemplates();
-      const orderedByIdTemplates = savedTemplates.sort((t1, t2) => Number(t2.pinned) - Number(t1.pinned) || t2.id - t1.id);
-      const savedEqualToRendered = JSON.stringify(orderedByIdTemplates) === JSON.stringify(templates);
-      if (!savedEqualToRendered) {
-        setTemplates(orderedByIdTemplates);
-      }
-    };
     getTemplates();
   });
+
+  const getTemplates = async (): Promise<void> => {
+    const savedTemplates = await getSavedTemplates();
+    const sortedTemplates = sortTemplates(savedTemplates);
+    const savedEqualToRendered = JSON.stringify(sortedTemplates) === JSON.stringify(templates);
+    if (!savedEqualToRendered) {
+      setTemplates(sortedTemplates);
+    }
+  };
+
+  const sortTemplates = (templates: Template[]): Template[] => {
+    return templates.sort((t1, t2) => Number(t2.pinned) - Number(t1.pinned) || t2.id - t1.id);
+  };
 
   const sendTemplate = async (messageType: MESSAGE_TYPE, template: Template): Promise<void> => {
     const event: SendTemplatePageEvent = {
@@ -42,12 +48,22 @@ export const TemplatesTab = (): JSX.Element => {
     setTemplates(newTemplates);
   };
 
+  const updateTemplate = async (templateId: number, updateData: Partial<Template>): Promise<void> => {
+    await updateTemplateById(templateId, updateData);
+    await getTemplates();
+  };
+
   return (
     <div className="templates-container">
       {templates.length ? (
         templates.map((t) => (
           <div key={t.id}>
-            <TemplateRow template={t} deleteTemplate={deleteTemplate} sendTemplate={sendTemplate} />
+            <TemplateRow
+              template={t}
+              deleteTemplate={deleteTemplate}
+              sendTemplate={sendTemplate}
+              updateTemplate={updateTemplate}
+            />
           </div>
         ))
       ) : (

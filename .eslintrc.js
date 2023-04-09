@@ -40,7 +40,7 @@ module.exports = {
             },
         ],
         'no-tabs': 2,
-        'max-len': [2, 120, 2],
+        'max-len': [2, { 'ignoreStrings': true, code: 120 }],
         'space-before-blocks': ['error'],
         'object-curly-spacing': ['error', 'always'],
         '@typescript-eslint/no-inferrable-types': 'off',

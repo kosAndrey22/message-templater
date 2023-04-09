@@ -24,10 +24,7 @@ export const saveNewTemplate = async (newTemplateData: Omit<Template, 'id'>): Pr
   await saveTemplates(templates);
 };
 
-export const updateTemplateById = async (
-  id: Template['id'],
-  updateTemplateData: Partial<Omit<Template, 'id'>>,
-): Promise<void> => {
+export const updateTemplateById = async (id: Template['id'], updateTemplateData: Partial<Template>): Promise<void> => {
   const templates = await getSavedTemplates();
   const updatedTemplateIndex = templates.findIndex((t) => t.id === id);
   templates[updatedTemplateIndex] = {

@@ -1,5 +1,6 @@
 $primary-color: #333;
 $secondary-color: #ccc;
+$pinned-color: #a89b0b;
 
 .templates-container {
   display: flex;
@@ -36,6 +37,22 @@ $secondary-color: #ccc;
       flex-direction: row;
       height: 30px;
 
+      .icon {
+        padding-top: 0px;
+        margin-left: 10px;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: bold;
+        text-align: left;
+        width: 3.5ex;
+        height: 3.5ex;
+        font-size: 2.8ex;
+        padding-top: 0px;
+        line-height: 3.5ex;
+        text-decoration: none;
+        width: 15px;
+      }
+
       b {
         font-size: 15px;
         margin-top: 5px;
@@ -45,29 +62,28 @@ $secondary-color: #ccc;
       }
 
       .edit-icon {
-        padding-top: 0px;
-        margin-left: 10px;
-        cursor: pointer;
-      }
-
-      .edit-icon:before {
-        content: '\270E';
-        display: inline-block;
-        font-weight: bold;
-        text-align: left;
-        width: 3.5ex;
-        height: 3.5ex;
-        font-size: 2.8ex;
-        padding-top: 0px;
-        line-height: 3.5ex;
+        @extend .icon;
         color: lighten($primary-color, 20%);
-        text-decoration: none;
-        transform: scaleX(-1);
-        width: 15px;
       }
 
-      .edit-icon:hover:before {
+      .edit-icon:hover {
         color: $primary-color;
+      }
+
+      .pin-icon {
+        @extend .icon;
+        color: lighten($primary-color, 20%);
+        transform: rotateY(0deg) rotate(45deg);
+
+        &--pinned {
+          @extend .pin-icon;
+          color: $pinned-color;
+          transform: rotateY(0deg) rotate(0deg);
+        }
+      }
+
+      .pin-icon:hover {
+        color: lighten($pinned-color, 15%);
       }
     }
 

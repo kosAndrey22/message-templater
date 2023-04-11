@@ -1,4 +1,4 @@
-import { findPageElementsByClassName } from '../../helpers';
+import { findPageElementsByClassName, removeInvalidChars } from '../../helpers';
 import { PageInfo } from '../../types';
 import { AbstractReceivePageStrategy } from './abstract.receive-page-info.strategy';
 
@@ -27,7 +27,10 @@ export class LinkedinReceivePageInfoStrategy extends AbstractReceivePageStrategy
     if (!fullNameHeader) {
       return [];
     }
-    const [firstName, lastName] = fullNameHeader.textContent.split(' ');
+    const stringFromHeader = fullNameHeader.textContent.split(' ');
+    const withoutEmojis = stringFromHeader.map((s) => removeInvalidChars(s));
+    const withoutEmpty = withoutEmojis.filter((s) => s.length > 0);
+    const [firstName, lastName] = withoutEmpty;
     return [firstName, lastName];
   }
 }

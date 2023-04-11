@@ -22,3 +22,10 @@ export const onlyFirstLetterToUpper = (str: string): string => {
   const newString = firstLetter.toUpperCase() + otherLetters.toLowerCase();
   return newString;
 };
+
+export const removeInvalidChars = (str: string): string => {
+  return str.replace(
+    /[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2580-\u27BF]|\uD83E[\uDD10-\uDDFF]/g,
+    '',
+  );
+};

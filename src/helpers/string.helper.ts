@@ -15,3 +15,10 @@ export const interpolate = (str: string, values: { [key: string]: string }): str
   }
   return newStr;
 };
+
+export const onlyFirstLetterToUpper = (str: string): string => {
+  const firstLetter = str[0];
+  const otherLetters = str.substring(1, str.length);
+  const newString = firstLetter.toUpperCase() + otherLetters.toLowerCase();
+  return newString;
+};

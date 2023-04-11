@@ -1,13 +1,13 @@
 import { findPageElementsByClassName } from '../../helpers';
-import { ReceivePageInfoStrategy } from '../../interfaces';
 import { PageInfo } from '../../types';
+import { AbstractReceivePageStrategy } from './abstract.receive-page-info.strategy';
 
-export class LinkedinReceivePageInfoStrategy implements ReceivePageInfoStrategy {
+export class LinkedinReceivePageInfoStrategy extends AbstractReceivePageStrategy {
   private profileFullNameHeader = {
     className: 'text-heading-xlarge inline t-24 v-align-middle break-words',
   };
 
-  public receive(): PageInfo {
+  protected receiveInfo(): PageInfo {
     const pageInfo: PageInfo = {};
     const [firstName, lastName] = this.getFirstAndLastNameFromHeader();
     if (firstName) {

@@ -9,9 +9,11 @@ import {
   formatNewErrorMessage,
   moveCaretToTextStart,
 } from '../../helpers';
-import { ReceivePageInfoStrategy, SendTemplateStrategy, Template } from '../../interfaces';
+import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../interfaces';
 
 export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy {
+  private MAX_CONNECT_MESSAGE_LENGTH = 300;
+
   private openConnectModalButton = {
     sectionClassName: 'artdeco-card ember-view pv-top-card',
     type: 'connect',
@@ -27,12 +29,33 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
 
   constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
 
-  public async send(template: Template): Promise<void> {
+  public async send(template: Template): Promise<SendTemplateResult> {
+    let result: SendTemplateResult = {};
+    try {
+      await this.openDialog();
+      const text = this.getText(template);
+      result = this.validateText(text);
+      if (result.errors && result.errors.length) {
+        throw new Error();
+      }
+      this.insertTextToInput(text);
+    } catch (e) {
+      if (e.message) {
+        result.errors.push(e.message);
+      }
+    }
+    return result;
+  }
+
+  private async openDialog(): Promise<void> {
     await this.clickOpenConnectModalButton();
     await this.clickPersonalizeButton();
+  }
+
+  private getText(template: Template): string {
     const pageInfo = this.pageInfoReceiver.receive();
     const text = interpolate(template.text, pageInfo);
-    this.insertText(text);
+    return text;
   }
 
   private async clickOpenConnectModalButton(): Promise<void> {
@@ -59,7 +82,7 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
     await clickWithDelayAfter(button);
   }
 
-  private insertText(text: string): void {
+  private insertTextToInput(text: string): void {
     const input = <HTMLTextAreaElement>findPageElementById(this.personalizeInput.id);
     if (!input) {
       const errorMessage = formatNewErrorMessage(
@@ -71,5 +94,15 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
     }
     setElementText(input, text);
     moveCaretToTextStart(input);
+  }
+
+  private validateText(text: string): SendTemplateResult {
+    const textLength = text.length;
+    if (textLength > this.MAX_CONNECT_MESSAGE_LENGTH) {
+      return {
+        warnings: [`Inserted text length is ${textLength}, max is ${this.MAX_CONNECT_MESSAGE_LENGTH}`],
+      };
+    }
+    return {};
   }
 }

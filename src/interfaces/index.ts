@@ -1,4 +1,4 @@
 export * from './page-events';
-export * from './receive-page-info-strategy.interface';
-export * from './send-template-strategy.interface';
-export * from './template.interface';
+export * from './receive-page-info-strategy.interfaces';
+export * from './send-template-strategy.interfaces';
+export * from './template.interfaces';

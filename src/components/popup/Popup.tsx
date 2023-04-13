@@ -1,10 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { addPageEventListener, closeWindow, isSendTemplateResultEvent, removePageEventListener } from '../../helpers';
+import { BasePageEvent } from '../../interfaces';
 import { AddTemplateTab } from '../addTemplateTab';
+import { AlertsModal } from '../alertsModal';
 import { TemplatesTab } from '../templatesTab';
 import './Popup.scss';
 
+type AlertsModalCallback = () => () => void;
+
 export const Popup = (): JSX.Element => {
+  /* eslint-disable-next-line @typescript-eslint/no-empty-function */
+  const defaultCloseAlertsModalCallback: AlertsModalCallback = () => () => {};
+  const [alertsModalVisibility, setAlertsModalVisibilty] = useState<boolean>(false);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [warnings, setWarnings] = useState<string[]>([]);
+  const [closeAlertsModalCallback, setCloseAlertsModalCallback] = useState<() => () => void>(
+    defaultCloseAlertsModalCallback,
+  );
+
+  const closeAlertsModal = (): void => {
+    setErrors([]);
+    setWarnings([]);
+    setAlertsModalVisibilty(false);
+    closeAlertsModalCallback();
+    setCloseAlertsModalCallback(defaultCloseAlertsModalCallback);
+  };
+
+  const openAlertsModal = (e: string[], w: string[]): void => {
+    setErrors(e);
+    setWarnings(w);
+    setAlertsModalVisibilty(true);
+  };
+
+  useEffect(() => {
+    const sendTemplateResultListener = <Event extends BasePageEvent>(event: Event): void => {
+      if (!isSendTemplateResultEvent(event)) {
+        return;
+      }
+      const {
+        result: { errors: resultErrors, warnings: resultWarnings },
+      } = event;
+      const errorsExists = resultErrors && resultErrors.length;
+      const warningsExists = resultWarnings && resultWarnings.length;
+      if (errorsExists || warningsExists) {
+        openAlertsModal(resultErrors || [], resultWarnings || []);
+        setCloseAlertsModalCallback(() => () => {
+          closeWindow();
+        });
+      } else {
+        closeWindow();
+      }
+    };
+    addPageEventListener(sendTemplateResultListener);
+    return (): void => {
+      removePageEventListener(sendTemplateResultListener);
+    };
+  }, []);
+
   return (
     <div className="app">
       <Tabs>
@@ -26,6 +79,7 @@ export const Popup = (): JSX.Element => {
           <AddTemplateTab />
         </TabPanel>
       </Tabs>
+      <AlertsModal visible={alertsModalVisibility} errors={errors} warnings={warnings} closeModal={closeAlertsModal} />
     </div>
   );
 };

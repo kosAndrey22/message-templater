@@ -8,7 +8,7 @@ import {
   formatNewErrorMessage,
   moveCaretToTextStart,
 } from '../../helpers';
-import { ReceivePageInfoStrategy, SendTemplateStrategy, Template } from '../../interfaces';
+import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../interfaces';
 
 export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private openDialogButton = {
@@ -23,11 +23,29 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
 
   constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
 
-  public async send(template: Template): Promise<void> {
+  public async send(template: Template): Promise<SendTemplateResult> {
+    const result: SendTemplateResult = {};
+    try {
+      await this.openDialog();
+      const text = this.getText(template);
+      this.insertTextToInput(text);
+      return {};
+    } catch (e) {
+      if (e.message) {
+        result.errors.push(e.message);
+      }
+    }
+    return result;
+  }
+
+  private async openDialog(): Promise<void> {
     await this.clickOpenDialogButton();
+  }
+
+  private getText(template: Template): string {
     const pageInfo = this.pageInfoReceiver.receive();
     const text = interpolate(template.text, pageInfo);
-    this.insertText(text);
+    return text;
   }
 
   private async clickOpenDialogButton(): Promise<void> {
@@ -48,7 +66,7 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
     await clickWithDelayAfter(button);
   }
 
-  private insertText(text: string): void {
+  private insertTextToInput(text: string): void {
     const input = findPageElementsByClassName(this.messageInput.class)[0];
     if (!input) {
       const errorMessage = formatNewErrorMessage(

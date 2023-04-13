@@ -1,0 +1,31 @@
+.alerts-modal-content {
+  .errors {
+    .errors-header {
+      color: red;
+    }
+
+    .error-el {
+      color: red;
+      font-size: 115%;
+    }
+  }
+
+  .warnings {
+    .warnings-header {
+      color: #FFC200;
+    }
+
+    .warn-el {
+      color: #FFC200;
+      font-size: 115%;
+    }
+  }
+
+  .close-btn {
+    position: absolute;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    bottom: 0;
+    right: 0;
+  }
+}

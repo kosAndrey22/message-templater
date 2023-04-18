@@ -21,7 +21,7 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
     class: 'msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 full-height notranslate      ',
   };
 
-  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
+  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) { }
 
   public async send(template: Template): Promise<SendTemplateResult> {
     const result: SendTemplateResult = {};
@@ -32,7 +32,9 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
       return {};
     } catch (e) {
       if (e.message) {
-        result.errors.push(e.message);
+        result.errors
+          ? result.errors.push(e.message)
+          : result.errors = [e.message];
       }
     }
     return result;
@@ -71,7 +73,7 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
     if (!input) {
       const errorMessage = formatNewErrorMessage(
         'Can not find connect send input',
-        'insertText',
+        'insertTextToInput',
         'LinkedinSendTemplateStrategy',
       );
       throw new HTMLElementNotFoundError(errorMessage);

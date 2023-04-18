@@ -27,7 +27,7 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
     id: 'custom-message',
   };
 
-  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) { }
+  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
 
   public async send(template: Template): Promise<SendTemplateResult> {
     let result: SendTemplateResult = {};
@@ -41,9 +41,7 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
       this.insertTextToInput(text);
     } catch (e) {
       if (e.message) {
-        result.errors
-          ? result.errors.push(e.message)
-          : result.errors = [e.message];
+        result.errors ? result.errors.push(e.message) : (result.errors = [e.message]);
       }
     }
     return result;

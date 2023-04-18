@@ -5,6 +5,7 @@ import {
   addMouseEnterListener,
   addMouseOutListener,
   findPageElementById,
+  getElementCaretPosition,
   isCursorInside,
   removeMouseEnterListener,
   removeMouseOutListener,
@@ -15,6 +16,7 @@ import './AddTemplateTab.scss';
 export const AddTemplateTab = (): JSX.Element => {
   const tooltipMarkId = 'info-tooltip-mark';
   const tooltipContainerId = 'tooltip-container';
+  const textareaId = 'add-template-textarea';
 
   const [templateText, setTemplateText] = useState('');
   const [templateTitle, setTemplateTitle] = useState('');
@@ -34,14 +36,24 @@ export const AddTemplateTab = (): JSX.Element => {
   };
 
   const onPlacehoderVariableClick = (placeholderVar: PLACEHOLDER): void => {
-    const lastChar = templateText[templateText.length - 1];
-    const messageEmpty = lastChar === undefined;
-    const newStringStarted = lastChar === '\n';
-    const spaceBeforeInserted = lastChar === ' ';
+    const caretPosition = getTextareaCaretPosition();
+    const previousChar = templateText[caretPosition - 1];
+    const messageEmpty = previousChar === undefined;
+    const newStringStarted = previousChar === '\n';
+    const spaceBeforeInserted = previousChar === ' ';
     const spaceBeforeRequired = !(messageEmpty || newStringStarted || spaceBeforeInserted);
     const varIndent = spaceBeforeRequired ? ' ' : '';
-    setTemplateText(`${templateText}${varIndent}{${placeholderVar.toString()}}`);
+    setTemplateText(
+      `${templateText.substring(0, caretPosition)}${varIndent}{${placeholderVar.toString()}}${templateText.substring(
+        caretPosition,
+      )}`,
+    );
     closeTooltip();
+  };
+
+  const getTextareaCaretPosition = (): number => {
+    const textareaElement = findPageElementById(textareaId);
+    return getElementCaretPosition(textareaElement);
   };
 
   const closeTooltip = (): void => {
@@ -136,7 +148,12 @@ export const AddTemplateTab = (): JSX.Element => {
             onChange={(e): void => onTitleInputChange(e)}
             maxLength={MAX_TEMPLATE_TITLE_LENGHT}
           />
-          <textarea placeholder="Template Text" value={templateText} onChange={(e): void => onTextInputChange(e)} />
+          <textarea
+            id={textareaId}
+            placeholder="Template Text"
+            value={templateText}
+            onChange={(e): void => onTextInputChange(e)}
+          />
           <button disabled={!templateTitle || !templateText} onClick={(): void => onSave()}>
             Save
           </button>

@@ -122,6 +122,13 @@ export const moveCaretToTextEnd = (element: HTMLElement): void => {
   element.setSelectionRange(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
 };
 
+export const getElementCaretPosition = (element: HTMLElement): number => {
+  if (!isInputElemet(element)) {
+    return;
+  }
+  return element.selectionEnd;
+};
+
 // Document data section:
 
 export const getDocumentUrl = (): string => {

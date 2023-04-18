@@ -1,11 +1,11 @@
 {
   "name": "message-templater",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Chrome Extension for sending template messages",
   "scripts": {
-    "build": "webpack --config webpack.prod.js",
-    "build:zip": "npm run build && zip -r $npm_package_name.zip ./dist",
-    "dev": "webpack --config webpack.dev.js",
+    "build": "webpack --config webpack.dev.js",
+    "build:prod": "webpack --config webpack.prod.js",
+    "build:zip": "yarn build:prod && zip -r $npm_package_name.zip ./dist",
     "watch": "webpack -w --config webpack.dev.js",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix"

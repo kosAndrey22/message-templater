@@ -1,4 +1,10 @@
-export const formatNewErrorMessage = (message: string, functionName?: string, className?: string): string => {
+type ErrorObject = {
+  message: string,
+  functionName?: string,
+  className?: string
+};
+
+export const formatNewErrorMessage = ({ message, functionName, className }: ErrorObject): string => {
   return VERBOSE ? getFullMessage(message, functionName, className) : getShortMessage(message);
 };
 

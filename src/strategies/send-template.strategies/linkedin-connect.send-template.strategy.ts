@@ -69,11 +69,11 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
     );
     const button = <HTMLButtonElement>elements[0];
     if (!button) {
-      const errorMessage = formatNewErrorMessage(
-        'Can not find connect button. Maybe you are already connected.',
-        'clickOpenConnectModalButton',
-        'LinkedinConnectSendTemplateStrategy',
-      );
+      const errorMessage = formatNewErrorMessage({
+        message: 'Can not find connect button. Maybe you are already connected.',
+        functionName: 'clickOpenConnectModalButton',
+        className: 'LinkedinConnectSendTemplateStrategy',
+      });
       throw new HTMLElementNotFoundError(errorMessage);
     }
     await clickWithDelayAfter(button);
@@ -90,11 +90,11 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
   private insertTextToInput(text: string): void {
     const input = <HTMLTextAreaElement>findPageElementById(this.personalizeInput.id);
     if (!input) {
-      const errorMessage = formatNewErrorMessage(
-        'Can not find connect message input',
-        'insertTextToInput',
-        'LinkedinConnectSendTemplateStrategy',
-      );
+      const errorMessage = formatNewErrorMessage({
+        message: 'Can not find connect message input',
+        functionName: 'insertTextToInput',
+        className: 'LinkedinConnectSendTemplateStrategy',
+      });
       throw new HTMLElementNotFoundError(errorMessage);
     }
     setElementText(input, text);

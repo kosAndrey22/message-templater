@@ -61,11 +61,11 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
     );
     const button = <HTMLButtonElement>elements[0];
     if (!button) {
-      const errorMessage = formatNewErrorMessage(
-        'Can not find send message button.',
-        'clickOpenDialogButton',
-        'LinkedinSendTemplateStrategy',
-      );
+      const errorMessage = formatNewErrorMessage({
+        message: 'Can not find send message button.',
+        functionName: 'clickOpenDialogButton',
+        className: 'LinkedinSendTemplateStrategy',
+      });
       throw new HTMLElementNotFoundError(errorMessage);
     }
     await clickWithDelayAfter(button);
@@ -74,11 +74,11 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private insertTextToInput(text: string): void {
     const input = findPageElementsByClassName(this.messageInput.class)[0];
     if (!input) {
-      const errorMessage = formatNewErrorMessage(
-        'Can not find connect send input',
-        'insertTextToInput',
-        'LinkedinSendTemplateStrategy',
-      );
+      const errorMessage = formatNewErrorMessage({
+        message: 'Can not find connect send input.',
+        functionName: 'insertTextToInput',
+        className: 'LinkedinSendTemplateStrategy',
+      });
       throw new HTMLElementNotFoundError(errorMessage);
     }
     input.click();

@@ -13,7 +13,7 @@ export const AlertsModal = ({ visible, warnings, errors, closeModal }: AlertsMod
   const renderErrors = (errors: string[]): JSX.Element => {
     return errors.length ? (
       <div className="errors">
-        <h4 className="errors-header">We've got a problem here:</h4>
+        <h4 className="errors-header">We've got an error here:</h4>
         <ul className="error-el">
           {errors.map((e) => (
             <li>{e}</li>
@@ -25,7 +25,7 @@ export const AlertsModal = ({ visible, warnings, errors, closeModal }: AlertsMod
   const renderWarnings = (warnings: string[]): JSX.Element => {
     return warnings.length ? (
       <div className="warnings">
-        <h4 className="warnings-header">We've got an error here:</h4>
+        <h4 className="warnings-header">We've got a problem here:</h4>
         <ul>
           {warnings.map((w) => (
             <li className="warn-el">{w}</li>

@@ -105,7 +105,9 @@ export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy
     const textLength = text.length;
     if (textLength > this.MAX_CONNECT_MESSAGE_LENGTH) {
       return {
-        warnings: [`Inserted text length is ${textLength}, max is ${this.MAX_CONNECT_MESSAGE_LENGTH}`],
+        warnings: [
+          `The inserted text length is ${textLength} characters - max is 300 ${this.MAX_CONNECT_MESSAGE_LENGTH}.`,
+        ],
       };
     }
     return {};

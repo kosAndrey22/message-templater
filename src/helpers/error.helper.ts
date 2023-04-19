@@ -1,7 +1,7 @@
 type ErrorObject = {
-  message: string,
-  functionName?: string,
-  className?: string
+  message: string;
+  functionName?: string;
+  className?: string;
 };
 
 export const formatNewErrorMessage = ({ message, functionName, className }: ErrorObject): string => {

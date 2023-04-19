@@ -61,7 +61,12 @@ export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
     );
     const button = <HTMLButtonElement>elements[0];
     if (!button) {
-      return;
+      const errorMessage = formatNewErrorMessage(
+        'Can not find send message button.',
+        'clickOpenDialogButton',
+        'LinkedinSendTemplateStrategy',
+      );
+      throw new HTMLElementNotFoundError(errorMessage);
     }
     await clickWithDelayAfter(button);
   }

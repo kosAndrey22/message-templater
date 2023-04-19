@@ -3,8 +3,8 @@ import { MESSAGE_TYPE, PAGE_EVENT } from '../../constants';
 import {
   getSavedTemplates,
   deleteTemplate as deleteTemplateFromStorage,
-  sendPageEventToActiveTab,
   updateTemplateById,
+  executeScriptOnActiveTabOnce,
 } from '../../helpers';
 import { SendTemplatePageEvent, Template } from '../../interfaces';
 import { TemplateRow } from './TemplateRow';
@@ -36,7 +36,7 @@ export const TemplatesTab = (): JSX.Element => {
       messageType,
       type: PAGE_EVENT.SEND_TEMPLATE,
     };
-    await sendPageEventToActiveTab(event);
+    await executeScriptOnActiveTabOnce(event);
   };
 
   const deleteTemplate = async (templateId: number): Promise<void> => {

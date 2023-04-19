@@ -1,5 +1,4 @@
 import { BasePageEvent } from '../../interfaces';
-import { getActiveTab } from './browser.tab.helper';
 
 type EventListener = (
   request: any,
@@ -14,12 +13,6 @@ export const addPageEventListener = (func: EventListener): void => {
 export const removePageEventListener = (func: EventListener): void => {
   chrome.runtime.onMessage.removeListener(func);
 };
-
-export const sendPageEventToActiveTab = async <Event extends BasePageEvent>(event: Event): Promise<void> => {
-  const activeTab = await getActiveTab();
-  chrome.tabs.sendMessage(activeTab.id, event);
-};
-
 export const sendPageRuntimeEvent = <Event extends BasePageEvent>(event: Event): void => {
   chrome.runtime.sendMessage(event);
 };

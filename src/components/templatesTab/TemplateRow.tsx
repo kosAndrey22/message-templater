@@ -47,9 +47,9 @@ export const TemplateRow = ({
       sendTemplate(MESSAGE_TYPE.CONNECT_MESSAGE, templateData);
     };
 
-    // const send = (): void => {
-    //   sendTemplate(MESSAGE_TYPE.NORMAL_MESSAGE, templateData);
-    // };
+    const send = (): void => {
+      sendTemplate(MESSAGE_TYPE.NORMAL_MESSAGE, templateData);
+    };
 
     const deleteCurrentTemplate = (): void => {
       deleteTemplate(template.id);
@@ -79,9 +79,7 @@ export const TemplateRow = ({
         <span>{templateData?.text ?? ''}</span>
         <div className="buttons">
           <button onClick={(): void => connect()}>Connect</button>
-          {/* <button onClick={(): void => send()}>
-          Send
-        </button> */}
+          <button onClick={(): void => send()}>Send</button>
         </div>
       </>
     );

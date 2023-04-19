@@ -147,7 +147,7 @@ export const scrollToElementEnd = (element: HTMLElement): void => {
   element.scrollTop = Number.MAX_SAFE_INTEGER;
 };
 
-// Events section
+// Elements events section
 export const addMouseEnterListener = <K extends keyof HTMLElementEventMap>(
   element: HTMLElement,
   func: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
@@ -174,4 +174,9 @@ export const removeMouseOutListener = <K extends keyof HTMLElementEventMap>(
   func: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
 ): void => {
   element.removeEventListener('mouseout', func);
+};
+
+// Document events section
+export const addDocumentDomLoadListener = (listener: EventListenerOrEventListenerObject): void => {
+  document.addEventListener('DOMContentLoaded', listener);
 };

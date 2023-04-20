@@ -1,9 +1,14 @@
-import { LINKEDIN_HOST, MESSAGE_TYPE } from '../../../constants';
+import { MESSAGE_TYPE } from '../../../constants';
+import { isLinkedinUrl } from '../../../helpers';
 import { SendTemplateStrategy, SendTemplateStrategyManager } from '../../../interfaces';
-import { ProfileLinkedinReceivePageInfoStrategy } from '../../receive-page-info.strategies';
+import {
+  PrivateMessagesLinkedinReceivePageInfoStrategy,
+  ProfileLinkedinReceivePageInfoStrategy,
+} from '../../receive-page-info.strategies';
 import {
   SendLinkedinSendTemplateStrategy,
   ConnectLinkedinConnectSendTemplateStrategy,
+  PrivateMessageLinkedinSendTemplateStrategy,
 } from '../../send-template.strategies';
 
 export class LinkedinSendTemplateStrategyManager implements SendTemplateStrategyManager {
@@ -22,6 +27,9 @@ export class LinkedinSendTemplateStrategyManager implements SendTemplateStrategy
     if (this.isLinkedinProfilePageUrl(url)) {
       const pageInfoReceiveStrategy = new ProfileLinkedinReceivePageInfoStrategy();
       return new SendLinkedinSendTemplateStrategy(pageInfoReceiveStrategy);
+    } else if (this.isLinkedinPrivateMessagesPageUrl(url)) {
+      const pageInfoReceiveStrategy = new PrivateMessagesLinkedinReceivePageInfoStrategy();
+      return new PrivateMessageLinkedinSendTemplateStrategy(pageInfoReceiveStrategy);
     } else {
       return null;
     }
@@ -35,9 +43,21 @@ export class LinkedinSendTemplateStrategyManager implements SendTemplateStrategy
   private isLinkedinProfilePageUrl(url: string): boolean {
     try {
       const parsedUrl = new URL(url);
-      const { host, pathname } = parsedUrl;
-      const hostMatch = host === LINKEDIN_HOST;
+      const { pathname } = parsedUrl;
+      const hostMatch = isLinkedinUrl(url);
       const pathMatch = !!pathname.match(/^\/in\/.{1,}/);
+      return hostMatch && pathMatch;
+    } catch {
+      return false;
+    }
+  }
+
+  private isLinkedinPrivateMessagesPageUrl(url: string): boolean {
+    try {
+      const parsedUrl = new URL(url);
+      const { pathname } = parsedUrl;
+      const hostMatch = isLinkedinUrl(url);
+      const pathMatch = !!pathname.match(/^\/messaging\/thread\/.{1,}/);
       return hostMatch && pathMatch;
     } catch {
       return false;

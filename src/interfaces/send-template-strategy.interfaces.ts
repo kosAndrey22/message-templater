@@ -6,5 +6,5 @@ export interface SendTemplateResult {
 }
 
 export interface SendTemplateStrategy {
-  send(template: Template): Promise<SendTemplateResult>;
+  send(template: Template): SendTemplateResult | Promise<SendTemplateResult>;
 }

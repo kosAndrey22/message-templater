@@ -1,10 +1,10 @@
-import { findPageElementsByClassName, removeInvalidChars } from '../../../helpers';
+import { findPageElementById, removeInvalidChars } from '../../../helpers';
 import { PageInfo } from '../../../types';
 import { AbstractReceivePageStrategy } from '../abstract.receive-page-info.strategy';
 
-export class ProfileLinkedinReceivePageInfoStrategy extends AbstractReceivePageStrategy {
+export class PrivateMessagesLinkedinReceivePageInfoStrategy extends AbstractReceivePageStrategy {
   private profileFullNameHeader = {
-    className: 'text-heading-xlarge inline t-24 v-align-middle break-words',
+    id: 'thread-detail-jump-target',
   };
 
   protected receiveInfo(): PageInfo {
@@ -23,7 +23,7 @@ export class ProfileLinkedinReceivePageInfoStrategy extends AbstractReceivePageS
   }
 
   private getFirstAndLastNameFromHeader(): [string | undefined, string | undefined] | [] {
-    const fullNameHeader = findPageElementsByClassName(this.profileFullNameHeader.className)[0];
+    const fullNameHeader = findPageElementById(this.profileFullNameHeader.id);
     if (!fullNameHeader) {
       return [];
     }

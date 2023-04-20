@@ -1,7 +1,9 @@
 const DEFAULT_CLICK_DELAY_MS = 1000;
+// TODO: remove using document commands.
 const DOCUMENT_COMMANDS = {
   DELETE: 'delete',
   INSERT_TEXT: 'insertText',
+  SELECT_ALL: 'selectAll',
 };
 
 // Type check section:
@@ -88,11 +90,8 @@ export const selectAllDocumentText = (element: HTMLElement): void => {
 };
 
 export const clearElementText = (element: HTMLElement): void => {
-  if (!isInputElemet(element)) {
-    return;
-  }
   focus(element);
-  selectAllDocumentText(element);
+  document.execCommand(DOCUMENT_COMMANDS.SELECT_ALL, false);
   document.execCommand(DOCUMENT_COMMANDS.DELETE, false);
 };
 

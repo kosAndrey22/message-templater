@@ -1,3 +1,5 @@
+import { getRandomBetween } from '../random.helper';
+
 const DEFAULT_CLICK_DELAY_MS = 1000;
 // TODO: remove using document commands.
 const DOCUMENT_COMMANDS = {
@@ -76,6 +78,17 @@ export const clickWithDelayAfter = async (
 ): Promise<void> => {
   click(element);
   await new Promise((resolve) => setTimeout(resolve, delay));
+  return;
+};
+
+export const clickWithRandomDelayAfter = async (
+  element: HTMLElement,
+  minDelay: number = DEFAULT_CLICK_DELAY_MS,
+  maxDelay: number = DEFAULT_CLICK_DELAY_MS * 1.5,
+): Promise<void> => {
+  click(element);
+  const delay = getRandomBetween(minDelay, maxDelay);
+  await clickWithDelayAfter(element, delay);
   return;
 };
 

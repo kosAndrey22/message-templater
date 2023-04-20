@@ -1,6 +1,6 @@
 import { HTMLElementNotFoundError } from '../../../errors';
 import {
-  clickWithDelayAfter,
+  clickWithRandomDelayAfter,
   findPageElementsByClassName,
   findPageElementById,
   setElementText,
@@ -76,7 +76,7 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
-    await clickWithDelayAfter(button);
+    await clickWithRandomDelayAfter(button);
   }
 
   private async clickPersonalizeButton(): Promise<void> {
@@ -84,7 +84,7 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
     if (!button) {
       return;
     }
-    await clickWithDelayAfter(button);
+    await clickWithRandomDelayAfter(button);
   }
 
   private insertTextToInput(text: string): void {

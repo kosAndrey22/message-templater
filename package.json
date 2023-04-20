@@ -1,6 +1,6 @@
 {
   "name": "message-templater",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Chrome Extension for sending template messages",
   "scripts": {
     "build": "webpack --config webpack.dev.js",

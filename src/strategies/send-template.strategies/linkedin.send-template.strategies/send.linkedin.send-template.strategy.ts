@@ -1,6 +1,6 @@
 import { HTMLElementNotFoundError } from '../../../errors';
 import {
-  clickWithDelayAfter,
+  clickWithRandomDelayAfter,
   findPageElementsByClassName,
   setElementText,
   interpolate,
@@ -68,7 +68,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
-    await clickWithDelayAfter(button);
+    await clickWithRandomDelayAfter(button);
   }
 
   private insertTextToInput(text: string): void {

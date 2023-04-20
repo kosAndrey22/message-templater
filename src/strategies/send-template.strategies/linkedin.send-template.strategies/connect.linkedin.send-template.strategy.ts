@@ -1,4 +1,4 @@
-import { HTMLElementNotFoundError } from '../../errors';
+import { HTMLElementNotFoundError } from '../../../errors';
 import {
   clickWithDelayAfter,
   findPageElementsByClassName,
@@ -8,10 +8,10 @@ import {
   findChildsInsideElementRecursively,
   formatNewErrorMessage,
   moveCaretToTextStart,
-} from '../../helpers';
-import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../interfaces';
+} from '../../../helpers';
+import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
-export class LinkedinConnectSendTemplateStrategy implements SendTemplateStrategy {
+export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateStrategy {
   private MAX_CONNECT_MESSAGE_LENGTH = 300;
 
   private openConnectModalButton = {

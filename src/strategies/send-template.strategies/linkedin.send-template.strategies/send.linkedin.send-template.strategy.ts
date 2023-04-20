@@ -1,4 +1,4 @@
-import { HTMLElementNotFoundError } from '../../errors';
+import { HTMLElementNotFoundError } from '../../../errors';
 import {
   clickWithDelayAfter,
   findPageElementsByClassName,
@@ -7,10 +7,10 @@ import {
   findChildsInsideElementRecursively,
   formatNewErrorMessage,
   moveCaretToTextStart,
-} from '../../helpers';
-import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../interfaces';
+} from '../../../helpers';
+import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
-export class LinkedinSendTemplateStrategy implements SendTemplateStrategy {
+export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private openDialogButton = {
     sectionClassName: 'artdeco-card ember-view pv-top-card',
     type: 'send-privately',

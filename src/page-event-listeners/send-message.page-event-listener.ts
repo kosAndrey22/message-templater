@@ -1,11 +1,12 @@
 import { MESSAGE_TYPE, PAGE_EVENT } from '../constants';
 import { getDocumentUrl, sendPageRuntimeEvent } from '../helpers';
 import { SendTemplateResult, SendTemplateResultPageEvent, Template } from '../interfaces';
-import { SendTemplateStrategyManager } from '../strategies';
+import { MainSendTemplateStrategyManager } from '../strategies';
 
 export const sendTemplate = async (messageType: MESSAGE_TYPE, template: Template): Promise<void> => {
   const url = getDocumentUrl();
-  const strategy = SendTemplateStrategyManager.getStrategy(url, messageType);
+  const strategyManager = new MainSendTemplateStrategyManager();
+  const strategy = strategyManager.getStrategy(url, messageType);
   if (!strategy) {
     return;
   }

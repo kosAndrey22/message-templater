@@ -1,8 +1,8 @@
-import { findPageElementsByClassName, removeInvalidChars } from '../../helpers';
-import { PageInfo } from '../../types';
-import { AbstractReceivePageStrategy } from './abstract.receive-page-info.strategy';
+import { findPageElementsByClassName, removeInvalidChars } from '../../../helpers';
+import { PageInfo } from '../../../types';
+import { AbstractReceivePageStrategy } from '../abstract.receive-page-info.strategy';
 
-export class LinkedinReceivePageInfoStrategy extends AbstractReceivePageStrategy {
+export class ProfileLinkedinReceivePageInfoStrategy extends AbstractReceivePageStrategy {
   private profileFullNameHeader = {
     className: 'text-heading-xlarge inline t-24 v-align-middle break-words',
   };

@@ -86,7 +86,6 @@ export const clickWithRandomDelayAfter = async (
   minDelay: number = DEFAULT_CLICK_DELAY_MS,
   maxDelay: number = DEFAULT_CLICK_DELAY_MS * 1.5,
 ): Promise<void> => {
-  click(element);
   const delay = getRandomBetween(minDelay, maxDelay);
   await clickWithDelayAfter(element, delay);
   return;

@@ -4,11 +4,13 @@ import { SendTemplateStrategy, SendTemplateStrategyManager } from '../../../inte
 import {
   PrivateMessagesLinkedinReceivePageInfoStrategy,
   ProfileLinkedinReceivePageInfoStrategy,
+  RecruiterLiteLinkedinReceivePageInfoStrategy,
 } from '../../receive-page-info.strategies';
 import {
   SendLinkedinSendTemplateStrategy,
   ConnectLinkedinConnectSendTemplateStrategy,
   PrivateMessageLinkedinSendTemplateStrategy,
+  RecruiterLiteLinkedinSendTemplateStrategy,
 } from '../../send-template.strategies';
 
 export class LinkedinSendTemplateStrategyManager implements SendTemplateStrategyManager {
@@ -30,6 +32,9 @@ export class LinkedinSendTemplateStrategyManager implements SendTemplateStrategy
     } else if (this.isLinkedinPrivateMessagesPageUrl(url)) {
       const pageInfoReceiveStrategy = new PrivateMessagesLinkedinReceivePageInfoStrategy();
       return new PrivateMessageLinkedinSendTemplateStrategy(pageInfoReceiveStrategy);
+    } else if (this.isLinkedinRecruiterLitePageUrl(url)) {
+      const pageInfoReceiveStrategy = new RecruiterLiteLinkedinReceivePageInfoStrategy();
+      return new RecruiterLiteLinkedinSendTemplateStrategy(pageInfoReceiveStrategy);
     } else {
       return null;
     }
@@ -38,6 +43,18 @@ export class LinkedinSendTemplateStrategyManager implements SendTemplateStrategy
   private getConnectStrategy(): SendTemplateStrategy {
     const pageInfoReceiveStrategy = new ProfileLinkedinReceivePageInfoStrategy();
     return new ConnectLinkedinConnectSendTemplateStrategy(pageInfoReceiveStrategy);
+  }
+
+  private isLinkedinRecruiterLitePageUrl(url: string): boolean {
+    try {
+      const parsedUrl = new URL(url);
+      const { pathname } = parsedUrl;
+      const hostMatch = isLinkedinUrl(url);
+      const pathMatch = !!pathname.match(/^\/talent\/profile\/.{1,}/);
+      return hostMatch && pathMatch;
+    } catch {
+      return false;
+    }
   }
 
   private isLinkedinProfilePageUrl(url: string): boolean {

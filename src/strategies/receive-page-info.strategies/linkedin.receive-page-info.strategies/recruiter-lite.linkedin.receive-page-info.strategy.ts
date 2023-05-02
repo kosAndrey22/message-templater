@@ -1,4 +1,4 @@
-import { findPageElementsByClassName, removeInvalidChars } from '../../../helpers';
+import { findPageElementsByClassName, removeInvalidChars, stringContainsInvalidCharsOnly } from '../../../helpers';
 import { PageInfo } from '../../../types';
 import { AbstractReceivePageStrategy } from '../abstract.receive-page-info.strategy';
 
@@ -30,9 +30,9 @@ export class RecruiterLiteLinkedinReceivePageInfoStrategy extends AbstractReceiv
     const fullNameHeaderContainer =
       fullNameHeader.firstElementChild.lastElementChild.firstElementChild.firstElementChild;
     const stringFromHeader = fullNameHeaderContainer.textContent.split(' ');
-    const withoutInvalidChars = stringFromHeader.map((s) => removeInvalidChars(s));
-    const withoutEmpty = withoutInvalidChars.filter((s) => s.length > 0);
-    const [firstName, lastName] = withoutEmpty;
+    const withoutOnlyInvalidChars = stringFromHeader.filter((s) => !stringContainsInvalidCharsOnly(s));
+    const formatted = withoutOnlyInvalidChars.map((s) => removeInvalidChars(s));
+    const [firstName, lastName] = formatted;
     return [firstName, lastName];
   }
 }

@@ -7,7 +7,9 @@
         "default_icon": "icon48.png",
         "default_popup": "popup.html"
     },
-    "background": {},
+    "background": {
+        "service_worker": "js/background.js"
+    },
     "icons": {
         "16": "icon16.png",
         "48": "icon48.png",

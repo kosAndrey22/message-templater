@@ -7,6 +7,7 @@ import {
   findChildsInsideElementRecursively,
   formatNewErrorMessage,
   moveCaretToTextStart,
+  sendPageRuntimeEvent,
 } from '../../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
@@ -40,6 +41,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
 
   private async openDialog(): Promise<void> {
     await this.clickOpenDialogButton();
+    sendPageRuntimeEvent({ msg: 'zalupa' } as any);
   }
 
   private getText(template: Template): string {

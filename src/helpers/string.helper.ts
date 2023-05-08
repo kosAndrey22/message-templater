@@ -1,3 +1,5 @@
+import { ZERO_WIDTH_JOINER_CHAR_CODE } from '../constants';
+
 const interpDataRegExp = /{[^{]{0,}}/g;
 
 export const interpolate = (str: string, values: { [key: string]: string }): string => {
@@ -25,7 +27,19 @@ export const onlyFirstLetterToUpper = (str: string): string => {
 
 export const removeInvalidChars = (str: string): string => {
   return str.replace(
-    /\u000A|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2580-\u27BF]|\uD83E[\uDD10-\uDDFF]|/g,
+    /\u000A|[\u2580-\u27BF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD10-\uDDFF]|[\uE000-\uF8FF]/g,
     '',
   );
+};
+
+export const stringEmprtyOrContainsOnlyZeroWidthJoiners = (str: string): boolean => {
+  const chars = str.split('');
+  const withoutZeroJoiners = chars.filter((el) => el !== String.fromCharCode(ZERO_WIDTH_JOINER_CHAR_CODE));
+  return withoutZeroJoiners.length === 0;
+};
+
+export const stringContainsInvalidCharsOnly = (str: string): boolean => {
+  const withoutInvalidChars = removeInvalidChars(str);
+  const isEmpty = stringEmprtyOrContainsOnlyZeroWidthJoiners(withoutInvalidChars);
+  return isEmpty;
 };

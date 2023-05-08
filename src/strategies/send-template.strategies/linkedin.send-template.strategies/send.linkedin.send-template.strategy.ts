@@ -1,3 +1,4 @@
+import { SMALL_DEFAULT_CLICK_DELAY_MS } from '../../../constants';
 import { HTMLElementNotFoundError } from '../../../errors';
 import {
   clickWithRandomDelayAfter,
@@ -8,28 +9,43 @@ import {
   formatNewErrorMessage,
   moveCaretToTextStart,
   sendPageRuntimeEvent,
+  getDefaultRandomClickParams,
+  elementClassListContainsClass,
 } from '../../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
 export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
-  private openDialogButton = {
+  private readonly idPositionInImageUrl = 5;
+
+  private readonly avatarHeader = {
+    class: `pv-top-card-profile-picture pv-top-card-profile-picture__container display-block
+      pv-top-card__photo presence-entity__image EntityPhoto-circle-9`,
+  };
+
+  private readonly dialogPopup = {
+    class: 'msg-convo-wrapper msg-overlay-conversation-bubble msg-overlay-conversation-bubble--default-inactive ml4',
+    imageClassName: 'evi-image',
+    closedClassName: 'msg-overlay-conversation-bubble--is-minimized',
+  };
+
+  private readonly openDialogButton = {
     sectionClassName: 'artdeco-card ember-view pv-top-card',
     type: 'send-privately',
     lockedType: 'locked',
   };
 
-  private messageInput = {
-    class: 'msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 full-height notranslate      ',
+  private readonly messageInput = {
+    role: 'textbox',
   };
 
-  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
+  constructor(private receivePageInfoStrategy: ReceivePageInfoStrategy) {}
 
   public async send(template: Template): Promise<SendTemplateResult> {
     const result: SendTemplateResult = {};
     try {
       await this.openDialog();
       const text = this.getText(template);
-      this.insertTextToInput(text);
+      await this.insertTextToInput(text);
       return {};
     } catch (e) {
       if (e.message) {
@@ -45,7 +61,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   }
 
   private getText(template: Template): string {
-    const pageInfo = this.pageInfoReceiver.receive();
+    const pageInfo = this.receivePageInfoStrategy.receive();
     const text = interpolate(template.text, pageInfo);
     return text;
   }
@@ -73,8 +89,8 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     await clickWithRandomDelayAfter(button);
   }
 
-  private insertTextToInput(text: string): void {
-    const input = findPageElementsByClassName(this.messageInput.class)[0];
+  private async insertTextToInput(text: string): Promise<void> {
+    const input = await this.getDialogInputWithOpenedUser();
     if (!input) {
       const errorMessage = formatNewErrorMessage({
         message: 'Can not find connect send input.',
@@ -83,8 +99,58 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
-    input.click();
+    await clickWithRandomDelayAfter(input, ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS));
     setElementText(input, text);
     moveCaretToTextStart(input);
+  }
+
+  private async getDialogInputWithOpenedUser(): Promise<HTMLInputElement | null> {
+    const dialogs = findPageElementsByClassName(this.dialogPopup.class);
+    const avatarUrl = this.getPageAvatarUrl();
+    const userId = this.getUserIdFromAvatarUrl(avatarUrl);
+
+    const currentDialog = dialogs.find((d) => {
+      const img = findChildsInsideElementRecursively(d, (el) =>
+        elementClassListContainsClass(el, this.dialogPopup.imageClassName),
+      )[0];
+      if (!img) {
+        return;
+      }
+      const userIdFromDialog = this.getUserIdFromAvatarUrl((<HTMLImageElement>img).src);
+      return userId === userIdFromDialog;
+    });
+
+    if (!currentDialog) {
+      return null;
+    }
+
+    const dialogClosed = elementClassListContainsClass(currentDialog, this.dialogPopup.closedClassName);
+    if (dialogClosed) {
+      const header = currentDialog.children[1];
+      await clickWithRandomDelayAfter(
+        <HTMLElement>header,
+        ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS),
+      );
+    }
+
+    const input = findChildsInsideElementRecursively(
+      currentDialog,
+      (el) => el.getAttribute('role') === this.messageInput.role,
+    )[0];
+    return <HTMLInputElement>input;
+  }
+
+  private getPageAvatarUrl(): string {
+    const header = findPageElementsByClassName(this.avatarHeader.class);
+    const img = header[0]?.firstElementChild;
+    if (!img) {
+      return '';
+    }
+    return (<HTMLImageElement>img).src;
+  }
+
+  private getUserIdFromAvatarUrl(url: string): string {
+    const splitted = url.split('/');
+    return splitted[this.idPositionInImageUrl];
   }
 }

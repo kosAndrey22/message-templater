@@ -12,6 +12,7 @@ import {
   PrivateMessageLinkedinSendTemplateStrategy,
   RecruiterLiteLinkedinSendTemplateStrategy,
 } from '../../send-template.strategies';
+import { OpenDialogsLinkedinSendTemplateStrategy } from '../../send-template.strategies/linkedin.send-template.strategies/open-dialogs.linkedin.send-template.strategy';
 
 export class LinkedinSendTemplateStrategyManager implements SendTemplateStrategyManager {
   public getStrategy(url: string, messageType: MESSAGE_TYPE): SendTemplateStrategy | null {
@@ -36,7 +37,7 @@ export class LinkedinSendTemplateStrategyManager implements SendTemplateStrategy
       const pageInfoReceiveStrategy = new RecruiterLiteLinkedinReceivePageInfoStrategy();
       return new RecruiterLiteLinkedinSendTemplateStrategy(pageInfoReceiveStrategy);
     } else {
-      return null;
+      return new OpenDialogsLinkedinSendTemplateStrategy();
     }
   }
 

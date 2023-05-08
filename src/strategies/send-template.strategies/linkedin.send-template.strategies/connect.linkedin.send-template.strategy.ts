@@ -12,22 +12,22 @@ import {
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
 export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateStrategy {
-  private MAX_CONNECT_MESSAGE_LENGTH = 300;
+  private readonly MAX_CONNECT_MESSAGE_LENGTH = 300;
 
-  private openConnectModalButton = {
+  private readonly openConnectModalButton = {
     sectionClassName: 'artdeco-card ember-view pv-top-card',
     type: 'connect',
   };
 
-  private personalizeButton = {
+  private readonly personalizeButton = {
     className: 'artdeco-button artdeco-button--muted artdeco-button--2 artdeco-button--secondary ember-view mr1',
   };
 
-  private personalizeInput = {
+  private readonly personalizeInput = {
     id: 'custom-message',
   };
 
-  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
+  constructor(private receivePageInfoStrategy: ReceivePageInfoStrategy) {}
 
   public async send(template: Template): Promise<SendTemplateResult> {
     let result: SendTemplateResult = {};
@@ -53,7 +53,7 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
   }
 
   private getText(template: Template): string {
-    const pageInfo = this.pageInfoReceiver.receive();
+    const pageInfo = this.receivePageInfoStrategy.receive();
     const text = interpolate(template.text, pageInfo);
     return text;
   }

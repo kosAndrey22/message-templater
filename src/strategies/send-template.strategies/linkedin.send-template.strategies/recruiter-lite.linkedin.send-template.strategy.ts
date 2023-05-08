@@ -1,8 +1,11 @@
+import { SMALL_DEFAULT_CLICK_DELAY_MS } from '../../../constants';
 import { HTMLElementNotFoundError } from '../../../errors';
 import {
+  clickWithRandomDelayAfter,
   findChildsInsideElementRecursively,
   findPageElementsByClassName,
   formatNewErrorMessage,
+  getDefaultRandomClickParams,
   interpolate,
   moveCaretToTextStart,
   setElementText,
@@ -10,18 +13,18 @@ import {
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
 export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateStrategy {
-  private messageInputContainer = {
+  private readonly messageInputContainer = {
     class: 'compose-body',
     inputClassname: 'compose-textarea__textarea',
   };
 
-  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
+  constructor(private receivePageInfoStrategy: ReceivePageInfoStrategy) {}
 
-  public send(template: Template): SendTemplateResult {
+  public async send(template: Template): Promise<SendTemplateResult> {
     const result: SendTemplateResult = {};
     try {
       const text = this.getText(template);
-      this.insertTextToInput(text);
+      await this.insertTextToInput(text);
       return {};
     } catch (e) {
       if (e.message) {
@@ -32,12 +35,12 @@ export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateSt
   }
 
   private getText(template: Template): string {
-    const pageInfo = this.pageInfoReceiver.receive();
+    const pageInfo = this.receivePageInfoStrategy.receive();
     const text = interpolate(template.text, pageInfo);
     return text;
   }
 
-  private insertTextToInput(text: string): void {
+  private async insertTextToInput(text: string): Promise<void> {
     const inputContainer = findPageElementsByClassName(this.messageInputContainer.class)[0];
     if (!inputContainer) {
       const errorMessage = formatNewErrorMessage({
@@ -53,7 +56,7 @@ export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateSt
       (e): boolean => e.className === this.messageInputContainer.inputClassname,
     )[0];
 
-    input.click();
+    await clickWithRandomDelayAfter(input, ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS));
     setElementText(input, text);
     moveCaretToTextStart(input);
   }

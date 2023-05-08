@@ -1,7 +1,10 @@
+import { SMALL_DEFAULT_CLICK_DELAY_MS } from '../../../constants';
 import { HTMLElementNotFoundError } from '../../../errors';
 import {
+  clickWithRandomDelayAfter,
   findPageElementsByClassName,
   formatNewErrorMessage,
+  getDefaultRandomClickParams,
   interpolate,
   moveCaretToTextStart,
   setElementText,
@@ -9,17 +12,17 @@ import {
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
 export class PrivateMessageLinkedinSendTemplateStrategy implements SendTemplateStrategy {
-  private messageInputContainer = {
+  private readonly messageInputContainer = {
     class: 'msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 full-height notranslate',
   };
 
-  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
+  constructor(private receivePageInfoStrategy: ReceivePageInfoStrategy) {}
 
-  public send(template: Template): SendTemplateResult {
+  public async send(template: Template): Promise<SendTemplateResult> {
     const result: SendTemplateResult = {};
     try {
       const text = this.getText(template);
-      this.insertTextToInput(text);
+      await this.insertTextToInput(text);
       return {};
     } catch (e) {
       if (e.message) {
@@ -30,12 +33,12 @@ export class PrivateMessageLinkedinSendTemplateStrategy implements SendTemplateS
   }
 
   private getText(template: Template): string {
-    const pageInfo = this.pageInfoReceiver.receive();
+    const pageInfo = this.receivePageInfoStrategy.receive();
     const text = interpolate(template.text, pageInfo);
     return text;
   }
 
-  private insertTextToInput(text: string): void {
+  private async insertTextToInput(text: string): Promise<void> {
     const input = findPageElementsByClassName(this.messageInputContainer.class)[0];
     if (!input) {
       const errorMessage = formatNewErrorMessage({
@@ -45,7 +48,7 @@ export class PrivateMessageLinkedinSendTemplateStrategy implements SendTemplateS
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
-    input.click();
+    await clickWithRandomDelayAfter(input, ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS));
     setElementText(input, text);
     moveCaretToTextStart(input);
   }

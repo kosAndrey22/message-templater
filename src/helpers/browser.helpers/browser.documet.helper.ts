@@ -99,7 +99,6 @@ export const getDefaultRandomClickParams = (minDelay = DEFAULT_ELEMENT_CLICK_DEL
   return [minDelay, minDelay * 1.5];
 };
 
-
 // Element text section:
 
 export const selectAllDocumentText = (element: HTMLElement): void => {

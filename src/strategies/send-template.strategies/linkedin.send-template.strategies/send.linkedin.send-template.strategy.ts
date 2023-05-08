@@ -96,7 +96,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
-    await clickWithRandomDelayAfter(input, ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS))
+    await clickWithRandomDelayAfter(input, ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS));
     setElementText(input, text);
     moveCaretToTextStart(input);
   }
@@ -124,7 +124,10 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     const isDialogClosed = currentDialog.classList.contains(this.dialogPopup.closedClassName);
     if (isDialogClosed) {
       const header = currentDialog.children[1];
-      await clickWithRandomDelayAfter((<HTMLElement>header), ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS));
+      await clickWithRandomDelayAfter(
+        <HTMLElement>header,
+        ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS),
+      );
     }
 
     const input = findChildsInsideElementRecursively(

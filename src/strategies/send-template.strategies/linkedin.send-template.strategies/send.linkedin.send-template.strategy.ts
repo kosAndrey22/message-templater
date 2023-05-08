@@ -9,6 +9,7 @@ import {
   formatNewErrorMessage,
   moveCaretToTextStart,
   getDefaultRandomClickParams,
+  elementClassListContainsClass,
 } from '../../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
@@ -108,7 +109,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
 
     const currentDialog = dialogs.find((d) => {
       const img = findChildsInsideElementRecursively(d, (el) =>
-        el.classList.contains(this.dialogPopup.imageClassName),
+        elementClassListContainsClass(el, this.dialogPopup.imageClassName),
       )[0];
       if (!img) {
         return;
@@ -121,8 +122,8 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
       return null;
     }
 
-    const isDialogClosed = currentDialog.classList.contains(this.dialogPopup.closedClassName);
-    if (isDialogClosed) {
+    const dialogClosed = elementClassListContainsClass(currentDialog, this.dialogPopup.closedClassName);
+    if (dialogClosed) {
       const header = currentDialog.children[1];
       await clickWithRandomDelayAfter(
         <HTMLElement>header,

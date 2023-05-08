@@ -27,6 +27,10 @@ export const findPageElementsByClassName = (className: string): HTMLElement[] =>
   return arrayOfMatchinElements;
 };
 
+export const elementClassListContainsClass = (element: HTMLElement, className: string): boolean => {
+  return element.classList.contains(className);
+};
+
 export const addClassToElemetClassList = (element: HTMLElement, className: string): void => {
   element.classList.add(className);
 };

@@ -1,6 +1,6 @@
+import { DEFAULT_ELEMENT_CLICK_DELAY_MS } from '../../constants';
 import { getRandomBetween } from '../random.helper';
 
-const DEFAULT_CLICK_DELAY_MS = 1000;
 // TODO: remove using document commands.
 const DOCUMENT_COMMANDS = {
   DELETE: 'delete',
@@ -74,7 +74,7 @@ export const click = (element: HTMLElement): void => {
 
 export const clickWithDelayAfter = async (
   element: HTMLElement,
-  delay: number = DEFAULT_CLICK_DELAY_MS,
+  delay: number = DEFAULT_ELEMENT_CLICK_DELAY_MS,
 ): Promise<void> => {
   click(element);
   await new Promise((resolve) => setTimeout(resolve, delay));
@@ -83,13 +83,22 @@ export const clickWithDelayAfter = async (
 
 export const clickWithRandomDelayAfter = async (
   element: HTMLElement,
-  minDelay: number = DEFAULT_CLICK_DELAY_MS,
-  maxDelay: number = DEFAULT_CLICK_DELAY_MS * 1.5,
+  minDelay?: number,
+  maxDelay?: number,
 ): Promise<void> => {
-  const delay = getRandomBetween(minDelay, maxDelay);
+  let delayParams: [number, number] = [minDelay, maxDelay];
+  if (!maxDelay) {
+    delayParams = getDefaultRandomClickParams(minDelay);
+  }
+  const delay = getRandomBetween(...delayParams);
   await clickWithDelayAfter(element, delay);
   return;
 };
+
+export const getDefaultRandomClickParams = (minDelay = DEFAULT_ELEMENT_CLICK_DELAY_MS): [number, number] => {
+  return [minDelay, minDelay * 1.5];
+};
+
 
 // Element text section:
 

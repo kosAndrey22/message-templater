@@ -1,5 +1,6 @@
 export * from './event.constants';
 export * from './message.constants';
+export * from './page-elements.constants';
 export * from './placeholder.constants';
 export * from './script.constants';
 export * from './storage.constants';

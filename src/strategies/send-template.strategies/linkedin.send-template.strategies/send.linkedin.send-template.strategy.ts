@@ -1,3 +1,4 @@
+import { SMALL_DEFAULT_CLICK_DELAY_MS } from '../../../constants';
 import { HTMLElementNotFoundError } from '../../../errors';
 import {
   clickWithRandomDelayAfter,
@@ -7,6 +8,7 @@ import {
   findChildsInsideElementRecursively,
   formatNewErrorMessage,
   moveCaretToTextStart,
+  getDefaultRandomClickParams,
 } from '../../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
@@ -41,7 +43,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     try {
       await this.openDialog();
       const text = this.getText(template);
-      this.insertTextToInput(text);
+      await this.insertTextToInput(text);
       return {};
     } catch (e) {
       if (e.message) {
@@ -84,8 +86,8 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     await clickWithRandomDelayAfter(button);
   }
 
-  private insertTextToInput(text: string): void {
-    const input = this.getDialogInputWithOpenedUser();
+  private async insertTextToInput(text: string): Promise<void> {
+    const input = await this.getDialogInputWithOpenedUser();
     if (!input) {
       const errorMessage = formatNewErrorMessage({
         message: 'Can not find connect send input.',
@@ -94,12 +96,12 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
-    input.click();
+    await clickWithRandomDelayAfter(input, ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS))
     setElementText(input, text);
     moveCaretToTextStart(input);
   }
 
-  private getDialogInputWithOpenedUser(): HTMLInputElement | null {
+  private async getDialogInputWithOpenedUser(): Promise<HTMLInputElement | null> {
     const dialogs = findPageElementsByClassName(this.dialogPopup.class);
     const avatarUrl = this.getPageAvatarUrl();
     const userId = this.getUserIdFromAvatarUrl(avatarUrl);
@@ -122,7 +124,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     const isDialogClosed = currentDialog.classList.contains(this.dialogPopup.closedClassName);
     if (isDialogClosed) {
       const header = currentDialog.children[1];
-      (<HTMLElement>header).click();
+      await clickWithRandomDelayAfter((<HTMLElement>header), ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS));
     }
 
     const input = findChildsInsideElementRecursively(

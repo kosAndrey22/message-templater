@@ -11,6 +11,19 @@ import {
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
 export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
+  private idPositionInImageUrl = 5;
+
+  private avatarHeader = {
+    class: `pv-top-card-profile-picture pv-top-card-profile-picture__container display-block
+      pv-top-card__photo presence-entity__image EntityPhoto-circle-9`,
+  };
+
+  private dialogPopup = {
+    class: 'msg-convo-wrapper msg-overlay-conversation-bubble msg-overlay-conversation-bubble--default-inactive ml4',
+    imageClassName: 'evi-image',
+    closedClassName: 'msg-overlay-conversation-bubble--is-minimized',
+  };
+
   private openDialogButton = {
     sectionClassName: 'artdeco-card ember-view pv-top-card',
     type: 'send-privately',
@@ -18,7 +31,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   };
 
   private messageInput = {
-    class: 'msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 full-height notranslate      ',
+    role: 'textbox',
   };
 
   constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
@@ -72,7 +85,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   }
 
   private insertTextToInput(text: string): void {
-    const input = findPageElementsByClassName(this.messageInput.class)[0];
+    const input = this.getDialogInputWithOpenedUser();
     if (!input) {
       const errorMessage = formatNewErrorMessage({
         message: 'Can not find connect send input.',
@@ -84,5 +97,52 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     input.click();
     setElementText(input, text);
     moveCaretToTextStart(input);
+  }
+
+  private getDialogInputWithOpenedUser(): HTMLInputElement | null {
+    const dialogs = findPageElementsByClassName(this.dialogPopup.class);
+    const avatarUrl = this.getPageAvatarUrl();
+    const userId = this.getUserIdFromAvatarUrl(avatarUrl);
+
+    const currentDialog = dialogs.find((d) => {
+      const img = findChildsInsideElementRecursively(d, (el) =>
+        el.classList.contains(this.dialogPopup.imageClassName),
+      )[0];
+      if (!img) {
+        return;
+      }
+      const userIdFromDialog = this.getUserIdFromAvatarUrl((<HTMLImageElement>img).src);
+      return userId === userIdFromDialog;
+    });
+
+    if (!currentDialog) {
+      return null;
+    }
+
+    const isDialogClosed = currentDialog.classList.contains(this.dialogPopup.closedClassName);
+    if (isDialogClosed) {
+      const header = currentDialog.children[1];
+      (<HTMLElement>header).click();
+    }
+
+    const input = findChildsInsideElementRecursively(
+      currentDialog,
+      (el) => el.getAttribute('role') === this.messageInput.role,
+    )[0];
+    return <HTMLInputElement>input;
+  }
+
+  private getPageAvatarUrl(): string {
+    const header = findPageElementsByClassName(this.avatarHeader.class);
+    const img = header[0]?.firstElementChild;
+    if (!img) {
+      return '';
+    }
+    return (<HTMLImageElement>img).src;
+  }
+
+  private getUserIdFromAvatarUrl(url: string): string {
+    const splitted = url.split('/');
+    return splitted[this.idPositionInImageUrl];
   }
 }

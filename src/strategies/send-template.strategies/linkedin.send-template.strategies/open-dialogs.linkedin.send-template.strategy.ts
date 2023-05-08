@@ -30,7 +30,27 @@ export class OpenDialogsLinkedinSendTemplateStrategy implements SendTemplateStra
   };
 
   public async send(template: Template): Promise<SendTemplateResult> {
-    const openDialogs = this.getOpenDialogs();
+    const result: SendTemplateResult = {};
+    try {
+      const openDialogs = this.getOpenDialogs();
+
+      // Use await in a loop so not to insert all texts at one time.
+      for (let i = 0; i < openDialogs.length; i += 1) {
+        const currentDialog = openDialogs[i];
+        const text = this.getText(template, currentDialog);
+        await this.insertText(text, currentDialog);
+      }
+    } catch (e) {
+      if (e.message) {
+        result.errors ? result.errors.push(e.message) : (result.errors = [e.message]);
+      }
+    }
+    return result;
+  }
+
+  private getOpenDialogs(): HTMLElement[] {
+    const dialogs = findPageElementsByClassName(this.dialogPopup.class);
+    const openDialogs = dialogs.filter((d) => !elementClassListContainsClass(d, this.dialogPopup.closedClassName));
     if (!openDialogs.length) {
       const errorMessage = formatNewErrorMessage({
         message: 'Can not find any open dialogs.',
@@ -39,20 +59,6 @@ export class OpenDialogsLinkedinSendTemplateStrategy implements SendTemplateStra
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
-
-    // Use await in a loop so not to insert all texts at one time.
-    for (let i = 0; i < openDialogs.length; i += 1) {
-      const currentDialog = openDialogs[i];
-      const text = this.getText(template, currentDialog);
-      await this.insertText(text, currentDialog);
-    }
-
-    return {};
-  }
-
-  private getOpenDialogs(): HTMLElement[] {
-    const dialogs = findPageElementsByClassName(this.dialogPopup.class);
-    const openDialogs = dialogs.filter((d) => !elementClassListContainsClass(d, this.dialogPopup.closedClassName));
     return openDialogs;
   }
 

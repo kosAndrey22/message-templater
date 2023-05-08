@@ -13,7 +13,7 @@ import {
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
 export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateStrategy {
-  private messageInputContainer = {
+  private readonly messageInputContainer = {
     class: 'compose-body',
     inputClassname: 'compose-textarea__textarea',
   };

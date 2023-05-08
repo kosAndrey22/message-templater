@@ -9,23 +9,23 @@ import {
   getDefaultRandomClickParams,
   interpolate,
   moveCaretToTextStart,
-  onlyFirstLetterToUpper,
-  removeInvalidChars,
   setElementText,
-  stringContainsInvalidCharsOnly,
 } from '../../../helpers';
 import { SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
+import { LinkedinPageDataFormatterService } from '../../../services';
 import { PageInfo } from '../../../types';
 
 export class OpenDialogsLinkedinSendTemplateStrategy implements SendTemplateStrategy {
-  private dialogPopup = {
+  private readonly pageDataFormatterService = new LinkedinPageDataFormatterService();
+
+  private readonly dialogPopup = {
     class: 'msg-convo-wrapper msg-overlay-conversation-bubble msg-overlay-conversation-bubble--default-inactive ml4',
     closedClassName: 'msg-overlay-conversation-bubble--is-minimized',
     profileLinkClass: 'app-aware-link  profile-card-one-to-one__profile-link',
     headerClass: 'pl1 msg-overlay-bubble-header__title truncate t-14 t-bold',
   };
 
-  private messageInput = {
+  private readonly messageInput = {
     role: 'textbox',
   };
 
@@ -110,23 +110,8 @@ export class OpenDialogsLinkedinSendTemplateStrategy implements SendTemplateStra
   }
 
   private formatNamesString(str: string): PageInfo {
-    const pageInfo: PageInfo = {};
-
-    const splitted = str.split(' ');
-    const withoutOnlyInvalidChars = splitted.filter((s) => !stringContainsInvalidCharsOnly(s));
-    const formatted = withoutOnlyInvalidChars.map((s) => removeInvalidChars(s));
-    const [firstName, lastName] = formatted;
-
-    if (firstName) {
-      pageInfo.firstName = onlyFirstLetterToUpper(firstName);
-    }
-    if (lastName) {
-      pageInfo.lastName = onlyFirstLetterToUpper(lastName);
-    }
-    if (firstName && lastName) {
-      pageInfo.fullName = `${pageInfo.firstName} ${pageInfo.lastName}`;
-    }
-
-    return pageInfo;
+    const pageUserNamesInfo = this.pageDataFormatterService.formatFullNameHeaderContent(str);
+    const formattedPageInfo = this.pageDataFormatterService.formatPageInfo(pageUserNamesInfo);
+    return formattedPageInfo;
   }
 }

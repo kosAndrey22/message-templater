@@ -1,36 +1,26 @@
-import { findPageElementById, removeInvalidChars, stringContainsInvalidCharsOnly } from '../../../helpers';
+import { PLACEHOLDER } from '../../../constants';
+import { findPageElementById } from '../../../helpers';
+import { LinkedinPageDataFormatterService } from '../../../services';
 import { PageInfo } from '../../../types';
 import { AbstractReceivePageStrategy } from '../abstract.receive-page-info.strategy';
 
 export class PrivateMessagesLinkedinReceivePageInfoStrategy extends AbstractReceivePageStrategy {
-  private profileFullNameHeader = {
+  protected readonly pageDataFormatterService = new LinkedinPageDataFormatterService();
+  private readonly profileFullNameHeader = {
     id: 'thread-detail-jump-target',
   };
 
   protected receiveInfo(): PageInfo {
-    const pageInfo: PageInfo = {};
-    const [firstName, lastName] = this.getFirstAndLastNameFromHeader();
-    if (firstName) {
-      pageInfo.firstName = firstName;
-    }
-    if (lastName) {
-      pageInfo.lastName = lastName;
-    }
-    if (firstName && lastName) {
-      pageInfo.fullName = `${firstName} ${lastName}`;
-    }
+    const pageInfo = this.getFirstAndLastNameFromHeader();
     return pageInfo;
   }
 
-  private getFirstAndLastNameFromHeader(): [string | undefined, string | undefined] | [] {
+  private getFirstAndLastNameFromHeader(): Partial<Pick<PageInfo, PLACEHOLDER.FIRST_NAME | PLACEHOLDER.LAST_NAME>> {
     const fullNameHeader = findPageElementById(this.profileFullNameHeader.id);
     if (!fullNameHeader) {
-      return [];
+      return {};
     }
-    const stringFromHeader = fullNameHeader.textContent.split(' ');
-    const withoutOnlyInvalidChars = stringFromHeader.filter((s) => !stringContainsInvalidCharsOnly(s));
-    const formatted = withoutOnlyInvalidChars.map((s) => removeInvalidChars(s));
-    const [firstName, lastName] = formatted;
-    return [firstName, lastName];
+    const fullNameHeaderText = fullNameHeader.textContent;
+    return this.pageDataFormatterService.formatFullNameHeaderContent(fullNameHeaderText);
   }
 }

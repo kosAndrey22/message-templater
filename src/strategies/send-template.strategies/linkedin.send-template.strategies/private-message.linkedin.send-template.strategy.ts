@@ -12,7 +12,7 @@ import {
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
 export class PrivateMessageLinkedinSendTemplateStrategy implements SendTemplateStrategy {
-  private messageInputContainer = {
+  private readonly messageInputContainer = {
     class: 'msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 full-height notranslate',
   };
 

@@ -1,36 +1,27 @@
-import { findPageElementsByClassName, removeInvalidChars, stringContainsInvalidCharsOnly } from '../../../helpers';
+import { PLACEHOLDER } from '../../../constants';
+import { findPageElementsByClassName } from '../../../helpers';
+import { LinkedinPageDataFormatterService } from '../../../services';
 import { PageInfo } from '../../../types';
 import { AbstractReceivePageStrategy } from '../abstract.receive-page-info.strategy';
 
 export class ProfileLinkedinReceivePageInfoStrategy extends AbstractReceivePageStrategy {
-  private profileFullNameHeader = {
+  protected readonly pageDataFormatterService = new LinkedinPageDataFormatterService();
+
+  private readonly profileFullNameHeader = {
     className: 'text-heading-xlarge inline t-24 v-align-middle break-words',
   };
 
   protected receiveInfo(): PageInfo {
-    const pageInfo: PageInfo = {};
-    const [firstName, lastName] = this.getFirstAndLastNameFromHeader();
-    if (firstName) {
-      pageInfo.firstName = firstName;
-    }
-    if (lastName) {
-      pageInfo.lastName = lastName;
-    }
-    if (firstName && lastName) {
-      pageInfo.fullName = `${firstName} ${lastName}`;
-    }
+    const pageInfo = this.getFirstAndLastNameFromHeader();
     return pageInfo;
   }
 
-  private getFirstAndLastNameFromHeader(): [string | undefined, string | undefined] | [] {
+  private getFirstAndLastNameFromHeader(): Partial<Pick<PageInfo, PLACEHOLDER.FIRST_NAME | PLACEHOLDER.LAST_NAME>> {
     const fullNameHeader = findPageElementsByClassName(this.profileFullNameHeader.className)[0];
     if (!fullNameHeader) {
-      return [];
+      return {};
     }
-    const stringFromHeader = fullNameHeader.textContent.split(' ');
-    const withoutOnlyInvalidChars = stringFromHeader.filter((s) => !stringContainsInvalidCharsOnly(s));
-    const formatted = withoutOnlyInvalidChars.map((s) => removeInvalidChars(s));
-    const [firstName, lastName] = formatted;
-    return [firstName, lastName];
+    const fullNameHeaderText = fullNameHeader.textContent;
+    return this.pageDataFormatterService.formatFullNameHeaderContent(fullNameHeaderText);
   }
 }

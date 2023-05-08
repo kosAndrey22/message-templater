@@ -14,26 +14,26 @@ import {
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
 export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
-  private idPositionInImageUrl = 5;
+  private readonly idPositionInImageUrl = 5;
 
-  private avatarHeader = {
+  private readonly avatarHeader = {
     class: `pv-top-card-profile-picture pv-top-card-profile-picture__container display-block
       pv-top-card__photo presence-entity__image EntityPhoto-circle-9`,
   };
 
-  private dialogPopup = {
+  private readonly dialogPopup = {
     class: 'msg-convo-wrapper msg-overlay-conversation-bubble msg-overlay-conversation-bubble--default-inactive ml4',
     imageClassName: 'evi-image',
     closedClassName: 'msg-overlay-conversation-bubble--is-minimized',
   };
 
-  private openDialogButton = {
+  private readonly openDialogButton = {
     sectionClassName: 'artdeco-card ember-view pv-top-card',
     type: 'send-privately',
     lockedType: 'locked',
   };
 
-  private messageInput = {
+  private readonly messageInput = {
     role: 'textbox',
   };
 

@@ -16,7 +16,7 @@ export class PrivateMessageLinkedinSendTemplateStrategy implements SendTemplateS
     class: 'msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 full-height notranslate',
   };
 
-  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
+  constructor(private receivePageInfoStrategy: ReceivePageInfoStrategy) {}
 
   public async send(template: Template): Promise<SendTemplateResult> {
     const result: SendTemplateResult = {};
@@ -33,7 +33,7 @@ export class PrivateMessageLinkedinSendTemplateStrategy implements SendTemplateS
   }
 
   private getText(template: Template): string {
-    const pageInfo = this.pageInfoReceiver.receive();
+    const pageInfo = this.receivePageInfoStrategy.receive();
     const text = interpolate(template.text, pageInfo);
     return text;
   }

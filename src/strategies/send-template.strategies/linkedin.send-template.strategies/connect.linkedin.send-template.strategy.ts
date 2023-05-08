@@ -27,7 +27,7 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
     id: 'custom-message',
   };
 
-  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
+  constructor(private receivePageInfoStrategy: ReceivePageInfoStrategy) {}
 
   public async send(template: Template): Promise<SendTemplateResult> {
     let result: SendTemplateResult = {};
@@ -53,7 +53,7 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
   }
 
   private getText(template: Template): string {
-    const pageInfo = this.pageInfoReceiver.receive();
+    const pageInfo = this.receivePageInfoStrategy.receive();
     const text = interpolate(template.text, pageInfo);
     return text;
   }

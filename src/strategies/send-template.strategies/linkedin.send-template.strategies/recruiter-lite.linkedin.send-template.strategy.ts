@@ -18,7 +18,7 @@ export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateSt
     inputClassname: 'compose-textarea__textarea',
   };
 
-  constructor(private pageInfoReceiver: ReceivePageInfoStrategy) {}
+  constructor(private receivePageInfoStrategy: ReceivePageInfoStrategy) {}
 
   public async send(template: Template): Promise<SendTemplateResult> {
     const result: SendTemplateResult = {};
@@ -35,7 +35,7 @@ export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateSt
   }
 
   private getText(template: Template): string {
-    const pageInfo = this.pageInfoReceiver.receive();
+    const pageInfo = this.receivePageInfoStrategy.receive();
     const text = interpolate(template.text, pageInfo);
     return text;
   }

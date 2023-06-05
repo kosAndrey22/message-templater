@@ -21,4 +21,4 @@ Now supports only LinkedIn.
 
 2. Go to the site and navigate to the user page you want to send this message.
 
-3. Click create (or connect, if you want to add this user) and formatter will receive the user's info, insert it into the template and insert into the send input. All you have to do after that is submit sending.
+3. Click send (or connect, if you want to add this user) and formatter will receive the user's info, insert it into the template and insert into the send input. All you have to do after that is submit sending.

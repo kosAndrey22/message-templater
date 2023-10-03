@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack --config webpack.dev.js",
     "build:prod": "webpack --config webpack.prod.js",
-    "build:zip": "yarn build:prod && zip -r $npm_package_name.zip ./dist",
+    "build:zip": "yarn build:prod && mkdir -p dist/build && zip -r dist/build/$npm_package_name-$npm_package_version.zip ./dist",
     "watch": "webpack -w --config webpack.dev.js",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix"

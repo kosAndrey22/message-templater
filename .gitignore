@@ -1,5 +1,5 @@
 dist/js
-dist/build
+builds
 node_modules
 
 ## Builded ext

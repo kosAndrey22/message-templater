@@ -17,6 +17,7 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
   private readonly openConnectModalButton = {
     sectionClassName: 'artdeco-card ember-view pv-top-card',
     type: 'connect',
+    icon: 'connect-medium',
   };
 
   private readonly personalizeButton = {
@@ -63,11 +64,19 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
     if (!buttonSection) {
       return;
     }
-    const elements = findChildsInsideElementRecursively(
+    let button: HTMLButtonElement = <HTMLButtonElement>(findChildsInsideElementRecursively(
       buttonSection,
-      (el: HTMLElement) => el.getAttribute('type') === this.openConnectModalButton.type,
-    );
-    const button = <HTMLButtonElement>elements[0];
+      (el: HTMLElement) => el.getAttribute('type') === this.openConnectModalButton.type
+    )[0]);
+
+    if (!button) {
+      const buttonIcon = findChildsInsideElementRecursively(
+        buttonSection,
+        (el: HTMLElement) => el.getAttribute('data-test-icon') === this.openConnectModalButton.icon,
+      )[0];
+      button = <HTMLButtonElement>buttonIcon.parentElement;
+    }
+
     if (!button) {
       const errorMessage = formatNewErrorMessage({
         message: 'Can not find connect button. Maybe you are already connected.',

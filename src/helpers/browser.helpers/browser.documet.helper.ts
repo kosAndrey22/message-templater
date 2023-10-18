@@ -1,5 +1,6 @@
 import { DEFAULT_ELEMENT_CLICK_DELAY_MS } from '../../constants';
 import { getRandomBetween } from '../random.helper';
+import { sleep } from '../sleep.helper';
 
 // TODO: remove using document commands.
 const DOCUMENT_COMMANDS = {
@@ -81,7 +82,7 @@ export const clickWithDelayAfter = async (
   delay: number = DEFAULT_ELEMENT_CLICK_DELAY_MS,
 ): Promise<void> => {
   click(element);
-  await new Promise((resolve) => setTimeout(resolve, delay));
+  await sleep(delay);
   return;
 };
 
@@ -200,6 +201,6 @@ export const removeMouseOutListener = <K extends keyof HTMLElementEventMap>(
 };
 
 // Document events section
-export const addDocumentDomLoadListener = (listener: EventListenerOrEventListenerObject): void => {
-  document.addEventListener('DOMContentLoaded', listener);
+export const addDocumentDomLoadListener = (listener: EventListenerOrEventListenerObject, once = false): void => {
+  document.addEventListener('DOMContentLoaded', listener, { once });
 };

@@ -1,3 +1,4 @@
+export * from './browser.constants';
 export * from './event.constants';
 export * from './message.constants';
 export * from './page-elements.constants';

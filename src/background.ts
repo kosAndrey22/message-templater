@@ -1,15 +1,26 @@
-import { addPageEventListener, getActiveTab } from './helpers';
+import { TAB_STATUS } from './constants';
+import { addPageEventListener, executeScriptOnActiveTabOnce, getActiveTab, getTabById, isResendTemplateIfRedirectedEvent, sleep } from './helpers';
+import { BasePageEvent, ResendTemplateIfRedirectedPageEvent } from './interfaces';
 
-const listener = async () => {
-  console.log('bbb');
-  const tabs = await new Promise((resolve) => {
-    chrome.tabs.query({}, (tabs: chrome.tabs.Tab[]) => {
-      resolve(tabs);
-    });
-  });
-  console.log(1, JSON.stringify(tabs));
-  const tab = await getActiveTab();
-  console.log(1, tab);
+const listener = async <Event extends BasePageEvent>(event: Event) => {
+  if (isResendTemplateIfRedirectedEvent(event)) {
+    processResendTemplateIfRedirectedEvent(event)
+  }
 };
 
-addPageEventListener(() => listener());
+const processResendTemplateIfRedirectedEvent = async (resendEvent: ResendTemplateIfRedirectedPageEvent<BasePageEvent>) => {
+  const activeTab = await getActiveTab();
+  let tabStatus = activeTab.status;
+  let tabId = activeTab.id;
+  if (tabStatus === TAB_STATUS.LOADING) {
+    while (tabStatus === TAB_STATUS.LOADING) {
+      await sleep(500);
+      const tab = await getTabById(tabId);
+      tabStatus = tab?.status;
+    }
+    const { event } = resendEvent;
+    executeScriptOnActiveTabOnce({ ...event, resended: true })
+  }
+};
+
+addPageEventListener(listener);

@@ -12,7 +12,14 @@ import {
   getDefaultRandomClickParams,
   elementClassListContainsClass,
 } from '../../../helpers';
-import { ResendTemplateIfRedirectedPageEvent, ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template, SendTemplatePageEvent } from '../../../interfaces';
+import {
+  ResendTemplateIfRedirectedPageEvent,
+  ReceivePageInfoStrategy,
+  SendTemplateResult,
+  SendTemplateStrategy,
+  Template,
+  SendTemplatePageEvent,
+} from '../../../interfaces';
 
 export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private readonly idPositionInImageUrl = 5;
@@ -117,7 +124,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
       event: {
         template,
         messageType: MESSAGE_TYPE.NORMAL_MESSAGE,
-        type: PAGE_EVENT.SEND_TEMPLATE
+        type: PAGE_EVENT.SEND_TEMPLATE,
       },
       type: PAGE_EVENT.RESEND_TEMPLATE_IF_REDIRECTED,
     };

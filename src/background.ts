@@ -1,17 +1,26 @@
 import { TAB_STATUS } from './constants';
-import { addPageEventListener, executeScriptOnActiveTabOnce, getActiveTab, getTabById, isResendTemplateIfRedirectedEvent, sleep } from './helpers';
+import {
+  addPageEventListener,
+  executeScriptOnActiveTabOnce,
+  getActiveTab,
+  getTabById,
+  isResendTemplateIfRedirectedEvent,
+  sleep,
+} from './helpers';
 import { BasePageEvent, ResendTemplateIfRedirectedPageEvent } from './interfaces';
 
-const listener = async <Event extends BasePageEvent>(event: Event) => {
+const listener = async <Event extends BasePageEvent>(event: Event): Promise<void> => {
   if (isResendTemplateIfRedirectedEvent(event)) {
-    processResendTemplateIfRedirectedEvent(event)
+    await processResendTemplateIfRedirectedEvent(event);
   }
 };
 
-const processResendTemplateIfRedirectedEvent = async (resendEvent: ResendTemplateIfRedirectedPageEvent<BasePageEvent>) => {
+const processResendTemplateIfRedirectedEvent = async (
+  resendEvent: ResendTemplateIfRedirectedPageEvent<BasePageEvent>,
+): Promise<void> => {
   const activeTab = await getActiveTab();
   let tabStatus = activeTab.status;
-  let tabId = activeTab.id;
+  const tabId = activeTab.id;
   if (tabStatus === TAB_STATUS.LOADING) {
     while (tabStatus === TAB_STATUS.LOADING) {
       await sleep(500);
@@ -19,7 +28,7 @@ const processResendTemplateIfRedirectedEvent = async (resendEvent: ResendTemplat
       tabStatus = tab?.status;
     }
     const { event } = resendEvent;
-    executeScriptOnActiveTabOnce({ ...event, resended: true })
+    executeScriptOnActiveTabOnce({ ...event, resended: true });
   }
 };
 

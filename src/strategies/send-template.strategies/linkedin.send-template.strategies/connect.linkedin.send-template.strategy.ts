@@ -64,10 +64,12 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
     if (!buttonSection) {
       return;
     }
-    let button: HTMLButtonElement = <HTMLButtonElement>(findChildsInsideElementRecursively(
-      buttonSection,
-      (el: HTMLElement) => el.getAttribute('type') === this.openConnectModalButton.type
-    )[0]);
+    let button: HTMLButtonElement = <HTMLButtonElement>(
+      findChildsInsideElementRecursively(
+        buttonSection,
+        (el: HTMLElement) => el.getAttribute('type') === this.openConnectModalButton.type,
+      )[0]
+    );
 
     if (!button) {
       const buttonIcon = findChildsInsideElementRecursively(

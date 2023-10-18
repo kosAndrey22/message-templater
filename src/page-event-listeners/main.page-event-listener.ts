@@ -1,4 +1,4 @@
-import { isSendTemplateEvent, sleep } from '../helpers';
+import { isSendTemplateEvent } from '../helpers';
 import { BasePageEvent } from '../interfaces';
 import { sendTemplate } from './send-message.page-event-listener';
 

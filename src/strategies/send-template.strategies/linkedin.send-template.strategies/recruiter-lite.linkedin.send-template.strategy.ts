@@ -20,7 +20,8 @@ export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateSt
   };
 
   private readonly sendMessageButton = {
-    class: 'artdeco-button artdeco-button--circle artdeco-button--muted artdeco-button--2 artdeco-button--tertiary ember-view profile-item-actions__item',
+    class:
+      'artdeco-button artdeco-button--circle artdeco-button--muted artdeco-button--2 artdeco-button--tertiary ember-view profile-item-actions__item',
   };
 
   constructor(private receivePageInfoStrategy: ReceivePageInfoStrategy) {}

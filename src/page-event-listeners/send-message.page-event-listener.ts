@@ -3,7 +3,11 @@ import { getDocumentUrl, sendPageRuntimeEvent } from '../helpers';
 import { SendTemplateResult, SendTemplateResultPageEvent, Template } from '../interfaces';
 import { MainSendTemplateStrategyManager } from '../strategies';
 
-export const sendTemplate = async (messageType: MESSAGE_TYPE, template: Template, resended: boolean = false): Promise<void> => {
+export const sendTemplate = async (
+  messageType: MESSAGE_TYPE,
+  template: Template,
+  resended: boolean = false,
+): Promise<void> => {
   const url = getDocumentUrl();
   const strategyManager = new MainSendTemplateStrategyManager();
   const strategy = strategyManager.getStrategy(url, messageType);

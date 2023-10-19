@@ -9,6 +9,7 @@ import {
   interpolate,
   moveCaretToTextStart,
   setElementText,
+  sleep,
 } from '../../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
@@ -18,11 +19,22 @@ export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateSt
     inputClassname: 'compose-textarea__textarea',
   };
 
+  private readonly sendMessageButton = {
+    class:
+      'artdeco-button artdeco-button--circle artdeco-button--muted artdeco-button--2 artdeco-button--tertiary ember-view profile-item-actions__item',
+  };
+
   constructor(private receivePageInfoStrategy: ReceivePageInfoStrategy) {}
 
-  public async send(template: Template): Promise<SendTemplateResult> {
+  public async send(template: Template, resended = false): Promise<SendTemplateResult> {
     const result: SendTemplateResult = {};
     try {
+      const waitUntilInputLoaded = resended;
+      if (waitUntilInputLoaded) {
+        await this.waitUntilInputLoad();
+      }
+
+      await this.openDialog();
       const text = this.getText(template);
       await this.insertTextToInput(text);
       return {};
@@ -38,6 +50,25 @@ export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateSt
     const pageInfo = this.receivePageInfoStrategy.receive();
     const text = interpolate(template.text, pageInfo);
     return text;
+  }
+
+  private async openDialog(): Promise<void> {
+    const button = findPageElementsByClassName(this.sendMessageButton.class)[0];
+    if (!button) {
+      return;
+    }
+    await clickWithRandomDelayAfter(button, ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS));
+  }
+
+  private async waitUntilInputLoad(): Promise<void> {
+    let inputContainer = null;
+    const maxAttempts = 10;
+    let attempt = 0;
+    while (!inputContainer && attempt < maxAttempts) {
+      await sleep(1000);
+      inputContainer = findPageElementsByClassName(this.messageInputContainer.class)[0];
+      attempt += 1;
+    }
   }
 
   private async insertTextToInput(text: string): Promise<void> {

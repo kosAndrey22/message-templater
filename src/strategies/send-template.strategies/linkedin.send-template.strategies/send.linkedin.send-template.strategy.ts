@@ -1,4 +1,4 @@
-import { SMALL_DEFAULT_CLICK_DELAY_MS } from '../../../constants';
+import { MESSAGE_TYPE, PAGE_EVENT, SMALL_DEFAULT_CLICK_DELAY_MS } from '../../../constants';
 import { HTMLElementNotFoundError } from '../../../errors';
 import {
   clickWithRandomDelayAfter,
@@ -8,10 +8,18 @@ import {
   findChildsInsideElementRecursively,
   formatNewErrorMessage,
   moveCaretToTextStart,
+  sendPageRuntimeEvent,
   getDefaultRandomClickParams,
   elementClassListContainsClass,
 } from '../../../helpers';
-import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
+import {
+  ResendTemplateIfRedirectedPageEvent,
+  ReceivePageInfoStrategy,
+  SendTemplateResult,
+  SendTemplateStrategy,
+  Template,
+  SendTemplatePageEvent,
+} from '../../../interfaces';
 
 export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private readonly idPositionInImageUrl = 5;
@@ -31,6 +39,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     sectionClassName: 'artdeco-card ember-view pv-top-card',
     type: 'send-privately',
     lockedType: 'locked',
+    icon: 'send-privately-medium',
   };
 
   private readonly messageInput = {
@@ -44,6 +53,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     try {
       await this.openDialog();
       const text = this.getText(template);
+      this.sendResendTemplateIfRedirectedEvent(template);
       await this.insertTextToInput(text);
       return {};
     } catch (e) {
@@ -75,7 +85,14 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
         el.getAttribute('type') === this.openDialogButton.type ||
         el.getAttribute('type') === this.openDialogButton.lockedType,
     );
-    const button = <HTMLButtonElement>elements[0];
+    let button = <HTMLButtonElement>elements[0];
+    if (!button) {
+      const buttonIcon = findChildsInsideElementRecursively(
+        buttonSection,
+        (el: HTMLElement) => el.getAttribute('data-test-icon') === this.openDialogButton.icon,
+      )[0];
+      button = <HTMLButtonElement>buttonIcon.parentElement;
+    }
     if (!button) {
       const errorMessage = formatNewErrorMessage({
         message: 'Can not find send message button.',
@@ -100,6 +117,18 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     await clickWithRandomDelayAfter(input, ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS));
     setElementText(input, text);
     moveCaretToTextStart(input);
+  }
+
+  private sendResendTemplateIfRedirectedEvent(template: Template): void {
+    const event: ResendTemplateIfRedirectedPageEvent<SendTemplatePageEvent> = {
+      event: {
+        template,
+        messageType: MESSAGE_TYPE.NORMAL_MESSAGE,
+        type: PAGE_EVENT.SEND_TEMPLATE,
+      },
+      type: PAGE_EVENT.RESEND_TEMPLATE_IF_REDIRECTED,
+    };
+    sendPageRuntimeEvent(event);
   }
 
   private async getDialogInputWithOpenedUser(): Promise<HTMLInputElement | null> {

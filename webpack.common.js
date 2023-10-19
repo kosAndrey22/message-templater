@@ -3,6 +3,7 @@ const path = require("path");
 module.exports = {
   entry: {
     app: path.join(__dirname, "src/components/App.tsx"),
+    background: path.join(__dirname, "src/background.ts"),
     process_page_event_once: path.join(__dirname, "src/scripts/process-page-event-once.script.ts")
   },
   output: {

@@ -5,6 +5,10 @@ export interface SendTemplateResult {
   errors?: string[];
 }
 
+export interface SendOptions {
+  tryWaitForElementsRender: boolean
+}
+
 export interface SendTemplateStrategy {
-  send(template: Template, resended?: boolean): SendTemplateResult | Promise<SendTemplateResult>;
+  send(template: Template, options?: SendOptions): SendTemplateResult | Promise<SendTemplateResult>;
 }

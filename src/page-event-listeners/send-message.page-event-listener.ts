@@ -1,12 +1,12 @@
 import { MESSAGE_TYPE, PAGE_EVENT } from '../constants';
 import { getDocumentUrl, sendPageRuntimeEvent } from '../helpers';
-import { SendTemplateResult, SendTemplateResultPageEvent, Template } from '../interfaces';
+import { SendOptions, SendTemplateResult, SendTemplateResultPageEvent, Template } from '../interfaces';
 import { MainSendTemplateStrategyManager } from '../strategies';
 
 export const sendTemplate = async (
   messageType: MESSAGE_TYPE,
   template: Template,
-  resended: boolean = false,
+  options: SendOptions,
 ): Promise<void> => {
   const url = getDocumentUrl();
   const strategyManager = new MainSendTemplateStrategyManager();
@@ -14,7 +14,7 @@ export const sendTemplate = async (
   if (!strategy) {
     return;
   }
-  const sendResult = await strategy.send(template, resended);
+  const sendResult = await strategy.send(template, options);
   processSendResult(sendResult);
 };
 

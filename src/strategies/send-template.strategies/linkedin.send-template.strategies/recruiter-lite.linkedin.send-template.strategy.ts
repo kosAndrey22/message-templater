@@ -11,7 +11,7 @@ import {
   setElementText,
   sleep,
 } from '../../../helpers';
-import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
+import { ReceivePageInfoStrategy, SendOptions, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
 export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private readonly messageInputContainer = {
@@ -26,11 +26,11 @@ export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateSt
 
   constructor(private receivePageInfoStrategy: ReceivePageInfoStrategy) {}
 
-  public async send(template: Template, resended = false): Promise<SendTemplateResult> {
+  public async send(template: Template, options: SendOptions): Promise<SendTemplateResult> {
     const result: SendTemplateResult = {};
     try {
-      const waitUntilInputLoaded = resended;
-      if (waitUntilInputLoaded) {
+      const { tryWaitForElementsRender } = options;
+      if (tryWaitForElementsRender) {
         await this.waitUntilInputLoad();
       }
 

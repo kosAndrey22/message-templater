@@ -6,7 +6,7 @@ export interface SendTemplateResult {
 }
 
 export interface SendOptions {
-  tryWaitForElementsRender: boolean
+  tryWaitForElementsRender: boolean;
 }
 
 export interface SendTemplateStrategy {

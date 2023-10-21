@@ -11,7 +11,13 @@ import {
   setElementText,
   sleep,
 } from '../../../helpers';
-import { ReceivePageInfoStrategy, SendOptions, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
+import {
+  ReceivePageInfoStrategy,
+  SendOptions,
+  SendTemplateResult,
+  SendTemplateStrategy,
+  Template,
+} from '../../../interfaces';
 
 export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private readonly messageInputContainer = {

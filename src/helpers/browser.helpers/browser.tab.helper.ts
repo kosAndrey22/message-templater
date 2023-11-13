@@ -3,7 +3,7 @@ import { BasePageEvent } from '../../interfaces';
 
 export const getActiveTab = async (): Promise<chrome.tabs.Tab> => {
   const activeTab: chrome.tabs.Tab = await new Promise((resolve) => {
-    chrome.tabs.query({ active: true }, (tabs: chrome.tabs.Tab[]) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
       resolve(tabs[0]);
     });
   });

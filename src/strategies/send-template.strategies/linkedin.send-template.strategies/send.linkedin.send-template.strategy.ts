@@ -36,10 +36,10 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   };
 
   private readonly openDialogButton = {
-    sectionClassName: 'artdeco-card ember-view pv-top-card',
+    sectionClassName: 'artdeco-card pv-top-card',
     type: 'send-privately',
     lockedType: 'locked',
-    icon: 'send-privately-medium',
+    icon: 'send-privately-small',
   };
 
   private readonly messageInput = {
@@ -77,7 +77,12 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private async clickOpenDialogButton(): Promise<void> {
     const buttonSection = findPageElementsByClassName(this.openDialogButton.sectionClassName)[0];
     if (!buttonSection) {
-      return;
+      const errorMessage = formatNewErrorMessage({
+        message: 'Can not find button section.',
+        functionName: 'clickOpenConnectModalButton',
+        className: 'LinkedinConnectSendTemplateStrategy',
+      });
+      throw new HTMLElementNotFoundError(errorMessage);
     }
     const elements = findChildsInsideElementRecursively(
       buttonSection,

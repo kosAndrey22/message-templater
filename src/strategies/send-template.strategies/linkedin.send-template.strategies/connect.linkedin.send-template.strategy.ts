@@ -15,7 +15,7 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
   private readonly MAX_CONNECT_MESSAGE_LENGTH = 300;
 
   private readonly openConnectModalButton = {
-    sectionClassName: 'artdeco-card ember-view pv-top-card',
+    sectionClassName: 'artdeco-card pv-top-card',
     type: 'connect',
     icon: 'connect-medium',
   };
@@ -62,7 +62,12 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
   private async clickOpenConnectModalButton(): Promise<void> {
     const buttonSection = findPageElementsByClassName(this.openConnectModalButton.sectionClassName)[0];
     if (!buttonSection) {
-      return;
+      const errorMessage = formatNewErrorMessage({
+        message: 'Can not find button section.',
+        functionName: 'clickOpenConnectModalButton',
+        className: 'LinkedinConnectSendTemplateStrategy',
+      });
+      throw new HTMLElementNotFoundError(errorMessage);
     }
     let button: HTMLButtonElement = <HTMLButtonElement>(
       findChildsInsideElementRecursively(

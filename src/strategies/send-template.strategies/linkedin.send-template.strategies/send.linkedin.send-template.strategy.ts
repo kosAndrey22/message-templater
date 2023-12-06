@@ -37,9 +37,13 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
 
   private readonly openDialogButton = {
     sectionClassName: 'artdeco-card pv-top-card',
+    // Types of send button for first attempt for finding it.
     type: 'send-privately',
     lockedType: 'locked',
+    // Icon of send button for second attempt for finding it.
     icon: 'send-privately-small',
+    // Class of send button without icon for third attempt for finding it.
+    withoutIconVariantClassName: 'artdeco-button--primary',
   };
 
   private readonly messageInput = {
@@ -84,6 +88,12 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
+    const button = this.getOpenSendModalButtonOnButtonSection(buttonSection);
+    await clickWithRandomDelayAfter(button);
+  }
+
+  private getOpenSendModalButtonOnButtonSection(buttonSection: HTMLElement): HTMLButtonElement {
+    // first attempt to find button.
     const elements = findChildsInsideElementRecursively(
       buttonSection,
       (el: HTMLElement) =>
@@ -91,13 +101,24 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
         el.getAttribute('type') === this.openDialogButton.lockedType,
     );
     let button = <HTMLButtonElement>elements[0];
+
+    // second attempt to find button.
     if (!button) {
       const buttonIcon = findChildsInsideElementRecursively(
         buttonSection,
         (el: HTMLElement) => el.getAttribute('data-test-icon') === this.openDialogButton.icon,
       )[0];
-      button = <HTMLButtonElement>buttonIcon.parentElement;
+      button = <HTMLButtonElement>buttonIcon?.parentElement;
     }
+
+    // third attempt to find button.
+    if (!button) {
+      button = <HTMLButtonElement>findChildsInsideElementRecursively(
+        buttonSection,
+        (el: HTMLElement) => elementClassListContainsClass(el, this.openDialogButton.withoutIconVariantClassName),
+      )[0];
+    }
+
     if (!button) {
       const errorMessage = formatNewErrorMessage({
         message: 'Can not find send message button.',
@@ -106,7 +127,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
-    await clickWithRandomDelayAfter(button);
+    return button;
   }
 
   private async insertTextToInput(text: string): Promise<void> {

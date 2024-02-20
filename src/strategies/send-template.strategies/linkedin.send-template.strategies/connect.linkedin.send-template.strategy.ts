@@ -15,9 +15,10 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
   private readonly MAX_CONNECT_MESSAGE_LENGTH = 300;
 
   private readonly openConnectModalButton = {
-    sectionClassName: 'artdeco-card pv-top-card',
+    sectionClassName: 'artdeco-card yXgMPMAoaaMwZCcPILKjJTelEoHHPKHJSnaJIAWec',
     type: 'connect',
-    icon: 'connect-medium',
+    iconMedium: 'connect-medium',
+    iconSmall: 'connect-small',
   };
 
   private readonly personalizeButton = {
@@ -77,11 +78,16 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
     );
 
     if (!button) {
-      const buttonIcon = findChildsInsideElementRecursively(
+      const buttonIconMedium = findChildsInsideElementRecursively(
         buttonSection,
-        (el: HTMLElement) => el.getAttribute('data-test-icon') === this.openConnectModalButton.icon,
+        (el: HTMLElement) => el.getAttribute('data-test-icon') === this.openConnectModalButton.iconMedium,
       )[0];
-      button = <HTMLButtonElement>buttonIcon.parentElement;
+      const buttonIconSmall = findChildsInsideElementRecursively(
+        buttonSection,
+        (el: HTMLElement) => el.getAttribute('data-test-icon') === this.openConnectModalButton.iconSmall,
+      )[0];
+      const buttonIcon = buttonIconMedium || buttonIconSmall
+      button = <HTMLButtonElement>buttonIcon?.parentElement;
     }
 
     if (!button) {

@@ -24,9 +24,8 @@ import {
 export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private readonly idPositionInImageUrl = 5;
 
-  private readonly avatarHeader = {
-    class: `pv-top-card-profile-picture pv-top-card-profile-picture__container display-block
-      pv-top-card__photo presence-entity__image EntityPhoto-circle-9`,
+  private readonly profileImage = {
+    class: 'pv-top-card-profile-picture__image pv-top-card-profile-picture__image--show evi-image ember-view',
   };
 
   private readonly dialogPopup = {
@@ -36,7 +35,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   };
 
   private readonly openDialogButton = {
-    sectionClassName: 'artdeco-card pv-top-card',
+    sectionClassName: 'artdeco-card yXgMPMAoaaMwZCcPILKjJTelEoHHPKHJSnaJIAWec',
     // Types of send button for first attempt for finding it.
     type: 'send-privately',
     lockedType: 'locked',
@@ -134,7 +133,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     const input = await this.getDialogInputWithOpenedUser();
     if (!input) {
       const errorMessage = formatNewErrorMessage({
-        message: 'Can not find connect send input.',
+        message: 'Can not find send input.',
         functionName: 'insertTextToInput',
         className: 'LinkedinSendTemplateStrategy',
       });
@@ -194,8 +193,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   }
 
   private getPageAvatarUrl(): string {
-    const header = findPageElementsByClassName(this.avatarHeader.class);
-    const img = header[0]?.firstElementChild;
+    const img = findPageElementsByClassName(this.profileImage.class)[0];
     if (!img) {
       return '';
     }

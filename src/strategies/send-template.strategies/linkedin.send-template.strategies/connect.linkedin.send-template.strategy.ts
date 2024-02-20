@@ -15,7 +15,7 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
   private readonly MAX_CONNECT_MESSAGE_LENGTH = 300;
 
   private readonly openConnectModalButton = {
-    sectionClassName: 'artdeco-card yXgMPMAoaaMwZCcPILKjJTelEoHHPKHJSnaJIAWec',
+    sectionClassName: 'scaffold-layout__main',
     type: 'connect',
     iconMedium: 'connect-medium',
     iconSmall: 'connect-small',

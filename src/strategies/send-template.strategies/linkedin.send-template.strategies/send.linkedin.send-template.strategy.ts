@@ -35,7 +35,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   };
 
   private readonly openDialogButton = {
-    sectionClassName: 'artdeco-card yXgMPMAoaaMwZCcPILKjJTelEoHHPKHJSnaJIAWec',
+    sectionClassName: 'scaffold-layout__main',
     // Types of send button for first attempt for finding it.
     type: 'send-privately',
     lockedType: 'locked',

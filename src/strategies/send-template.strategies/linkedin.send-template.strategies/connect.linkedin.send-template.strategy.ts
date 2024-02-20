@@ -86,7 +86,7 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
         buttonSection,
         (el: HTMLElement) => el.getAttribute('data-test-icon') === this.openConnectModalButton.iconSmall,
       )[0];
-      const buttonIcon = buttonIconMedium || buttonIconSmall
+      const buttonIcon = buttonIconMedium || buttonIconSmall;
       button = <HTMLButtonElement>buttonIcon?.parentElement;
     }
 

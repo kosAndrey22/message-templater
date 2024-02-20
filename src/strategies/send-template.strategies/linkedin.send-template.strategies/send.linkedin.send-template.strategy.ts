@@ -112,10 +112,11 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
 
     // third attempt to find button.
     if (!button) {
-      button = <HTMLButtonElement>findChildsInsideElementRecursively(
-        buttonSection,
-        (el: HTMLElement) => elementClassListContainsClass(el, this.openDialogButton.withoutIconVariantClassName),
-      )[0];
+      button = <HTMLButtonElement>(
+        findChildsInsideElementRecursively(buttonSection, (el: HTMLElement) =>
+          elementClassListContainsClass(el, this.openDialogButton.withoutIconVariantClassName),
+        )[0]
+      );
     }
 
     if (!button) {

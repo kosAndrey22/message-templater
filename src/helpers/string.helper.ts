@@ -18,11 +18,17 @@ export const interpolate = (str: string, values: { [key: string]: string }): str
   return newStr;
 };
 
-export const onlyFirstLetterToUpper = (str: string): string => {
+export const setFirstLetterToUpperCase = (str: string): string => {
   const firstLetter = str[0];
   const otherLetters = str.substring(1, str.length);
   const newString = firstLetter.toUpperCase() + otherLetters.toLowerCase();
   return newString;
+};
+
+export const setFirstAndAfterSpecialCharsLettersToUpperCase = (str: string): string => {
+  const splitted = str.split('-');
+  const formatted = splitted.map((s) => setFirstLetterToUpperCase(s));
+  return formatted.join('-');
 };
 
 export const removeInvalidChars = (str: string): string => {

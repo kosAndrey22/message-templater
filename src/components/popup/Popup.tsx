@@ -46,7 +46,7 @@ export const Popup = (): JSX.Element => {
       if (errorsExists || warningsExists) {
         openAlertsModal(resultErrors || [], resultWarnings || []);
         setCloseAlertsModalCallback(() => () => {
-          closeWindow();
+          // closeWindow(); // TODO: Made it configurable to close window or not afterclosing modal
         });
       } else {
         closeWindow();

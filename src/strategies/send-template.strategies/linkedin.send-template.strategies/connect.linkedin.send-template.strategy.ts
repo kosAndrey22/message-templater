@@ -15,7 +15,7 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
   private readonly MAX_CONNECT_MESSAGE_LENGTH = 300;
 
   private readonly openConnectModalButton = {
-    sectionClassName: 'scaffold-layout__main',
+    sectionClassName: 'ph5 pb5',
     type: 'connect',
     iconMedium: 'connect-medium',
     iconSmall: 'connect-small',

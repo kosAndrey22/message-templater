@@ -116,7 +116,7 @@ export const AddTemplateTab = (): JSX.Element => {
                 >
                   {PLACEHOLDER.FIRST_NAME}
                 </b>
-                - first name of the user
+                - First name of the user
               </p>
               <p>
                 <b
@@ -125,7 +125,7 @@ export const AddTemplateTab = (): JSX.Element => {
                 >
                   {PLACEHOLDER.LAST_NAME}
                 </b>
-                - last name of the user
+                - Last name of the user
               </p>
               <p>
                 <b

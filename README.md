@@ -8,8 +8,8 @@ Now supports only LinkedIn.
 
 ## Supported variables:
 
-* firstName - first name of user.
-* lastName - last name of user.
+* firstName - First name of user.
+* lastName - Last name of user.
 * fullName - Shortcut of {firstName} {lastName}.
 
 ## Usage:

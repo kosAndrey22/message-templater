@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { addPageEventListener, closeWindow, isSendTemplateResultEvent, removePageEventListener } from '../../helpers';
 import { BasePageEvent } from '../../interfaces';
-import { AddTemplateTab } from '../addTemplateTab';
-import { AlertsModal } from '../alertsModal';
-import { TemplatesTab } from '../templatesTab';
+import { AddTemplateTab } from '../add-template-tab';
+import { AlertsModal } from '../alerts-modal';
+import { TemplatesTab } from '../templates-tab';
 import './Popup.scss';
 
 type AlertsModalCallback = () => () => void;

@@ -6,6 +6,7 @@ import { AddTemplateTab } from '../add-template-tab';
 import { AlertsModal } from '../alerts-modal';
 import { TemplatesTab } from '../templates-tab';
 import './Popup.scss';
+import { getPackageVersion } from '../../helpers/package.helper';
 
 type AlertsModalCallback = () => () => void;
 
@@ -58,6 +59,8 @@ export const Popup = (): JSX.Element => {
     };
   }, []);
 
+  const packageVersion = getPackageVersion();
+
   return (
     <div className="app">
       <Tabs>
@@ -83,7 +86,7 @@ export const Popup = (): JSX.Element => {
       <div className="version-info">
         < hr />
         <div className="version">
-          Version: 1.1.1
+          Version: {packageVersion}
         </div>
       </div>
       <AlertsModal visible={alertsModalVisibility} errors={errors} warnings={warnings} closeModal={closeAlertsModal} />

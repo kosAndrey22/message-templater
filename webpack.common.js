@@ -1,4 +1,6 @@
+const { DefinePlugin } = require("webpack");
 const path = require("path");
+const packageJson = require('./package.json');
 
 module.exports = {
   entry: {
@@ -36,5 +38,10 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"]
-  }
+  },
+  plugins: [
+    new DefinePlugin({
+      VERSION: JSON.stringify(packageJson.version),
+    }),
+  ],
 };

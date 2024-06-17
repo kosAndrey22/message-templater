@@ -54,3 +54,20 @@ body {
         }
     }
 }
+
+.version-info {
+    margin: 0px;
+
+    hr {
+        margin: 0px;
+        background-color: darken($secondary-color, 20%);
+    }
+
+    .version {
+        font-size: 12px;
+        color: $secondary-color;
+        text-align: right;
+        margin-top: 0px;
+        margin-bottom: 2px;
+    }
+}

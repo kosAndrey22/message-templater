@@ -79,6 +79,13 @@ export const Popup = (): JSX.Element => {
           <AddTemplateTab />
         </TabPanel>
       </Tabs>
+
+      <div className="version-info">
+        < hr />
+        <div className="version">
+          Version: 1.1.1
+        </div>
+      </div>
       <AlertsModal visible={alertsModalVisibility} errors={errors} warnings={warnings} closeModal={closeAlertsModal} />
     </div>
   );

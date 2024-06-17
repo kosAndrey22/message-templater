@@ -4,7 +4,7 @@ export const downloadFile = (fileName: string, fileContent: string): void => {
   downloadLink.href = window.URL.createObjectURL(file);
   downloadLink.download = fileName;
   document.body.appendChild(downloadLink);
-  downloadLink.onclick = () => {
+  downloadLink.onclick = (): void => {
     // revokeObjectURL needs a delay to work properly
     setTimeout(() => {
       window.URL.revokeObjectURL(downloadLink.href);

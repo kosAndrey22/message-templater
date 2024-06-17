@@ -114,7 +114,7 @@ export const AddTemplateTab = (): JSX.Element => {
   const importTemplates = async (): Promise<void> => {
     const fileContent = await uploadFile();
     const parsed = JSON.parse(fileContent);
-    saveNewTemplates(parsed, overrideOnImport)
+    saveNewTemplates(parsed, overrideOnImport);
   };
 
   return (
@@ -178,14 +178,14 @@ export const AddTemplateTab = (): JSX.Element => {
         </div>
       </div>
 
-      < hr />
+      <hr />
 
       <div className="manage-templates-container">
         <div className="buttons">
           <button onClick={exportTemplates}>Export Templates</button>
           <br />
           <button onClick={importTemplates}>Import Templates</button>
-          <input type='checkbox' onChange={() => setOverrideOnImport(!overrideOnImport)} />
+          <input type="checkbox" onChange={(): void => setOverrideOnImport(!overrideOnImport)} />
           <span>Override on import</span>
         </div>
       </div>

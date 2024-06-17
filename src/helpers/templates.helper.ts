@@ -12,7 +12,10 @@ export const saveTemplates = async (templates: Template[]): Promise<void> => {
   await setToBrowserStorage<Template[]>(TEMPLATES_STORAGE_KEY, templates);
 };
 
-export const saveNewTemplates = async (newTemplatesData: PartialBy<Template, 'id'> | PartialBy<Template, 'id'>[], override: boolean = false): Promise<void> => {
+export const saveNewTemplates = async (
+  newTemplatesData: PartialBy<Template, 'id'> | PartialBy<Template, 'id'>[],
+  override: boolean = false,
+): Promise<void> => {
   let newTemplatesDataArray: PartialBy<Template, 'id'>[] = [];
 
   if (newTemplatesData instanceof Array) {
@@ -28,14 +31,14 @@ export const saveNewTemplates = async (newTemplatesData: PartialBy<Template, 'id
       text,
       pinned,
       id: id || new Date().getTime(),
-    }
+    };
   });
 
   if (override) {
     await saveTemplates(newTemplates);
   } else {
     const templates = await getSavedTemplates();
-    const filteredNewTemplates = newTemplates.filter((nt) => !templates.some((t) => t.id === nt.id))
+    const filteredNewTemplates = newTemplates.filter((nt) => !templates.some((t) => t.id === nt.id));
     templates.push(...filteredNewTemplates);
     await saveTemplates(templates);
   }

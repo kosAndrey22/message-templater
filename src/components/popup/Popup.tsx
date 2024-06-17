@@ -84,10 +84,8 @@ export const Popup = (): JSX.Element => {
       </Tabs>
 
       <div className="version-info">
-        < hr />
-        <div className="version">
-          Version: {packageVersion}
-        </div>
+        <hr />
+        <div className="version">Version: {packageVersion}</div>
       </div>
       <AlertsModal visible={alertsModalVisibility} errors={errors} warnings={warnings} closeModal={closeAlertsModal} />
     </div>

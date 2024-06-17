@@ -1,5 +1,6 @@
 import { TEMPLATES_STORAGE_KEY } from '../constants';
 import { Template } from '../interfaces';
+import { PartialBy } from '../types';
 import { getFromBrowserStorage, setToBrowserStorage } from './';
 
 export const getSavedTemplates = async (): Promise<Template[]> => {
@@ -11,31 +12,31 @@ export const saveTemplates = async (templates: Template[]): Promise<void> => {
   await setToBrowserStorage<Template[]>(TEMPLATES_STORAGE_KEY, templates);
 };
 
-export const saveNewTemplates = async (newTemplatesData: Omit<Template, 'id'> | Omit<Template, 'id'>[], override: boolean = false): Promise<void> => {
-  let newTemplates: Template[] = [];
+export const saveNewTemplates = async (newTemplatesData: PartialBy<Template, 'id'> | PartialBy<Template, 'id'>[], override: boolean = false): Promise<void> => {
+  let newTemplatesDataArray: PartialBy<Template, 'id'>[] = [];
+
   if (newTemplatesData instanceof Array) {
-    newTemplates.push(
-      ...newTemplatesData.map(({ title, text, pinned }) => ({
-        title,
-        text,
-        pinned,
-        id: new Date().getTime(),
-      })),
-    );
+    newTemplatesDataArray = newTemplatesData;
   } else {
-    const { title, text, pinned } = newTemplatesData;
-    newTemplates.push({
+    newTemplatesDataArray = [newTemplatesData];
+  }
+
+  const newTemplates: Template[] = newTemplatesDataArray.map((t) => {
+    const { title, text, pinned, id } = t;
+    return {
       title,
       text,
       pinned,
-      id: new Date().getTime(),
-    });
-  }
+      id: id || new Date().getTime(),
+    }
+  });
+
   if (override) {
     await saveTemplates(newTemplates);
   } else {
     const templates = await getSavedTemplates();
-    templates.push(...newTemplates);
+    const filteredNewTemplates = newTemplates.filter((nt) => !templates.some((t) => t.id === nt.id))
+    templates.push(...filteredNewTemplates);
     await saveTemplates(templates);
   }
 };

@@ -100,3 +100,33 @@ $secondary-color: #ccc;
     }
   }
 }
+
+.manage-templates-container {
+  .buttons {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-left: 10px;
+
+    button {
+      cursor: pointer;
+      padding: 5px 10px;
+      border: none;
+      background-color: $primary-color;
+      color: white;
+      font-size: 0.7rem;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+
+      &:disabled {
+        background-color: gray;
+        cursor: default;
+      }
+    }
+
+    input {
+      margin-left: 10px;
+    }
+  }
+}

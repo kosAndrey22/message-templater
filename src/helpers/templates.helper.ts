@@ -11,17 +11,33 @@ export const saveTemplates = async (templates: Template[]): Promise<void> => {
   await setToBrowserStorage<Template[]>(TEMPLATES_STORAGE_KEY, templates);
 };
 
-export const saveNewTemplate = async (newTemplateData: Omit<Template, 'id'>): Promise<void> => {
-  const templates = await getSavedTemplates();
-  const { title, text, pinned } = newTemplateData;
-  const newTemplate: Template = {
-    title,
-    text,
-    pinned,
-    id: new Date().getTime(),
-  };
-  templates.push(newTemplate);
-  await saveTemplates(templates);
+export const saveNewTemplates = async (newTemplatesData: Omit<Template, 'id'> | Omit<Template, 'id'>[], override: boolean = false): Promise<void> => {
+  let newTemplates: Template[] = [];
+  if (newTemplatesData instanceof Array) {
+    newTemplates.push(
+      ...newTemplatesData.map(({ title, text, pinned }) => ({
+        title,
+        text,
+        pinned,
+        id: new Date().getTime(),
+      })),
+    );
+  } else {
+    const { title, text, pinned } = newTemplatesData;
+    newTemplates.push({
+      title,
+      text,
+      pinned,
+      id: new Date().getTime(),
+    });
+  }
+  if (override) {
+    await saveTemplates(newTemplates);
+  } else {
+    const templates = await getSavedTemplates();
+    templates.push(...newTemplates);
+    await saveTemplates(templates);
+  }
 };
 
 export const updateTemplateById = async (id: Template['id'], updateTemplateData: Partial<Template>): Promise<void> => {

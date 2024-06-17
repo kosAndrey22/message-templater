@@ -1,6 +1,7 @@
 export * from './browser.helpers';
 export * from './error.helper';
 export * from './event-type.helper';
+export * from './file.helper';
 export * from './random.helper';
 export * from './sleep.helper';
 export * from './string.helper';

@@ -25,7 +25,7 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private readonly idPositionInImageUrl = 5;
 
   private readonly profileImage = {
-    class: 'pv-top-card-profile-picture__image pv-top-card-profile-picture__image--show evi-image ember-view',
+    class: 'pv-top-card-profile-picture__image--show evi-image ember-view',
   };
 
   private readonly dialogPopup = {
@@ -159,10 +159,14 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
 
   private async getDialogInputWithOpenedUser(): Promise<HTMLInputElement | null> {
     const dialogs = findPageElementsByClassName(this.dialogPopup.class);
-    const avatarUrl = this.getPageAvatarUrl();
+    const pageAvatar = this.getPageAvatar();
+    if (!pageAvatar) {
+      return null;
+    }
+    const avatarUrl = pageAvatar.src;
     const userId = this.getUserIdFromAvatarUrl(avatarUrl);
 
-    const currentDialog = dialogs.find((d) => {
+    let currentDialog = dialogs.find((d) => {
       const img = findChildsInsideElementRecursively(d, (el) =>
         elementClassListContainsClass(el, this.dialogPopup.imageClassName),
       )[0];
@@ -174,17 +178,27 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     });
 
     if (!currentDialog) {
+      const profileImageAltText = pageAvatar.alt;
+      const nameFromAvatarAltText = profileImageAltText.split(',')[0];
+
+      currentDialog = dialogs.find((d) => {
+        const img = findChildsInsideElementRecursively(d, (el) =>
+          elementClassListContainsClass(el, this.dialogPopup.imageClassName),
+        )[0];
+        if (!img) {
+          return;
+        }
+        const imageAltText = (<HTMLImageElement>img).alt;
+        const nameFromImageAltText = imageAltText.split(',')[0];
+        return nameFromImageAltText === nameFromAvatarAltText;
+      });
+    }
+
+    if (!currentDialog) {
       return null;
     }
 
-    const dialogClosed = elementClassListContainsClass(currentDialog, this.dialogPopup.closedClassName);
-    if (dialogClosed) {
-      const header = currentDialog.children[1];
-      await clickWithRandomDelayAfter(
-        <HTMLElement>header,
-        ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS),
-      );
-    }
+    await this.openDialogPopupIfNeeded(currentDialog);
 
     const input = findChildsInsideElementRecursively(
       currentDialog,
@@ -193,12 +207,20 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     return <HTMLInputElement>input;
   }
 
-  private getPageAvatarUrl(): string {
-    const img = findPageElementsByClassName(this.profileImage.class)[0];
-    if (!img) {
-      return '';
+  private async openDialogPopupIfNeeded(currentDialog: HTMLElement): Promise<void> {
+    const dialogClosed = elementClassListContainsClass(currentDialog, this.dialogPopup.closedClassName);
+    if (dialogClosed) {
+      const header = currentDialog.children[1];
+      await clickWithRandomDelayAfter(
+        <HTMLElement>header,
+        ...getDefaultRandomClickParams(SMALL_DEFAULT_CLICK_DELAY_MS),
+      );
     }
-    return (<HTMLImageElement>img).src;
+  }
+
+  private getPageAvatar(): HTMLImageElement | null {
+    const img = findPageElementsByClassName(this.profileImage.class)[0];
+    return img ? <HTMLImageElement>img : null;
   }
 
   private getUserIdFromAvatarUrl(url: string): string {

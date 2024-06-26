@@ -4,15 +4,14 @@ import { MAX_TEMPLATE_TITLE_LENGHT, PLACEHOLDER } from '../../constants';
 import {
   addMouseEnterListener,
   addMouseOutListener,
-  downloadFile,
   findPageElementById,
   getElementCaretPosition,
-  getSavedTemplates,
   isCursorInside,
   removeMouseEnterListener,
   removeMouseOutListener,
-  saveNewTemplates,
-  uploadFile,
+  createNewTemplates,
+  importTemplates as importTemplatesHelper,
+  exportTemplates as exportTemplatesHelper,
 } from '../../helpers';
 import './AddTemplateTab.scss';
 
@@ -33,7 +32,7 @@ export const AddTemplateTab = (): JSX.Element => {
   };
 
   const onSave = (): void => {
-    saveNewTemplates({ title: templateTitle, text: templateText, pinned: false });
+    createNewTemplates({ title: templateTitle, text: templateText, pinned: false });
     setTemplateTitle('');
     setTemplateText('');
   };
@@ -104,17 +103,12 @@ export const AddTemplateTab = (): JSX.Element => {
   });
 
   const exportTemplates = async (): Promise<void> => {
-    const savedTemplates = await getSavedTemplates();
-    const stringifiedTemplates = JSON.stringify(savedTemplates, null, 2);
-    const fileName = `Templates exports ${new Date().getTime()}.json`;
-    downloadFile(fileName, stringifiedTemplates);
+    await exportTemplatesHelper();
   };
 
   const [overrideOnImport, setOverrideOnImport] = useState(false);
   const importTemplates = async (): Promise<void> => {
-    const fileContent = await uploadFile();
-    const parsed = JSON.parse(fileContent);
-    saveNewTemplates(parsed, overrideOnImport);
+    await importTemplatesHelper(overrideOnImport);
   };
 
   return (

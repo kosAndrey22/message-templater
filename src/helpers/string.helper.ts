@@ -33,7 +33,7 @@ export const setFirstAndAfterSpecialCharsLettersToUpperCase = (str: string): str
 
 export const removeInvalidChars = (str: string): string => {
   return str.replace(
-    /\u000A|[\u2580-\u27BF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD10-\uDDFF]|[\uE000-\uF8FF]/g,
+    /\u000A|[\u2580-\u27BF]|[\u2b48-\u2b50]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD10-\uDDFF]|[\uE000-\uF8FF]/g,
     '',
   );
 };

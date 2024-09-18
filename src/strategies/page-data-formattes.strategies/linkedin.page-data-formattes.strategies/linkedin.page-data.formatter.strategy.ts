@@ -1,5 +1,9 @@
 import { PLACEHOLDER } from '../../../constants';
-import { removeInvalidChars, stringContainsInvalidCharsOnly } from '../../../helpers';
+import {
+  removeInvalidChars,
+  setFirstAndAfterSpecialCharsLettersToUpperCase,
+  stringContainsInvalidCharsOnly,
+} from '../../../helpers';
 import { PageInfo } from '../../../types';
 import { BasePageDataFormatterStrategy } from '../base.page-data.formatter.strategy';
 
@@ -11,6 +15,10 @@ export class LinkedinPageDataFormatterStrategy extends BasePageDataFormatterStra
     const withoutOnlyInvalidChars = stringFromHeader.filter((s) => !stringContainsInvalidCharsOnly(s));
     const formatted = withoutOnlyInvalidChars.map((s) => removeInvalidChars(s));
     const [firstName, lastName] = formatted;
-    return { firstName, lastName };
+
+    return {
+      firstName: setFirstAndAfterSpecialCharsLettersToUpperCase(firstName),
+      lastName: setFirstAndAfterSpecialCharsLettersToUpperCase(lastName),
+    };
   }
 }

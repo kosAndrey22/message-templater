@@ -1,4 +1,3 @@
-- Correct handling of user nics only for TG
 - Error on sending to chats
 - Refactor send/connect strategies structure 
 - Refactor send/connect strategies common logic

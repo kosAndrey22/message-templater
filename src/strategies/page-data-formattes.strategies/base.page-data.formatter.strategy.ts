@@ -1,7 +1,7 @@
 import { PageInfo } from '../../types';
 
 export class BasePageDataFormatterStrategy {
-  public formatPageInfo(pageInfo: PageInfo): PageInfo {
+  public buildPageInfo(pageInfo: PageInfo): PageInfo {
     const formattedInfo: PageInfo = {};
     if (pageInfo.firstName) {
       formattedInfo.firstName = pageInfo.firstName;

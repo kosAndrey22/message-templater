@@ -111,7 +111,7 @@ export class OpenDialogsLinkedinSendTemplateStrategy implements SendTemplateStra
 
   private formatNamesString(str: string): PageInfo {
     const pageUserNamesInfo = this.pageDataFormatterService.formatFullNameHeaderContent(str);
-    const formattedPageInfo = this.pageDataFormatterService.formatPageInfo(pageUserNamesInfo);
+    const formattedPageInfo = this.pageDataFormatterService.buildPageInfo(pageUserNamesInfo);
     return formattedPageInfo;
   }
 }

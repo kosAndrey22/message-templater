@@ -8,7 +8,7 @@ export abstract class AbstractReceivePageStrategy implements ReceivePageInfoStra
 
   public receive(): PageInfo {
     const pageInfo = this.receiveInfo();
-    const formattedPageInfo = this.pageDataFormatterService.formatPageInfo(pageInfo);
+    const formattedPageInfo = this.pageDataFormatterService.buildPageInfo(pageInfo);
     return formattedPageInfo;
   }
 }

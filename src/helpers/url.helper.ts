@@ -45,7 +45,7 @@ export const isLinkedinPrivateMessagesPageUrl = (url: string): boolean => {
   } catch {
     return false;
   }
-}
+};
 
 export const isTelegramUrl = (url: string): boolean => {
   try {

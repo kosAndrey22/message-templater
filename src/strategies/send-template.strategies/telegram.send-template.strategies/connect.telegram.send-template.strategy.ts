@@ -1,21 +1,11 @@
-
-import {
-  SendTemplateResult,
-  SendTemplateStrategy,
-} from '../../../interfaces';
+import { SendTemplateResult, SendTemplateStrategy } from '../../../interfaces';
 
 export class ConnectTenegramSendTemplateStrategy implements SendTemplateStrategy {
-
-  constructor() {}
-
-  public async send(): Promise<SendTemplateResult> {
+  public send(): SendTemplateResult {
     const result: SendTemplateResult = {
-      errors: [
-        'Connect feature does not support Telegram',
-      ],
+      errors: ['Connect feature does not support Telegram'],
     };
 
     return result;
   }
-
 }

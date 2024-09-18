@@ -1,5 +1,9 @@
 import { MESSAGE_TYPE } from '../../../constants';
-import { isLinkedinPrivateMessagesPageUrl, isLinkedinProfilePageUrl, isLinkedinRecruiterLitePageUrl, isLinkedinUrl } from '../../../helpers';
+import {
+  isLinkedinPrivateMessagesPageUrl,
+  isLinkedinProfilePageUrl,
+  isLinkedinRecruiterLitePageUrl,
+} from '../../../helpers';
 import { SendTemplateStrategy, SendTemplateStrategyManager } from '../../../interfaces';
 import {
   PrivateMessagesLinkedinReceivePageInfoStrategy,
@@ -11,7 +15,7 @@ import {
   ConnectLinkedinConnectSendTemplateStrategy,
   PrivateMessageLinkedinSendTemplateStrategy,
   RecruiterLiteLinkedinSendTemplateStrategy,
-  OpenDialogsLinkedinSendTemplateStrategy
+  OpenDialogsLinkedinSendTemplateStrategy,
 } from '../../send-template.strategies';
 
 export class LinkedinSendTemplateStrategyManager implements SendTemplateStrategyManager {

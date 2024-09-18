@@ -1,5 +1,5 @@
 import { PLACEHOLDER } from '../../../constants';
-import { elementClassListContainsClass, findChildsInsideElementRecursively, findPageElementsByClassName } from '../../../helpers';
+import { findPageElementsByClassName } from '../../../helpers';
 import { TelegramPageDataFormatterStrategy } from '../../page-data-formattes.strategies';
 import { PageInfo } from '../../../types';
 import { AbstractReceivePageStrategy } from '../abstract.receive-page-info.strategy';

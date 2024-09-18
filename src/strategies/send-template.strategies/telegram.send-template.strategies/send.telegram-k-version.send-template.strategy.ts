@@ -1,17 +1,18 @@
-
 import { HTMLElementNotFoundError } from '../../../errors';
-import { clickWithRandomDelayAfter, findPageElementById, findPageElementsByClassName, formatErrorMessage, interpolate, moveCaretToTextStart, setElementText } from '../../../helpers';
 import {
-  ReceivePageInfoStrategy,
-  SendTemplateResult,
-  SendTemplateStrategy,
-  Template,
-} from '../../../interfaces';
+  clickWithRandomDelayAfter,
+  findPageElementsByClassName,
+  formatErrorMessage,
+  interpolate,
+  moveCaretToTextStart,
+  setElementText,
+} from '../../../helpers';
+import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
 export class SendTenegramKWersionSendTemplateStrategy implements SendTemplateStrategy {
   private textInput = {
     class: 'input-message-container',
-  }
+  };
 
   constructor(private receivePageInfoStrategy: ReceivePageInfoStrategy) {}
 
@@ -29,12 +30,10 @@ export class SendTenegramKWersionSendTemplateStrategy implements SendTemplateStr
     return result;
   }
 
-  private async insertText(template: Template) {
+  private async insertText(template: Template): Promise<void> {
     const input = this.getInput();
     const text = this.getText(template);
-    await clickWithRandomDelayAfter(
-      <HTMLElement>input,
-    );
+    await clickWithRandomDelayAfter(<HTMLElement>input);
     setElementText(input, text);
     moveCaretToTextStart(input);
   }
@@ -49,7 +48,7 @@ export class SendTenegramKWersionSendTemplateStrategy implements SendTemplateStr
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
-    return <HTMLInputElement>(input.firstElementChild) || null;
+    return <HTMLInputElement>input.firstElementChild || null;
   }
 
   private getText(template: Template): string {
@@ -57,5 +56,4 @@ export class SendTenegramKWersionSendTemplateStrategy implements SendTemplateStr
     const text = interpolate(template.text, pageInfo);
     return text;
   }
-
 }

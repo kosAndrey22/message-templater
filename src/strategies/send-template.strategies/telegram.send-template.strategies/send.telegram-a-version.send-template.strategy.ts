@@ -1,17 +1,18 @@
-
 import { HTMLElementNotFoundError } from '../../../errors';
-import { clickWithRandomDelayAfter, findPageElementById, findPageElementsByClassName, formatErrorMessage, interpolate, moveCaretToTextStart, setElementText } from '../../../helpers';
 import {
-  ReceivePageInfoStrategy,
-  SendTemplateResult,
-  SendTemplateStrategy,
-  Template,
-} from '../../../interfaces';
+  clickWithRandomDelayAfter,
+  findPageElementById,
+  formatErrorMessage,
+  interpolate,
+  moveCaretToTextStart,
+  setElementText,
+} from '../../../helpers';
+import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
 
 export class SendTenegramAWersionSendTemplateStrategy implements SendTemplateStrategy {
   private textInput = {
     class: 'editable-message-text',
-  }
+  };
 
   constructor(private receivePageInfoStrategy: ReceivePageInfoStrategy) {}
 
@@ -29,12 +30,10 @@ export class SendTenegramAWersionSendTemplateStrategy implements SendTemplateStr
     return result;
   }
 
-  private async insertText(template: Template) {
+  private async insertText(template: Template): Promise<void> {
     const input = this.getInput();
     const text = this.getText(template);
-    await clickWithRandomDelayAfter(
-      <HTMLElement>input,
-    );
+    await clickWithRandomDelayAfter(<HTMLElement>input);
     setElementText(input, text);
     moveCaretToTextStart(input);
   }
@@ -57,5 +56,4 @@ export class SendTenegramAWersionSendTemplateStrategy implements SendTemplateStr
     const text = interpolate(template.text, pageInfo);
     return text;
   }
-
 }

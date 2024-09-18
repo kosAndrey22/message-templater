@@ -11,6 +11,9 @@ export class TelegramPageDataFormatterStrategy extends BasePageDataFormatterStra
     const withoutOnlyInvalidChars = stringFromHeader.filter((s) => !stringContainsInvalidCharsOnly(s));
     const formatted = withoutOnlyInvalidChars.map((s) => removeInvalidChars(s));
     const [firstName, lastName] = formatted;
-    return { firstName, lastName };
+    return {
+      firstName: firstName || '',
+      lastName: lastName || '',
+    };
   }
 }

@@ -11,9 +11,6 @@ export class LinkedinPageDataFormatterStrategy extends BasePageDataFormatterStra
     const withoutOnlyInvalidChars = stringFromHeader.filter((s) => !stringContainsInvalidCharsOnly(s));
     const formatted = withoutOnlyInvalidChars.map((s) => removeInvalidChars(s));
     const [firstName, lastName] = formatted;
-    return {
-      firstName: firstName || '',
-      lastName: lastName || '',
-    };
+    return { firstName, lastName };
   }
 }

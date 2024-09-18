@@ -1,9 +1,9 @@
-import { PLACEHOLDER } from '../../constants';
-import { removeInvalidChars, stringContainsInvalidCharsOnly } from '../../helpers';
-import { PageInfo } from '../../types';
-import { AbstractPageDataFormatterService } from './abstract.page-data.formatter.service';
+import { PLACEHOLDER } from '../../../constants';
+import { removeInvalidChars, stringContainsInvalidCharsOnly } from '../../../helpers';
+import { PageInfo } from '../../../types';
+import { BasePageDataFormatterStrategy } from '../base.page-data.formatter.strategy';
 
-export class LinkedinPageDataFormatterService extends AbstractPageDataFormatterService {
+export class TelegramPageDataFormatterStrategy extends BasePageDataFormatterStrategy {
   public formatFullNameHeaderContent(
     content: string,
   ): Partial<Pick<PageInfo, PLACEHOLDER.FIRST_NAME | PLACEHOLDER.LAST_NAME>> {

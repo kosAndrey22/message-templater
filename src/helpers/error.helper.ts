@@ -4,7 +4,7 @@ type ErrorObject = {
   className?: string;
 };
 
-export const formatNewErrorMessage = ({ message, functionName, className }: ErrorObject): string => {
+export const formatErrorMessage = ({ message, functionName, className }: ErrorObject): string => {
   return VERBOSE ? getFullMessage(message, functionName, className) : getShortMessage(message);
 };
 

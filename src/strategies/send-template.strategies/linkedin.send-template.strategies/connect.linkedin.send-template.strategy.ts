@@ -6,7 +6,7 @@ import {
   setElementText,
   interpolate,
   findChildsInsideElementRecursively,
-  formatNewErrorMessage,
+  formatErrorMessage,
   moveCaretToTextStart,
 } from '../../../helpers';
 import { ReceivePageInfoStrategy, SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
@@ -63,7 +63,7 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
   private async clickOpenConnectModalButton(): Promise<void> {
     const buttonSection = findPageElementsByClassName(this.openConnectModalButton.sectionClassName)[0];
     if (!buttonSection) {
-      const errorMessage = formatNewErrorMessage({
+      const errorMessage = formatErrorMessage({
         message: 'Can not find button section.',
         functionName: 'clickOpenConnectModalButton',
         className: 'LinkedinConnectSendTemplateStrategy',
@@ -91,10 +91,10 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
     }
 
     if (!button) {
-      const errorMessage = formatNewErrorMessage({
+      const errorMessage = formatErrorMessage({
         message: 'Can not find connect button. Maybe you are already connected.',
         functionName: 'clickOpenConnectModalButton',
-        className: 'LinkedinConnectSendTemplateStrategy',
+        className: 'ConnectLinkedinConnectSendTemplateStrategy',
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
@@ -112,10 +112,10 @@ export class ConnectLinkedinConnectSendTemplateStrategy implements SendTemplateS
   private insertTextToInput(text: string): void {
     const input = <HTMLTextAreaElement>findPageElementById(this.personalizeInput.id);
     if (!input) {
-      const errorMessage = formatNewErrorMessage({
+      const errorMessage = formatErrorMessage({
         message: 'Can not find connect message input',
         functionName: 'insertTextToInput',
-        className: 'LinkedinConnectSendTemplateStrategy',
+        className: 'ConnectLinkedinConnectSendTemplateStrategy',
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }

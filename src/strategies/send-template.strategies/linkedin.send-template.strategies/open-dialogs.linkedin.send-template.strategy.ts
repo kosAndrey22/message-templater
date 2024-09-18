@@ -5,18 +5,18 @@ import {
   elementClassListContainsClass,
   findChildsInsideElementRecursively,
   findPageElementsByClassName,
-  formatNewErrorMessage,
+  formatErrorMessage,
   getDefaultRandomClickParams,
   interpolate,
   moveCaretToTextStart,
   setElementText,
 } from '../../../helpers';
 import { SendTemplateResult, SendTemplateStrategy, Template } from '../../../interfaces';
-import { LinkedinPageDataFormatterService } from '../../../services';
+import { LinkedinPageDataFormatterStrategy } from '../../page-data-formattes.strategies';
 import { PageInfo } from '../../../types';
 
 export class OpenDialogsLinkedinSendTemplateStrategy implements SendTemplateStrategy {
-  private readonly pageDataFormatterService = new LinkedinPageDataFormatterService();
+  private readonly pageDataFormatterService = new LinkedinPageDataFormatterStrategy();
 
   private readonly dialogPopup = {
     class: 'msg-convo-wrapper msg-overlay-conversation-bubble msg-overlay-conversation-bubble--default-inactive ml4',
@@ -52,7 +52,7 @@ export class OpenDialogsLinkedinSendTemplateStrategy implements SendTemplateStra
     const dialogs = findPageElementsByClassName(this.dialogPopup.class);
     const openDialogs = dialogs.filter((d) => !elementClassListContainsClass(d, this.dialogPopup.closedClassName));
     if (!openDialogs.length) {
-      const errorMessage = formatNewErrorMessage({
+      const errorMessage = formatErrorMessage({
         message: 'Can not find any open dialogs.',
         functionName: 'send',
         className: 'OpenDialogsLinkedinSendTemplateStrategy',

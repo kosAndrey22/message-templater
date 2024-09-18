@@ -4,7 +4,7 @@ Chrome extension for formatting templates using data from a web page, and then s
 
 ## Supported sites:
 
-Now supports only LinkedIn.
+Supports LinkedIn and Telegram Web.
 
 ## Supported variables:
 

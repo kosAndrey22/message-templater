@@ -1,10 +1,10 @@
 import { ReceivePageInfoStrategy } from '../../interfaces';
-import { AbstractPageDataFormatterService } from '../../services';
+import { BasePageDataFormatterStrategy } from '../page-data-formattes.strategies';
 import { PageInfo } from '../../types';
 
 export abstract class AbstractReceivePageStrategy implements ReceivePageInfoStrategy {
   protected abstract receiveInfo(): PageInfo;
-  protected abstract readonly pageDataFormatterService: AbstractPageDataFormatterService;
+  protected abstract readonly pageDataFormatterService: BasePageDataFormatterStrategy;
 
   public receive(): PageInfo {
     const pageInfo = this.receiveInfo();

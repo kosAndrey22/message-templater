@@ -1,0 +1,4 @@
+- Other TG Web version
+- Error on sending to chats
+- Refactor send/connect strategies structure 
+- Refactor send/connect strategiescommon logic

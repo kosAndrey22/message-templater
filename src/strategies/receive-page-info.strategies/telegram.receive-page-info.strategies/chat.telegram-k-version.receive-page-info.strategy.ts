@@ -1,14 +1,14 @@
 import { PLACEHOLDER } from '../../../constants';
-import { findPageElementsByClassName } from '../../../helpers';
-import { LinkedinPageDataFormatterStrategy } from '../../page-data-formattes.strategies';
+import { elementClassListContainsClass, findChildsInsideElementRecursively, findPageElementsByClassName } from '../../../helpers';
+import { TelegramPageDataFormatterStrategy } from '../../page-data-formattes.strategies';
 import { PageInfo } from '../../../types';
 import { AbstractReceivePageStrategy } from '../abstract.receive-page-info.strategy';
 
-export class ProfileLinkedinReceivePageInfoStrategy extends AbstractReceivePageStrategy {
-  protected readonly pageDataFormatterService = new LinkedinPageDataFormatterStrategy();
+export class ChatTelegramKVersionReceivePageInfoStrategy extends AbstractReceivePageStrategy {
+  protected readonly pageDataFormatterService = new TelegramPageDataFormatterStrategy();
 
   private readonly profileFullNameHeader = {
-    className: 'text-heading-xlarge inline t-24 v-align-middle break-words',
+    className: 'top',
   };
 
   protected receiveInfo(): PageInfo {
@@ -21,7 +21,9 @@ export class ProfileLinkedinReceivePageInfoStrategy extends AbstractReceivePageS
     if (!fullNameHeader) {
       return {};
     }
-    const fullNameHeaderText = fullNameHeader.textContent;
+
+    const fullNameDiv = fullNameHeader.firstElementChild.firstElementChild;
+    const fullNameHeaderText = fullNameDiv.textContent;
     return this.pageDataFormatterService.formatFullNameHeaderContent(fullNameHeaderText);
   }
 }

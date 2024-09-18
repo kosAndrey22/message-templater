@@ -1,13 +1,16 @@
 import { MESSAGE_TYPE } from '../../../constants';
-import { isLinkedinUrl } from '../../../helpers';
+import { isLinkedinUrl, isTelegramUrl } from '../../../helpers';
 import { SendTemplateStrategy, SendTemplateStrategyManager } from '../../../interfaces';
 import { LinkedinSendTemplateStrategyManager } from './linkedin.send-template.strategy-manager';
+import { TelegramSendTemplateStrategyManager } from './telegram.send-template.strategy-manager';
 
 export class MainSendTemplateStrategyManager implements SendTemplateStrategyManager {
-  linkedinSendTemplateStrategyManager: LinkedinSendTemplateStrategyManager;
+  private readonly linkedinSendTemplateStrategyManager: LinkedinSendTemplateStrategyManager;
+  private readonly telegramSendTemplateStrategyManager: TelegramSendTemplateStrategyManager;
 
   constructor() {
     this.linkedinSendTemplateStrategyManager = new LinkedinSendTemplateStrategyManager();
+    this.telegramSendTemplateStrategyManager = new TelegramSendTemplateStrategyManager();
   }
 
   public getStrategy(url: string, messageType: MESSAGE_TYPE): SendTemplateStrategy | null {
@@ -21,6 +24,8 @@ export class MainSendTemplateStrategyManager implements SendTemplateStrategyMana
   private getStrategyManager(url: string): SendTemplateStrategyManager | null {
     if (isLinkedinUrl(url)) {
       return this.linkedinSendTemplateStrategyManager;
+    } else if (isTelegramUrl(url)) {
+      return this.telegramSendTemplateStrategyManager;
     }
     return null;
   }

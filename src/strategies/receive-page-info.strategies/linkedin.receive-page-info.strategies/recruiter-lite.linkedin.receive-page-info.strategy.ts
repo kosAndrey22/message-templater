@@ -1,11 +1,11 @@
 import { PLACEHOLDER } from '../../../constants';
 import { findPageElementsByClassName } from '../../../helpers';
-import { LinkedinPageDataFormatterService } from '../../../services';
+import { LinkedinPageDataFormatterStrategy } from '../../page-data-formattes.strategies';
 import { PageInfo } from '../../../types';
 import { AbstractReceivePageStrategy } from '../abstract.receive-page-info.strategy';
 
 export class RecruiterLiteLinkedinReceivePageInfoStrategy extends AbstractReceivePageStrategy {
-  protected readonly pageDataFormatterService = new LinkedinPageDataFormatterService();
+  protected readonly pageDataFormatterService = new LinkedinPageDataFormatterStrategy();
 
   private readonly profileFullNameHeader = {
     className: 'lockup',

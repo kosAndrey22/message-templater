@@ -3,7 +3,7 @@ import { HTMLElementNotFoundError } from '../../../errors';
 import {
   clickWithRandomDelayAfter,
   findPageElementsByClassName,
-  formatNewErrorMessage,
+  formatErrorMessage,
   getDefaultRandomClickParams,
   interpolate,
   moveCaretToTextStart,
@@ -23,7 +23,6 @@ export class PrivateMessageLinkedinSendTemplateStrategy implements SendTemplateS
     try {
       const text = this.getText(template);
       await this.insertTextToInput(text);
-      return {};
     } catch (e) {
       if (e.message) {
         result.errors ? result.errors.push(e.message) : (result.errors = [e.message]);
@@ -41,7 +40,7 @@ export class PrivateMessageLinkedinSendTemplateStrategy implements SendTemplateS
   private async insertTextToInput(text: string): Promise<void> {
     const input = findPageElementsByClassName(this.messageInputContainer.class)[0];
     if (!input) {
-      const errorMessage = formatNewErrorMessage({
+      const errorMessage = formatErrorMessage({
         message: 'Can not find send input.',
         functionName: 'insertTextToInput',
         className: 'PrivateMessageLinkedinSendTemplateStrategy',

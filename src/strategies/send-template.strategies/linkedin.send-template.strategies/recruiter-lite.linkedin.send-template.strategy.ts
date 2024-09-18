@@ -4,7 +4,7 @@ import {
   clickWithRandomDelayAfter,
   findChildsInsideElementRecursively,
   findPageElementsByClassName,
-  formatNewErrorMessage,
+  formatErrorMessage,
   getDefaultRandomClickParams,
   interpolate,
   moveCaretToTextStart,
@@ -43,7 +43,6 @@ export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateSt
       await this.openDialog();
       const text = this.getText(template);
       await this.insertTextToInput(text);
-      return {};
     } catch (e) {
       if (e.message) {
         result.errors ? result.errors.push(e.message) : (result.errors = [e.message]);
@@ -80,7 +79,7 @@ export class RecruiterLiteLinkedinSendTemplateStrategy implements SendTemplateSt
   private async insertTextToInput(text: string): Promise<void> {
     const inputContainer = findPageElementsByClassName(this.messageInputContainer.class)[0];
     if (!inputContainer) {
-      const errorMessage = formatNewErrorMessage({
+      const errorMessage = formatErrorMessage({
         message: 'Can not find send input.',
         functionName: 'insertTextToInput',
         className: 'RecruiterLiteLinkedinSendTemplateStrategy',

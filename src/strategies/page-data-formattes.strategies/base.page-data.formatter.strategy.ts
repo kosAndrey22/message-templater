@@ -1,7 +1,7 @@
 import { setFirstAndAfterSpecialCharsLettersToUpperCase } from '../../helpers';
 import { PageInfo } from '../../types';
 
-export class AbstractPageDataFormatterService {
+export class BasePageDataFormatterStrategy {
   public formatPageInfo(pageInfo: PageInfo): PageInfo {
     const formattedInfo: PageInfo = {};
     if (pageInfo.firstName) {

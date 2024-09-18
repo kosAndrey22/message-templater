@@ -6,7 +6,7 @@ import {
   setElementText,
   interpolate,
   findChildsInsideElementRecursively,
-  formatNewErrorMessage,
+  formatErrorMessage,
   moveCaretToTextStart,
   sendPageRuntimeEvent,
   getDefaultRandomClickParams,
@@ -58,7 +58,6 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
       const text = this.getText(template);
       this.sendResendTemplateIfRedirectedEvent(template);
       await this.insertTextToInput(text);
-      return {};
     } catch (e) {
       if (e.message) {
         result.errors ? result.errors.push(e.message) : (result.errors = [e.message]);
@@ -80,10 +79,10 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private async clickOpenDialogButton(): Promise<void> {
     const buttonSection = findPageElementsByClassName(this.openDialogButton.sectionClassName)[0];
     if (!buttonSection) {
-      const errorMessage = formatNewErrorMessage({
+      const errorMessage = formatErrorMessage({
         message: 'Can not find button section.',
         functionName: 'clickOpenConnectModalButton',
-        className: 'LinkedinConnectSendTemplateStrategy',
+        className: 'SendLinkedinSendTemplateStrategy',
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
@@ -120,10 +119,10 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
     }
 
     if (!button) {
-      const errorMessage = formatNewErrorMessage({
+      const errorMessage = formatErrorMessage({
         message: 'Can not find send message button.',
         functionName: 'clickOpenDialogButton',
-        className: 'LinkedinSendTemplateStrategy',
+        className: 'SendLinkedinSendTemplateStrategy',
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
@@ -133,10 +132,10 @@ export class SendLinkedinSendTemplateStrategy implements SendTemplateStrategy {
   private async insertTextToInput(text: string): Promise<void> {
     const input = await this.getDialogInputWithOpenedUser();
     if (!input) {
-      const errorMessage = formatNewErrorMessage({
+      const errorMessage = formatErrorMessage({
         message: 'Can not find send input.',
         functionName: 'insertTextToInput',
-        className: 'LinkedinSendTemplateStrategy',
+        className: 'SendLinkedinSendTemplateStrategy',
       });
       throw new HTMLElementNotFoundError(errorMessage);
     }
